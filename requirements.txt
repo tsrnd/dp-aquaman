@@ -1,0 +1,9 @@
+-i https://pypi.org/simple
+dj-database-url==0.5.0
+django-redis==4.10.0
+django==2.1.5
+djangorestframework==3.9.0
+psycopg2-binary==2.7.6.1
+python-dotenv==0.10.1
+pytz==2018.7
+redis==3.0.1

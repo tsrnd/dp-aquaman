@@ -27,6 +27,14 @@ paths:
       responses:
         '200':
           description: Successful response
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
   /user/login:
     get:
       tags:
@@ -35,7 +43,6 @@ paths:
       description: ""
       operationId: "loginUser"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: "username"
@@ -49,21 +56,22 @@ paths:
         required: true
         type: "string"
       responses:
-        200:
-          description: "successful operation"
+        '200':
+          description: Successful response
           schema:
-            type: "string"
-          headers:
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
-        400:
-          description: "Invalid username/password supplied"
+            title: Successful response
+            type: object
+            properties:
+              token:
+                $ref: '#/definitions/Token'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
   /user/logout:
     get:
       tags:
@@ -72,12 +80,19 @@ paths:
       description: ""
       operationId: "logoutUser"
       produces:
-      - "application/xml"
       - "application/json"
       parameters: []
       responses:
-        default:
-          description: "successful operation"
+        '200':
+          description: Successful response
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -124,3 +139,19 @@ parameters:
     in: formData
     type: integer
     required: false
+definitions:
+  Token:
+   type: string
+   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o"
+  ErrorDetails:
+    title: Error details
+    type: object
+    properties:
+      message:
+        type: string
+        description: error messages
+      errors:
+        type: array
+        items:
+          description: error detail
+          type: string

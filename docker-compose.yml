@@ -11,8 +11,8 @@ services:
     ports:
       - 8000:8000
     environment:
-      DATABASE_URL: 'postgres://hello:django@data:5432/yashoes'
-      CACHE_URL: 'postgres://hello:django@data:5432/yashoes'
+      DATABASE_URL: 'postgres://hello:django@data:5432/default'
+      CACHE_URL: 'postgres://hello:django@data:5432/default'
     links:
       - data:data
       - cache:cache
@@ -23,7 +23,7 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_DB: 'yashoes'
+      POSTGRES_DB: 'default'
       POSTGRES_USER: 'hello'
       POSTGRES_PASSWORD: 'django'
     restart: always

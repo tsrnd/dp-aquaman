@@ -1,16 +1,7 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
   version: "1.0.0"
   title: "Swagger Yashoes"
-  termsOfService: "http://swagger.io/terms/"
-  contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
 tags:
 - name: "User"
 schemes:
@@ -99,7 +90,9 @@ securityDefinitions:
     type: "apiKey"
     name: "api_key"
     in: "header"
-definitions:
+consumes:
+- "application/x-www-form-urlencoded"
+- "multipart/form-data"
 parameters:
   Username:
     name: username
@@ -131,6 +124,3 @@ parameters:
     in: formData
     type: integer
     required: false
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"

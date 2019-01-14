@@ -36,7 +36,7 @@ paths:
           schema:
             $ref: '#/definitions/ErrorDetails'
   /user/login:
-    get:
+    post:
       tags:
       - "User"
       summary: "Logs user into the system"
@@ -141,8 +141,8 @@ parameters:
     required: false
 definitions:
   Token:
-   type: string
-   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o"
+    type: string
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o"
   ErrorDetails:
     title: Error details
     type: object

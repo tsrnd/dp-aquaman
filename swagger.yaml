@@ -8,22 +8,20 @@ schemes:
 - "https"
 - "http"
 paths:
-  /api/user:
+  /api/user/register:
     post:
       tags:
       - "User"
-      summary: "Create user"
-      description: "Tạo mới user"
-      operationId: "createUser"
+      summary: "Register user"
+      description: "Đăng ký người dùng"
+      operationId: "registerUser"
       consumes:
       - "application/x-www-form-urlencoded"
       parameters:
       - $ref: '#/parameters/Username'
       - $ref: '#/parameters/Email'
       - $ref: '#/parameters/Password'
-      - $ref: '#/parameters/Address'
-      - $ref: '#/parameters/Role'
-      - $ref: '#/parameters/PhoneNumber'
+      - $ref: '#/parameters/Password_Confirm'
       responses:
         '200':
           description: Successful response
@@ -33,8 +31,6 @@ paths:
             $ref: '#/definitions/ErrorDetails'
         '500':
           description: Internal server error response
-          schema:
-            $ref: '#/definitions/ErrorDetails'
   /api/user/login:
     post:
       tags:
@@ -64,35 +60,42 @@ paths:
             properties:
               token:
                 $ref: '#/definitions/Token'
-        '400':
-          description: Bad request error response
+        '401':
+          description: Unauthorized
           schema:
             $ref: '#/definitions/ErrorDetails'
         '500':
           description: Internal server error response
-          schema:
-            $ref: '#/definitions/ErrorDetails'
-  /api/user/logout:
-    get:
+  /api/user/refresh-token:
+    post:
       tags:
       - "User"
-      summary: "Logs out current logged in user session"
+      summary: "refresh expirer time for token"
       description: ""
-      operationId: "logoutUser"
+      operationId: "refreshToken"
       produces:
       - "application/json"
-      parameters: []
+      parameters:
+      - name: "token"
+        in: "query"
+        description: "access token"
+        required: true
+        type: "string"
       responses:
         '200':
           description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              token:
+                $ref: '#/definitions/Token'
         '400':
           description: Bad request error response
           schema:
             $ref: '#/definitions/ErrorDetails'
         '500':
           description: Internal server error response
-          schema:
-            $ref: '#/definitions/ErrorDetails'
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -124,21 +127,11 @@ parameters:
     in: formData
     type: string
     required: true
-  Address:
-    name: address
+  Password_Confirm:
+    name: password_confirm
     in: formData
     type: string
-    required: false
-  Role:
-    name: address
-    in: formData
-    type: integer
     required: true
-  PhoneNumber:
-    name: phone_number
-    in: formData
-    type: integer
-    required: false
 definitions:
   Token:
     type: string
@@ -147,10 +140,7 @@ definitions:
     title: Error details
     type: object
     properties:
-      message:
-        type: string
-        description: error messages
-      errors:
+      field_name:
         type: array
         items:
           description: error detail

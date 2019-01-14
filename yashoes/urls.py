@@ -1,15 +1,5 @@
-from .views import AuthView, DetailView
-from rest_framework.routers import DefaultRouter
-from django.urls import path
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+from django.urls import path, include
 
-router = DefaultRouter()
-
-router.register(r'', AuthView, basename='user')
-router.register(r'user', DetailView, basename='user')
-
-auth_urls = [
-    path('login/', obtain_jwt_token, name="auth-login"),
-    path('refresh-token/', refresh_jwt_token, name='auth-refresh-token'),
+urlpatterns = [
+    path('', include('yashoes.auth.urls'))
 ]
-urlpatterns = router.urls + auth_urls

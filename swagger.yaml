@@ -1,0 +1,157 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Swagger Yashoes"
+tags:
+- name: "User"
+schemes:
+- "https"
+- "http"
+paths:
+  /api/user:
+    post:
+      tags:
+      - "User"
+      summary: "Create user"
+      description: "Tạo mới user"
+      operationId: "createUser"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - $ref: '#/parameters/Username'
+      - $ref: '#/parameters/Email'
+      - $ref: '#/parameters/Password'
+      - $ref: '#/parameters/Address'
+      - $ref: '#/parameters/Role'
+      - $ref: '#/parameters/PhoneNumber'
+      responses:
+        '200':
+          description: Successful response
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/user/login:
+    post:
+      tags:
+      - "User"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              token:
+                $ref: '#/definitions/Token'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/user/logout:
+    get:
+      tags:
+      - "User"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logoutUser"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+consumes:
+- "application/x-www-form-urlencoded"
+- "multipart/form-data"
+parameters:
+  Username:
+    name: username
+    in: formData
+    type: string
+    required: true
+  Email:
+    name: email
+    in: formData
+    type: string
+    required: true
+  Password:
+    name: password
+    in: formData
+    type: string
+    required: true
+  Address:
+    name: address
+    in: formData
+    type: string
+    required: false
+  Role:
+    name: address
+    in: formData
+    type: integer
+    required: true
+  PhoneNumber:
+    name: phone_number
+    in: formData
+    type: integer
+    required: false
+definitions:
+  Token:
+    type: string
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o"
+  ErrorDetails:
+    title: Error details
+    type: object
+    properties:
+      message:
+        type: string
+        description: error messages
+      errors:
+        type: array
+        items:
+          description: error detail
+          type: string

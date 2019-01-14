@@ -4,6 +4,7 @@ info:
   title: "Swagger Yashoes"
 tags:
 - name: "User"
+- name: "Product"
 schemes:
 - "https"
 - "http"
@@ -93,6 +94,44 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
+  /api/products:
+    get:
+      tags:
+      - "Product"
+      summary: "Get all product from database"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/Page'
+      - $ref: '#/parameters/ResultLimit'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              result_count:
+                type: integer
+                description: 'Count of result in this response'
+              page:
+                $ref: '#/definitions/Page'
+              next_page_flg:
+                $ref: '#/definitions/NextPageFlg'
+              product_list:
+                type: array
+                description: 'list of product(name, description, rating)'
+                items:
+                  $ref: '#/definitions/Product'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -139,10 +178,53 @@ parameters:
     in: formData
     type: integer
     required: false
+  Page:
+    name: page
+    in: query
+    description:  |  
+     specify the number of page.  
+     if not seted,the number of page is 1.
+    required: false
+    type: integer
+  ResultLimit:
+    name: result_limit
+    in: query
+    required: false
+    type: integer
+    description: |
+      Limit count of response record of list.
+      if not set,response record limit is 50.
+      MIN = 1
+      DEFAULT = 50
+      MAX = 100
 definitions:
+  Page:
+    type: integer
+    description:
+      from request parameter
+    example: 2
+  NextPageFlg:
+    type: boolean
+    description:
+      result about whether next page exists."True" means next page exists,"False" means next page not existx
   Token:
     type: string
     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o"
+  Product:
+    type: object
+    properties:
+      name:
+        type: string
+        description: name of product
+        example: "taylor chuck II"
+      description:
+        type: string
+        description: description of product for display.
+        example: 'New York, ニューヨーク州 アメリカ合衆国'
+      rating:
+        type: integer
+        description: avg rating of product
+        example: 4.5
   ErrorDetails:
     title: Error details
     type: object

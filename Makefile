@@ -9,6 +9,7 @@ build:
 
 up: build
 	@docker-compose up -d app
+	@docker-compose logs -f app
 
 stop:
 	@docker-compose stop

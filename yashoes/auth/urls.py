@@ -5,11 +5,11 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 router = DefaultRouter()
 
-router.register(r'', AuthView, basename='user')
+router.register(r'user', AuthView, basename='auth')
 router.register(r'user', DetailView, basename='user')
 
 auth_urls = [
-    path('login/', obtain_jwt_token, name="auth-login"),
-    path('refresh-token/', refresh_jwt_token, name='auth-refresh-token'),
+    path('user/login/', obtain_jwt_token, name="auth-login"),
+    path('user/refresh-token/', refresh_jwt_token, name='auth-refresh-token'),
 ]
 urlpatterns = router.urls + auth_urls

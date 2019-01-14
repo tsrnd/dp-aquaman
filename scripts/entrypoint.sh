@@ -9,13 +9,13 @@ done
 >&2 echo "Postgres is up - continuing"
 
 CMD="$*";
-if [ "$CMD" = "python manage\.py runserver*" ]; then
+if [ "$CMD" = "python manage.py runserver 0.0.0.0:8000" ]; then
   if [ "$AUTO_MIGRATE" = '1' ]; then
     python manage.py migrate --noinput
   fi
 
   if [ "$AUTO_SEED" = '1' ]; then
-    python manage.py seed
+    python manage.py seed_admin
   fi
 
   if [ "$AUTO_COLLECT_STATIC" = '1' ]; then

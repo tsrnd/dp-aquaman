@@ -12,6 +12,7 @@ class Products(APIView):
     """
     A view that returns the count of products in JSON.
     """
+    permission_classes = ()
 
     def get(self, request, format=None):
         product_list = Product.objects.all()

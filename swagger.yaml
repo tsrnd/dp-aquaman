@@ -118,6 +118,8 @@ paths:
                 $ref: '#/definitions/UserID'
               address:
                 $ref: '#/definitions/Address'
+              phone_number:
+                $ref: '#/definitions/PhoneNumber'
               status:
                 $ref: '#/definitions/Status'
               total:
@@ -206,4 +208,9 @@ definitions:
     description:
       total from transaction table
     example: 3
+  PhoneNumber:
+    type: interger
+    description:
+      phone number from transaction table
+    example: 0934000000
 

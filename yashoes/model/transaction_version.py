@@ -1,6 +1,6 @@
 from django.db import models
-from myapp.model.transaction import Transaction
-from myapp.model.version import Version
+from yashoes.model.transaction import Transaction
+from yashoes.model.version import Version
 
 
 class TransactionVersion(models.Model):

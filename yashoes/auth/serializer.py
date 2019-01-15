@@ -1,18 +1,20 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework.validators import UniqueValidator
-from django.contrib.auth.models import User
+from yashoes.models import User
 
 
 class RegisterSerializer(serializers.ModelSerializer):
     
     username = serializers.CharField(min_length=3, validators=[UniqueValidator(queryset=get_user_model().objects.all())])
     email = serializers.EmailField(validators=[UniqueValidator(queryset=get_user_model().objects.all())])
+    address = serializers.CharField(required=False)
+    phone_number = serializers.CharField(max_length=10, required=False)
     password = serializers.CharField(min_length=3)
 
     class Meta:
         model = get_user_model()
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'address', 'phone_number', 'password']
 
     def validate_password(self, value):
         pwdCF = 'password_confirm'
@@ -23,6 +25,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User(
             username=self.initial_data['username'],
             email=self.initial_data['email'],
+            address = valid_data.get('address'),
+            phone_number = valid_data.get('phone_number'),
         )
         user.set_password(self.initial_data['password'])
         user.save()

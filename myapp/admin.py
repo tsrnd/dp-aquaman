@@ -1,38 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth.backends import get_user_model
-from django.contrib.auth.admin import UserAdmin
-from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import User
-from myapp.model import cart, category, comment, notification, product_category, product, rating, transaction_version, transaction, version
-from django.utils.translation import gettext_lazy as _
+from myapp.foo import models
 
-
-class CustomUserAdmin(UserAdmin):
-    add_fieldsets = ((None, {
-        'classes': ('wide', ),
-        'fields': ('username', 'email', 'address', 'phone_number', 'password1',
-                   'password2'),
-    }), )
-    fieldsets = (
-        (None, {
-            'fields': ('username', 'password')
-        }),
-        (_('Personal info'), {
-            'fields': ('address', 'phone_number', 'email')
-        }),
-        (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups',
-                       'user_permissions')
-        }),
-        (_('Important dates'), {
-            'fields': ('last_login', )
-        }),
-    )
-    form = CustomUserChangeForm
-    add_form = CustomUserCreationForm
-    search_fields = ('username', 'email')
-    model = User
-    list_display = ['email', 'username', 'is_superuser']
-
-
-admin.site.register(User, CustomUserAdmin)
+admin.register(models.Foo)

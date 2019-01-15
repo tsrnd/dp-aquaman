@@ -1,5 +1,5 @@
 from django.db import models
-from myapp.model.product import Product
+from yashoes.model.product import Product
 from django.conf import settings
 
 

@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from myapp.model.version import Version
+from yashoes.model.version import Version
 
 
 class Cart(models.Model):

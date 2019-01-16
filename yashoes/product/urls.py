@@ -4,6 +4,7 @@ from yashoes.product import views
 
 urlpatterns = [
     path('', views.Products.as_view()),
+    path('<int:pk>', views.ProductDetail.as_view()),
 ]
 
 # urlpatterns = format_suffix_patterns(urlpatterns)

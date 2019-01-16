@@ -1,9 +1,10 @@
 from yashoes.model.product import Product
-from yashoes.product.serializers import ProductSerializer
+from yashoes.product.serializers import ProductSerializer, ProductDetailSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.shortcuts import get_object_or_404
+from rest_framework import generics
 
 RESULT_LIMIT = 5
 
@@ -38,3 +39,12 @@ class Products(APIView):
             'result': serializer.data,
         }
         return Response(content)
+
+
+class ProductDetail(generics.RetrieveAPIView):
+    permission_classes = ()
+
+    def get(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        serializer = ProductDetailSerializer(instance=product)
+        return Response(serializer.data)

@@ -14,3 +14,12 @@ class Product(models.Model):
 
     class Meta:
         db_table = "product"
+
+
+class ListProduct(object):
+    def __init__(self, id, name, description, rate, image_link):
+        self.id = id
+        self.name = name
+        self.description = description
+        self.rate = rate
+        self.image_link = image_link

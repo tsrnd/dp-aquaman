@@ -3,7 +3,8 @@ from yashoes.model.product import Product
 
 
 class Version(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, related_name='versions', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     size = models.CharField(max_length=5, null=True, blank=True)
     price = models.IntegerField(default=0)

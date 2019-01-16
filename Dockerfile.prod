@@ -16,7 +16,9 @@ RUN set -ex \
         linux-headers \
         pcre-dev \
         postgresql-dev \
+        jpeg-dev zlib-dev \
     && pip install -U -r requirements.txt --no-cache-dir \
+    && pip install -U Pillow \
     && apk del .build-deps \
     && apk add -U --no-cache \
         postgresql-client \

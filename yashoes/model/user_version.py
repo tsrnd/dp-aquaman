@@ -13,4 +13,4 @@ class Cart(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        db_table = "cart"
+        db_table = "user_version"

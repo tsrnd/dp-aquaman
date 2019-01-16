@@ -186,7 +186,7 @@ parameters:
     type: integer
     description: |
       Limit count of response record of list.
-      if not set,response record limit is 50.
+      if not set,response record limit is 5.
       MIN = 1
       DEFAULT = 5
       MAX = 100
@@ -220,6 +220,9 @@ definitions:
         type: integer
         description: avg rating of product
         example: 4.5
+      image_link:
+        type: string
+        example: image.jpeg
   ErrorDetails:
     title: Error details
     type: object

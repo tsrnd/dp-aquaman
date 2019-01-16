@@ -135,6 +135,42 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
+  /api/user/transaction-detail:
+    get:
+      tags:
+      - "User"
+      summary: "Get transaction detail"
+      description: ""
+      operationId: "transactionDetail"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/Userid'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              user_id:
+                $ref: '#/definitions/UserID'
+              address:
+                $ref: '#/definitions/Address'
+              phone_number:
+                $ref: '#/definitions/PhoneNumber'
+              status:
+                $ref: '#/definitions/Status'
+              total:
+                $ref: '#/definitions/Total'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -190,6 +226,13 @@ parameters:
       MIN = 1
       DEFAULT = 5
       MAX = 100
+  Userid:
+    name: user_id
+    in: query
+    required: true
+    type: integer
+    description:
+      user_id from transaction table
 definitions:
   Token:
     type: string
@@ -232,3 +275,29 @@ definitions:
         items:
           description: error detail
           type: string
+  Address:
+    type: string
+    description:
+      from transaction table
+    example: asiantech
+  UserID:
+    type: integer
+    description:
+      user_id from transaction table
+    example: 1
+  Status:
+    type: string
+    description:
+      status from transaction table
+    example: done
+  Total:
+    type: integer
+    description:
+      total from transaction table
+    example: 3
+  PhoneNumber:
+    type: integer
+    description:
+      phone number from transaction table
+    example: 0934000000
+

@@ -3,7 +3,7 @@ from django.contrib.auth.backends import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import User
-from yashoes.model import cart, category, comment, notification, product_category, product, rating, transaction_version, transaction, version
+from yashoes.model import user_version, category, comment, notification, product_category, product, rating, transaction_version, transaction, version
 from django.utils.translation import gettext_lazy as _
 
 

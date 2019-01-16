@@ -135,6 +135,52 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
+  /api/products/{id_product}:
+    get:
+      tags:
+      - "Product"
+      summary: "Get detail product from database"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+        - name: id_product
+          in: path
+          description: Product ID in product table
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+                description: 'Id of product'
+              name:
+                type: string
+                description: 'Name of product'
+              description:
+                type: string
+              rate:
+                type: number
+                example: 3.5
+              versions:
+                type: array
+                description: 'list of version(id, name, size, color, image_link, price, quantity)'
+                items:
+                  $ref: '#/definitions/Version'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -220,6 +266,23 @@ definitions:
         type: integer
         description: avg rating of product
         example: 4.5
+  Version:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: name of version
+      color:
+        type: string
+      price:
+        type: integer
+      size:
+        type: string
+      quantity:
+        type: integer
+      image_link:
+        type: string
   ErrorDetails:
     title: Error details
     type: object

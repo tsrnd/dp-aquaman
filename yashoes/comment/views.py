@@ -3,12 +3,15 @@ from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from yashoes.model.product import Product
 from yashoes.model.comment import Comment
-from yashoes.comment.serializers import PosCommentSerializer, GetCommentsSerializer
+from yashoes.comment.serializers import PostCommentSerializer, GetCommentsSerializer
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
+from rest_framework.decorators import api_view
 
 
-class CreateCommentView(APIView):
+class CommentView(APIView):
     def post(self, request):
         product = request.data.get("product")
         content = request.data.get("content")
@@ -18,7 +21,7 @@ class CreateCommentView(APIView):
             'content': content,
             'parent_comment': parent_comment
         }
-        serializer = PosCommentSerializer(
+        serializer = PostCommentSerializer(
             data=data, context={"user": request.user})
         if serializer.is_valid():
             serializer.save()
@@ -29,8 +32,29 @@ class CreateCommentView(APIView):
 class GetCommentView(APIView):
     permission_classes = (AllowAny, )
 
-    def get(self, request, product_id):
-        comment = Comment.objects.filter(product=product_id).filter(
+    def get(self, request, pk):
+        comment = Comment.objects.filter(product=pk).filter(
             parent_comment=None)
         data = GetCommentsSerializer(comment, many=True).data
         return Response({"data": data})
+
+    def delete(self, request, pk):
+        comment = get_object_or_404(Comment, pk=pk)
+        if request.user.id == comment.user.id:
+            comment.delete()
+        else:
+            raise PermissionDenied
+        return Response(status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        comment = get_object_or_404(Comment, pk=pk)
+        if request.user.id == comment.user.id:
+            content = request.data.get("content")
+            if content:
+                comment.content = content
+                comment.save()
+            else:
+                return Response({'error': 'Content must not empty'})
+        else:
+            raise PermissionDenied
+        return Response(status=status.HTTP_200_OK)

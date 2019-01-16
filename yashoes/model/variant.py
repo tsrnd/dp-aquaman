@@ -6,7 +6,7 @@ def get_image_path(instance, filename):
     return os.path.join('yashoes/static/product', str(instance.product.id), filename) 
 
 
-class Version(models.Model):
+class Variant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     size = models.CharField(max_length=5, null=True, blank=True)
@@ -19,4 +19,4 @@ class Version(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        db_table = "version"
+        db_table = "variant"

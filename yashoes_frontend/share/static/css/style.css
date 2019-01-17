@@ -1307,9 +1307,9 @@ ul.unit li span {
 .heading h3 {
 	font-size: 1.75em;
 }
-/* .address input[type="text"] {
+.address input[type="text"] {
 	padding: 7px 10px;
-} */
+}
 .map iframe {
 	height: 250px;
 }

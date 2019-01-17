@@ -35,6 +35,16 @@
   <link href="{% static 'css/memenu.css' %}" rel="stylesheet" type="text/css" media="all" />
   <script type="text/javascript" src="{% static 'js/memenu.js' %}"></script>
   <script>$(document).ready(function () { $(".memenu").memenu(); });</script>
+
+  <!-- override css -->
+  <link href="{% static 'css/app.css' %}" rel="stylesheet" type="text/css" >
+
+  {% block script %}
+  <!-- define custom js -->
+  {% endblock %}
+
+  <!-- csrf token -->
+  <!-- <meta name="csrf-token" content="{{csrf_token}}"> -->
 </head>
 
 <body>

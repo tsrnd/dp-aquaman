@@ -20,9 +20,9 @@ class GetCommentView(APIView):
 
 class CreateCommentView(APIView):
     def post(self, request):
-        product = request.data.get("product")
+        product = request.data.get("product_id")
         content = request.data.get("content")
-        parent_comment = request.data.get("parent_comment")
+        parent_comment = request.data.get("parent_comment_id")
         data = {
             'product': product,
             'content': content,

@@ -1,10 +1,13 @@
 from yashoes.model.product import Product, ListProduct
-from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer
+from yashoes.model.comment import Comment
+from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.permissions import AllowAny
 
 RESULT_LIMIT = 5
 
@@ -58,3 +61,13 @@ class ProductDetail(generics.RetrieveAPIView):
         product = get_object_or_404(Product, pk=pk)
         serializer = ProductDetailSerializer(instance=product)
         return Response(serializer.data)
+
+
+class GetCommentView(APIView):
+    permission_classes = (AllowAny, )
+
+    def get(self, request, product_id):
+        comment = Comment.objects.filter(product=product_id).filter(
+            parent_comment=None)
+        data = GetCommentsSerializer(comment, many=True).data
+        return Response({"data": data})

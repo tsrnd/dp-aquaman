@@ -17,6 +17,6 @@ class Transaction_listlView(viewsets.ViewSet):
         token = get_authorization_header(request)
         trulyToken = token.split()[1].decode('utf-8')
         user_information = jwt_decode_handler(trulyToken)
-        queryset = Transaction.objects.filter(user_id = user_information.get('user_id'))
+        queryset = Transaction.objects.filter(user_id = user_information.get('user_id')).exclude(deleted_at__isnull = False)
         serializer = TransactionSerializer(queryset, context={'fields': ['user_id','address','phone_number','status','total']}, many=True)
         return Response(serializer.data, status=200)

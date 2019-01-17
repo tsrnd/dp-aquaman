@@ -18,6 +18,7 @@ RUN set -ex \
         postgresql-dev \
     && apk add build-base python-dev py-pip jpeg-dev zlib-dev \
     && pip install -U Pillow \
+    && pip install -U django_minio \
     && pip install -U -r requirements.txt --no-cache-dir \
     && pip install -U -r requirements-dev.txt --no-cache-dir \
     && apk del .build-deps \

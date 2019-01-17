@@ -8,9 +8,8 @@ def get_image_path(instance, filename):
                         filename)
 
 
-class Version(models.Model):
-    product = models.ForeignKey(
-        Product, related_name='versions', on_delete=models.CASCADE)
+class Variant(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     size = models.CharField(max_length=5, null=True, blank=True)
     price = models.IntegerField(default=0)
@@ -26,4 +25,4 @@ class Version(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        db_table = "version"
+        db_table = "variant"

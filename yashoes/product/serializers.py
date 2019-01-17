@@ -1,21 +1,21 @@
 from rest_framework import serializers
 from yashoes.model.product import Product
-from yashoes.model.version import Version
+from yashoes.model.variant import Variant
 
 
-class VersionSerializer(serializers.ModelSerializer):
+class VariantSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Version
+        model = Variant
         fields = ('id', 'name', 'size', 'color', 'price', 'quantity',
                   'image_link')
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    versions = VersionSerializer(many=True, read_only=True)
+    variants = VariantSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'rate', 'versions')
+        fields = ('id', 'name', 'description', 'rate', 'variants')
 
 
 class ListProductSerializer(serializers.Serializer):

@@ -14,4 +14,8 @@ class MainTemplate(viewsets.ViewSet):
     def listproduct(self, request):
         return render(request, 'index.html')
 
+    @action(detail=False, url_path='product/detail', url_name='detail')
+    def productDetail(self, request):
+        return render(request, 'product-detail.html')    
+
     

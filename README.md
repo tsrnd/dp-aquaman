@@ -1,6 +1,6 @@
-# Hello Django
+# Demo Project - Yashoes
 
-[![Build Status](https://travis-ci.com/tsrnd/hello-django.svg?branch=master)](https://travis-ci.com/tsrnd/hello-django)
+[![Build Status](https://travis-ci.com/tsrnd/dp-yashoes.svg?branch=master)](https://travis-ci.com/tsrnd/dp-yashoes)
 
 ## Development
 

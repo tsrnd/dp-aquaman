@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
 
-class Transaction_detailView(viewsets.ViewSet):
+class Transaction_listlView(viewsets.ViewSet):
     def list(self, request):
         token = get_authorization_header(request)
         trulyToken = token.split()[1].decode('utf-8')

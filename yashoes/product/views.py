@@ -1,9 +1,10 @@
 from yashoes.model.product import Product, ListProduct
-from yashoes.product.serializers import ListProductSerializer
+from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.shortcuts import get_object_or_404
+from rest_framework import generics
 
 RESULT_LIMIT = 5
 
@@ -36,12 +37,8 @@ class ProductsAPIView(APIView):
             for version in product.versions.all():
                 image_link = version.image_link
                 break
-            tmp = ListProduct(
-                product.id,
-                product.name,
-                product.description,
-                product.rate,
-                image_link)
+            tmp = ListProduct(product.id, product.name, product.description,
+                              product.rate, image_link)
             response.append(tmp)
 
         serializer = ListProductSerializer(response, many=True)
@@ -52,3 +49,12 @@ class ProductsAPIView(APIView):
             'result': serializer.data,
         }
         return Response(content)
+
+
+class ProductDetail(generics.RetrieveAPIView):
+    permission_classes = ()
+
+    def get(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        serializer = ProductDetailSerializer(instance=product)
+        return Response(serializer.data)

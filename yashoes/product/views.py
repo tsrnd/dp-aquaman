@@ -1,16 +1,17 @@
-from yashoes.model.product import Product
-from yashoes.product.serializers import ProductSerializer
+from yashoes.model.product import Product, ListProduct
+from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.shortcuts import get_object_or_404
+from rest_framework import generics
 
 RESULT_LIMIT = 5
 
 
-class Products(APIView):
+class ProductsAPIView(APIView):
     """
-    A view that returns the count of products in JSON.
+    A view that returns the list of products in JSON.
     """
     permission_classes = ()
 
@@ -30,7 +31,17 @@ class Products(APIView):
             page = paginator.num_pages
             products = paginator.page(page)
 
-        serializer = ProductSerializer(products, many=True)
+        response = []
+        for product in products:
+            image_link = ""
+            for variant in product.variant_set.all():
+                image_link = variant.image_link
+                break
+            tmp = ListProduct(product.id, product.name, product.description,
+                              product.rate, image_link)
+            response.append(tmp)
+
+        serializer = ListProductSerializer(response, many=True)
         content = {
             'result_count': product_list.count(),
             'page': page,
@@ -38,3 +49,12 @@ class Products(APIView):
             'result': serializer.data,
         }
         return Response(content)
+
+
+class ProductDetail(generics.RetrieveAPIView):
+    permission_classes = ()
+
+    def get(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        serializer = ProductDetailSerializer(instance=product)
+        return Response(serializer.data)

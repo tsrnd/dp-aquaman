@@ -16,7 +16,7 @@ class CreateCartVariant(APIView):
         user_id = user_info.get('user_id')
         data = {
             'user': user_id,
-            'version': request.data.get('variant_id'),
+            'variant': request.data.get('variant_id'),
             'quantity': request.data.get('quantity')
         }
         serilizer = CartSerilizer(data=data)

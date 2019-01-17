@@ -18,25 +18,27 @@
   <div class="container">
     <div class="account-bottom">
       <div class="col-md-6 account-left">
-        <form>
+        <form method="POST" novalidate>
+          {% csrf_token %}
           <div class="account-top heading">
             <h3>LOGIN</h3>
           </div>
+          {% for field in form %}
           <div class="address">
-            <span>Username</span>
-            <input type="text">
+            <span>{{ field.label }}</span>
+            {{ field }}
           </div>
-          <div class="address">
-            <span>Password</span>
-            <input type="text">
-          </div>
+          {% endfor %}
           <div class="address">
             <a class="forgot" href="#">Forgot Your Password?</a>
             <input type="submit" value="Login">
           </div>
-        </div>
-      </form>
-      <div class="clearfix"> </div>
+        </form>
+        {% if errors %}
+        <span>{{ errors.message }}</span>
+        {% endif %}
+        <div class="clearfix"> </div>
+      </div>
     </div>
   </div>
 </div>

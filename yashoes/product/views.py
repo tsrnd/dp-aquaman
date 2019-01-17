@@ -34,8 +34,8 @@ class ProductsAPIView(APIView):
         response = []
         for product in products:
             image_link = ""
-            for version in product.versions.all():
-                image_link = version.image_link
+            for variant in product.variant_set.all():
+                image_link = variant.image_link
                 break
             tmp = ListProduct(product.id, product.name, product.description,
                               product.rate, image_link)

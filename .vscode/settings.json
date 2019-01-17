@@ -25,7 +25,7 @@
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
   "python.linting.maxNumberOfProblems": 20,
-  "python.formatting.provider": "yapf",
+  "python.formatting.provider": "autopep8",
   "python.unitTest.unittestEnabled": false,
   "python.unitTest.pyTestEnabled": true,
 }

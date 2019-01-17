@@ -4,6 +4,7 @@ info:
   title: "Swagger Yashoes"
 tags:
 - name: "User"
+- name: "Product"
 schemes:
 - "https"
 - "http"
@@ -96,6 +97,90 @@ paths:
             $ref: '#/definitions/ErrorDetails'
         '500':
           description: Internal server error response
+  /api/products:
+    get:
+      tags:
+      - "Product"
+      summary: "Get all product from database"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/Page'
+      - $ref: '#/parameters/ResultLimit'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              result_count:
+                type: integer
+                description: 'Count of result in this response'
+              page:
+                $ref: '#/definitions/Page'
+              next_page_flg:
+                $ref: '#/definitions/NextPageFlg'
+              result:
+                type: array
+                description: 'list of product(name, description, rating)'
+                items:
+                  $ref: '#/definitions/Product'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/products/{id_product}:
+    get:
+      tags:
+      - "Product"
+      summary: "Get detail product from database"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+        - name: id_product
+          in: path
+          description: Product ID in product table
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+                description: 'Id of product'
+              name:
+                type: string
+                description: 'Name of product'
+              description:
+                type: string
+              rate:
+                type: number
+                example: 3.5
+              versions:
+                type: array
+                description: 'list of version(id, name, size, color, image_link, price, quantity)'
+                items:
+                  $ref: '#/definitions/Version'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -132,10 +217,73 @@ parameters:
     in: formData
     type: string
     required: true
+  Page:
+    name: page
+    in: query
+    description:  |  
+     specify the number of page.  
+     if not seted,the number of page is 1.
+    required: false
+    type: integer
+  ResultLimit:
+    name: result_limit
+    in: query
+    required: false
+    type: integer
+    description: |
+      Limit count of response record of list.
+      if not set,response record limit is 5.
+      MIN = 1
+      DEFAULT = 5
+      MAX = 100
 definitions:
   Token:
     type: string
     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o"
+  Page:
+    type: integer
+    description:
+      from request parameter
+    example: 2
+  NextPageFlg:
+    type: boolean
+    description:
+      result about whether next page exists."True" means next page exists,"False" means next page not existx
+  Product:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+        description: name of product
+        example: "taylor chuck II"
+      description:
+        type: string
+        description: description of product for display.
+        example: 'New York, ニューヨーク州 アメリカ合衆国'
+      rate:
+        type: integer
+        description: avg rating of product
+        example: 4.5
+  Version:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: name of version
+      color:
+        type: string
+      price:
+        type: integer
+      size:
+        type: string
+      quantity:
+        type: integer
+      image_link:
+        type: string
+        example: image.jpeg
   ErrorDetails:
     title: Error details
     type: object

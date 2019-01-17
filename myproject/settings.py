@@ -186,3 +186,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(os.path.dirname(yashoes_frontend.__file__), "share/static/"),
 ]
+
+API_HOST = 'http://localhost:8000/'
+
+SESSION_COOKIE_SECURE = True

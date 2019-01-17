@@ -25,7 +25,7 @@ class GetCommentsSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'content', 'comments', 'created_at')
 
 
-class PosCommentSerializer(serializers.ModelSerializer):
+class PostCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'content', 'product', 'parent_comment')

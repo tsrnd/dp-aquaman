@@ -3,27 +3,9 @@ from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from yashoes.model.product import Product
 from yashoes.model.comment import Comment
-from yashoes.comment.serializers import PosCommentSerializer, GetCommentsSerializer
+from yashoes.comment.serializers import GetCommentsSerializer
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-
-
-class CreateCommentView(APIView):
-    def post(self, request):
-        product = request.data.get("product")
-        content = request.data.get("content")
-        parent_comment = request.data.get("parent_comment")
-        data = {
-            'product': product,
-            'content': content,
-            'parent_comment': parent_comment
-        }
-        serializer = PosCommentSerializer(
-            data=data, context={"user": request.user})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetCommentView(APIView):

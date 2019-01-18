@@ -5,4 +5,3 @@ urlpatterns = [
     path('products/', products, name="products"),
     path('products/detail/1', productsdetail, name="product-detail"),
 ]
-

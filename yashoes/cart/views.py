@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from yashoes.cart.serilizer import CartSerilizer
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from yashoes.model.user_variant import UserVariant
 
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
@@ -25,3 +28,14 @@ class CreateCartVariant(APIView):
             return Response(
                 data={'message': 'success.'}, status=status.HTTP_200_OK)
         return Response(serilizer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Cart(viewsets.ViewSet):
+    permission_classes = ()
+
+    @action(detail=False, url_path='information', url_name='information')
+    def total_cart(self, request):
+        user_id = request.user.id
+        total = UserVariant.objects.filter(user__pk=user_id, deleted_at=None).count()
+        return Response(data={
+            'total': total,
+        }, status=status.HTTP_200_OK)

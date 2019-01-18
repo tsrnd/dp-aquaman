@@ -1,0 +1,129 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block breadcum %}
+<div class="breadcrumbs">
+  <div class="container">
+    <div class="breadcrumbs-main">
+      <ol class="breadcrumb">
+        <li class="active">Home</li>
+        <li class="active">User</li>
+        <li class="active">Profile</li>
+      </ol>
+    </div>
+  </div>
+</div>
+{% endblock %}
+x
+{% block content %}
+<div class="single contact">
+  <div class="container">
+    <div class="single-main">
+      <div class="col-md-12 single-main-left">
+        <div class="sngl-top">
+          <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+            <div class="profile_img">
+              <div id="crop-avatar">
+
+                <!-- Current avatar -->
+                <img class="img-responsive avatar-view" src="{% static 'images/user.png' %}" alt="Avatar" title="Change the avatar">
+                <label for="upload" id="label-avata" style="display: none;"> <span class="glyphicon glyphicon-folder-open center"
+                    aria-hidden="true"></span>
+                  <input type="file" id="upload" >
+                </label>
+              </div>
+            </div>
+            <h3 class="my-name">ADMIN</h3>
+
+            <ul class="list-unstyled user_data">
+              <li><i class="fa fa-map-marker user-profile-icon my-address"> 103 Nguyen Luong Bang, TP Đà Nẵng</i></li>
+
+              <li><i class="fa fa-briefcase user-profile-icon"></i>
+                AsianTech Monstar-Lab</li>
+            </ul>
+          </div>
+
+          <div class="col-md-8 tab-pane fade active in" id="tab_content3" aria-labelledby="profile-tab">
+            <form id="form-user" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+              <input type="hidden" name="id" value="1">
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fullname">Full Name </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="fullname" name="fullname" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12"
+                    readonly="readonly">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="phone" class="control-label col-md-3 col-sm-3 col-xs-12">Phone</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input id="phone" name="phone" class="form-control col-md-7 col-xs-12" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="address" class="control-label col-md-3 col-sm-3 col-xs-12">Address</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input id="address" name="address" class="form-control col-md-7 col-xs-12" type="text">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                    <label class="form-check-label" for="exampleRadios1">
+                       Male
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                    <label class="form-check-label" for="exampleRadios2">
+                      Female
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Date
+                  Of Birth </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input id="birthday" name="birthday" class="date-picker form-control col-md-7 col-xs-12" required="required"
+                    type="date">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="margin-right:14px;">Avatar</label>
+                  <input style="width:300px" type="file" name="avatar">
+              </div>
+              <div class="form-group">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="col-md-12 col-xs-12 btn msg-error" style="font-size: 13px; display: none;"></div>
+                </div>
+              </div>
+              <div class="ln_solid"></div>
+              <div class="form-group button-edit" style="display: block;">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+
+                  <button class="btn btn-primary" type="reset">Reset</button>
+                  <button type="button" id="doEditProFile" class="btn btn-success">Save</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="clearfix"> </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/jquery.miranda.min.js' %}"></script>
+{% endblock %}

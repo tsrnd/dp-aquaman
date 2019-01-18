@@ -6,4 +6,6 @@ urlpatterns = [
     path('user/', include('yashoes.user.urls')),
     path('', include('yashoes.transaction.urls')),
     path('user/carts/', include('yashoes.cart.urls')),
+    path('cart/', include('yashoes.cart.urls')),
+    path('', include('yashoes.brand.urls')),
 ]

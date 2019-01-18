@@ -7,6 +7,7 @@ from .serializer import RegisterSerializer
 from django.shortcuts import get_object_or_404
 from yashoes.models import User
 import logging
+from django.core.cache import cache
 
 
 class AuthView(viewsets.ViewSet):
@@ -49,11 +50,12 @@ class DetailView(viewsets.ViewSet):
 
     @action(detail=True, url_path='detail', url_name='detail')
     def user_detail(self, request, pk=None):
-        user = get_object_or_404(User, pk=pk)
+        user = get_object_or_404(User, pk=pk, deleted_at=None)
         return Response(data={
             'email': user.email,
             'username': user.username,
             'address': user.address,
             'phone_number': user.phone_number,
+            'image_profile': user.image_profile.storage.url(user.image_profile.name),
         }, status=200)
         

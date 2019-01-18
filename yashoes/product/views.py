@@ -1,6 +1,6 @@
 from yashoes.model.product import Product, ListProduct
 from yashoes.model.comment import Comment
-from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer
+from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -63,7 +63,7 @@ class ProductDetail(generics.RetrieveAPIView):
         return Response(serializer.data)
 
 
-class GetCommentView(APIView):
+class CommentView(APIView):
     permission_classes = (AllowAny, )
 
     def get(self, request, product_id):
@@ -71,3 +71,22 @@ class GetCommentView(APIView):
             parent_comment=None)
         data = GetCommentsSerializer(comment, many=True).data
         return Response({"data": data})
+
+    def post(self, request, product_id):
+        if request.user.is_authenticated:
+            content = request.data.get("content")
+            parent_comment = request.data.get("parent_comment_id")
+            data = {
+                'product': product_id,
+                'content': content,
+                'parent_comment': parent_comment
+            }
+            serializer = PostCommentSerializer(
+                data=data, context={"user": request.user})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(status=status.HTTP_200_OK)
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'error': "Login first"}, status=status.HTTP_401_UNAUTHORIZED)

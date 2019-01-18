@@ -12,7 +12,12 @@ class VariantSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    variants = VariantSerializer(many=True, read_only=True)
+    variants = serializers.SerializerMethodField('is_variant_set')
+
+    def is_variant_set(self, product):
+        variant = Variant.objects.filter(product=product).order_by('id')
+        serializers = VariantSerializer(variant, many=True)
+        return serializers.data
 
     class Meta:
         model = Product

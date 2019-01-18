@@ -2,21 +2,25 @@ from rest_framework.response import Response
 from yashoes.models import User
 from rest_framework import viewsets
 from .serializer import TransactionSerializer
+from .serializer import TransactionVersionSerializer
 from yashoes.model.transaction import Transaction
-from rest_framework.authentication import get_authorization_header
-from rest_framework_jwt.settings import api_settings
-from rest_framework.decorators import action
+from yashoes.model.product import Product
+from yashoes.model.version import Version
+
+from yashoes.model.transaction_version import TransactionVersion
 from django.shortcuts import get_object_or_404
-
-
-jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
-
 
 class Transaction_listlView(viewsets.ViewSet):
     def list(self, request):
-        token = get_authorization_header(request)
-        trulyToken = token.split()[1].decode('utf-8')
-        user_information = jwt_decode_handler(trulyToken)
-        queryset = Transaction.objects.filter(user_id = user_information.get('user_id')).exclude(deleted_at__isnull = False)
-        serializer = TransactionSerializer(queryset, context={'fields': ['user_id','address','phone_number','status','total']}, many=True)
+        user = get_object_or_404(User, pk=request.user.id)
+        queryset = Transaction.objects.filter(user_id = user).exclude(deleted_at__isnull = False)
+        serializer = TransactionSerializer(queryset, context={'fields': ['transaction_id','user_id','address','phone_number','status','total']}, many=True)
         return Response(serializer.data, status=200)
+
+    def retrieve(self, request, pk=None):
+        ver
+        product = Product.objects.filter().prefetch_related(transaction_version__version_id = version_ )
+        user = get_object_or_404(User, pk=request.user.id)
+        transaction = TransactionVersion.objects.filter(transaction__pk = pk).filter(transaction__user_id = user)
+        serializer = TransactionVersionSerializer(transaction, many=True)
+        return Response(serializer.data)

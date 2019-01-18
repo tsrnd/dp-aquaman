@@ -89,4 +89,7 @@ class CommentView(APIView):
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'error': "Login first"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({
+                'error': "Login first"
+            },
+                            status=status.HTTP_401_UNAUTHORIZED)

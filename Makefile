@@ -24,7 +24,7 @@ migrations: up-data
 # additional commands
 
 up-data:
-	@docker-compose up -d data cache
+	@docker-compose up -d data cache storage
 	@bash ./scripts/wait-data.sh
 
 clean:

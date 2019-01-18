@@ -5,7 +5,7 @@ $(document).ready(function () {
       headers: {
         'Authorization': 'Bearer ' + readCookie('token'),
       },
-      url: 'http://localhost:8000/api/cart/variant/',
+      url: 'http://localhost:8000/api/user/carts/variant/',
       data: {
         CSRF: $('meta[name="csrf-token"]').attr('content'),
         'quantity': 1, //this will be replace by getting value when product detail data render implemented

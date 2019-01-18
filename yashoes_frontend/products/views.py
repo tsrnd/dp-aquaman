@@ -12,14 +12,14 @@ class MainTemplate(viewsets.ViewSet):
 
     @action(detail=False, url_path='index', url_name='index')
     def listproduct(self, request):
-        return render(request, 'index.html')
+        return render(request, 'products/index.html')
 
     @action(detail=False, url_path='product/detail', url_name='detail')
     def productDetail(self, request):
-        return render(request, 'product-detail.html')
+        return render(request, 'products/product-detail.html')
     
     @action(detail=False, url_path='products', url_name='pro-search')
     def productSearch(self, request):
-        return render(request, 'products.html')           
+        return render(request, 'products/products.html')
 
     

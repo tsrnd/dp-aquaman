@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from yashoes.cart.serilizer import CartSerilizer
 from django.shortcuts import get_object_or_404
+from rest_framework import viewsets
+from rest_framework.decorators import action
 from yashoes.model.user_variant import UserVariant
 
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
@@ -52,3 +54,14 @@ def get_user_id(request):
     user_info = jwt_decode_handler(trulyToken)
     user_id = user_info.get('user_id')
     return user_id
+
+class Cart(viewsets.ViewSet):
+    permission_classes = ()
+
+    @action(detail=False, url_path='information', url_name='information')
+    def total_cart(self, request):
+        user_id = request.user.id
+        total = UserVariant.objects.filter(user__pk=user_id, deleted_at=None).count()
+        return Response(data={
+            'total': total,
+        }, status=status.HTTP_200_OK)

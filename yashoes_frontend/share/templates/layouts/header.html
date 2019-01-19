@@ -13,10 +13,10 @@
       </div>
       <div class="col-md-4 top-header-right">
         <div class="cart box_1">
-          <a href="checkout.html">
+          <a href="{% url 'cart' %}">
             <h3>
               <div class="total">
-                <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span>
+                (<span id="cart-quantity"></span>
                 items)</div>
               <img src="{% static 'images/cart-1.png' %}" alt="" />
           </a>

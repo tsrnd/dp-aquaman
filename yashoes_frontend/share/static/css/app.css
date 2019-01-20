@@ -12,3 +12,22 @@
 	max-width: 100%;
 	max-height: 100%;
 }
+<<<<<<< HEAD
+=======
+
+/* override add cart button */
+.single-but input[type="button"] {
+	background: #8c2830;
+	color: #FFF;
+	font-size: 0.8em;
+	padding: 0.5em 1em;
+	transition: 0.5s all;
+	-webkit-transition: 0.5s all;
+	-moz-transition: 0.5s all;
+	-o-transition: 0.5s all;
+	cursor: pointer;
+	outline: none;
+	text-transform: uppercase;
+	border: none;
+}
+>>>>>>> 6c658bb69c0060d663977473f90276ab25816054

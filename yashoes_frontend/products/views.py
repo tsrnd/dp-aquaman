@@ -9,7 +9,6 @@ from django.conf import settings
 def home(request):
     return render(request, 'products/index.html')
 
-
 def products(request):
     return render(request, 'products/products.html')
 

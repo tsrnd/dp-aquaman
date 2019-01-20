@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from yashoes.model.transaction import Transaction
-from yashoes.model.transaction_version import TransactionVersion
+from yashoes.model.transaction_variant import TransactionVariant
 from yashoes.model.product import Product
-from yashoes.model.version import Version
+from yashoes.model.variant import Variant
 
 from yashoes.models import User
 
@@ -23,21 +23,18 @@ class TransactionSerializer(FieldMixin, serializers.ModelSerializer, object):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('description', 'rate')
-        # fields = '__all__'
+        fields = ('rate','description')
 
-class VersionSerializer(serializers.ModelSerializer):
-    price = ProductSerializer(many=False, read_only =True)
+class VariantSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(many=False, read_only =True)
     class Meta:
-        model = Version
-        fields = ('name', 'size', 'color', 'price')
+        model = Variant
+        fields = ('name', 'size', 'color', 'product', 'price')
 
-class TransactionVersionSerializer(serializers.ModelSerializer):
-    # product = serializers.IntegerField(source='version_id')
-    # version = serializers.StringRelatedField(read_only=True)
-
-    # version = serializers.SlugRelatedField()
-    version = VersionSerializer(many=False, read_only=True)
+class TransactionVariantSerializer(serializers.ModelSerializer):
+    transaction_id = serializers.IntegerField(source='variant_id')
+    variant = VariantSerializer(many=False, read_only=True)
     class Meta:
-        model = TransactionVersion
-        fields = ('quantity', 'version')
+        model = TransactionVariant
+        fields = ('transaction_id', 'quantity', 'variant')
+

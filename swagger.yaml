@@ -5,6 +5,7 @@ info:
 tags:
 - name: "User"
 - name: "Product"
+- name: "Comment"
 schemes:
 - "https"
 - "http"
@@ -181,17 +182,18 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
-  /api/user/transactions:
+  /api/products/{product_id}/comments:
     get:
-      tags:
-      - "User"
-      summary: "Get list transaction"
-      description: ""
-      operationId: "transactionDetail"
-      produces:
-      - "application/json"
+      tags: 
+      - "Comment"
+      summary: get comments about product
+      description: lấy bình luận về sản phẩm
       parameters:
-      - $ref: '#/parameters/Userid'
+        - name: product_id
+          in: path
+          description: Product ID in product table
+          required: true
+          type: integer
       responses:
         '200':
           description: Successful response
@@ -199,24 +201,59 @@ paths:
             title: Successful response
             type: object
             properties:
-              user_id:
-                $ref: '#/definitions/UserID'
-              address:
-                $ref: '#/definitions/Address'
-              phone_number:
-                $ref: '#/definitions/PhoneNumber'
-              status:
-                $ref: '#/definitions/Status'
-              total:
-                $ref: '#/definitions/Total'
-        '400':
-          description: Bad request error response
-          schema:
-            $ref: '#/definitions/ErrorDetails'
-        '500':
-          description: Internal server error response
-          schema:
-            $ref: '#/definitions/ErrorDetails'
+              data:
+                type: array
+                description: data
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                      description: 'Id of comment'
+                    username:
+                      type: string    
+                      example: sonvu
+                    content:
+                      type: string
+                      example: cui bap
+                    comments:
+                      type: array
+                      items:
+                        type: object
+                        properties: 
+                          id: 
+                            type: integer
+                            example: 2
+                            description: 'Id of comment'
+                          username:
+                            type: string    
+                            example: minhleo
+                          content:
+                            type: string
+                            example: cmnr
+                          created_at: 
+                            type: string
+                            format: date
+                    created_at: 
+                        type: string
+                        format: date       
+    post:
+      tags:
+      - "Comment"
+      summary: post a comment
+      description: đăng bình luận về sản phẩm
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - $ref: '#/parameters/Product'
+      - $ref: '#/parameters/Content'
+      - $ref: '#/parameters/Parent_comment'
+      responses:
+        200:
+          description: Successful response
+   
+
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -253,6 +290,21 @@ parameters:
     in: formData
     type: string
     required: true
+  Product:
+    name: product_id
+    in: formData
+    type: integer
+    required: true
+  Content:
+    name: content
+    in: formData
+    type: string
+    required: true
+  Parent_comment:
+    name: parent_comment_id
+    in: formData
+    type: integer
+    required: false
   Page:
     name: page
     in: query
@@ -272,13 +324,6 @@ parameters:
       MIN = 1
       DEFAULT = 5
       MAX = 100
-  Userid:
-    name: user_id
-    in: query
-    required: true
-    type: integer
-    description:
-      user_id from transaction table
 definitions:
   Token:
     type: string
@@ -336,28 +381,3 @@ definitions:
         items:
           description: error detail
           type: string
-  Address:
-    type: string
-    description:
-      from transaction table
-    example: asiantech
-  UserID:
-    type: integer
-    description:
-      user_id from transaction table
-    example: 1
-  Status:
-    type: string
-    description:
-      status from transaction table
-    example: done
-  Total:
-    type: integer
-    description:
-      total from transaction table
-    example: 3
-  PhoneNumber:
-    type: integer
-    description:
-      phone number from transaction table
-    example: 0934000000

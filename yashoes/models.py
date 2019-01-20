@@ -6,6 +6,10 @@ from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
+import os
+
+def get_image_path(instance, filename):
+    return os.path.join('users', str(instance.id), filename) 
 
 
 class CustomUserManager(BaseUserManager):
@@ -105,6 +109,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
 class User(CustomAbstractUser):
     address = models.TextField(null=True, blank=True)
     phone_number = models.CharField(max_length=10, null=True, blank=True)
+    image_profile = models.ImageField(upload_to=get_image_path, blank=True, null=True, max_length=50000)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)

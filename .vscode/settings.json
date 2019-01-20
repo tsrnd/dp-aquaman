@@ -21,7 +21,7 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 4
   },
-  "python.pythonPath": ".venv/bin/python",
+  "python.pythonPath": "/Users/mba0236p/.pyenv/versions/3.7.1/bin/python",
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
   "python.linting.maxNumberOfProblems": 20,

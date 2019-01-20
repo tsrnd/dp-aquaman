@@ -134,10 +134,13 @@ JWT_AUTH = {
     'rest_framework_jwt.utils.jwt_decode_handler',
 
     'JWT_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_payload_handler',
+    'yashoes.helper.custom_jwt.jwt_payload_handler',
 
     'JWT_PAYLOAD_GET_USER_ID_HANDLER':
     'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
+    'yashoes.helper.custom_jwt.jwt_get_username_from_payload_handler',
 
     'JWT_RESPONSE_PAYLOAD_HANDLER':
     'rest_framework_jwt.utils.jwt_response_payload_handler',
@@ -183,3 +186,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(os.path.dirname(yashoes_frontend.__file__), "share/static/"),
 ]
+
+MINIO_SERVER = os.getenv('STORAGE_URL')
+MINIO_ACCESSKEY = 'AKIAIOSFODNN7EDAMPLP'
+MINIO_SECRET = 'wJalrXUtnFEMKJH7MDENJFTPxRfiCYEXAMPLEKEY'
+MINIO_BUCKET = 'mybucket'
+MINIO_SECURE = False
+DEFAULT_FILE_STORAGE = 'yashoes.helper.custom_minio_storage.CustomMinioStorage'
+
+API_HOST = 'http://localhost:8000/'
+
+SESSION_COOKIE_SECURE = True

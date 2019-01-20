@@ -14,7 +14,7 @@ class FieldMixin(object):
             return field_names
         return super(FieldMixin, self).get_field_names(*args, **kwargs)
 
-class TransactionSerializer(FieldMixin, serializers.ModelSerializer, object):
+class TransactionSerializer(FieldMixin, serializers.ModelSerializer):
     transaction_id = serializers.IntegerField(source='id')
     class Meta:
         model = Transaction

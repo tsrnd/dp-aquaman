@@ -18,10 +18,7 @@ class Transaction_listlView(viewsets.ViewSet):
         return Response(serializer.data, status=200)
 
     def retrieve(self, request, pk=None):
-        # ver
-        # product = Product.objects.filter().prefetch_related(transaction_variant__variant_id = version_ )
         user = get_object_or_404(User, pk=request.user.id)
         transaction = TransactionVariant.objects.filter(transaction__pk = pk).filter(transaction__user_id = user)
-        print("12312312312",transaction)
         serializer = TransactionVariantSerializer(transaction, many=True)
         return Response(serializer.data)

@@ -246,14 +246,34 @@ paths:
       consumes:
       - "application/x-www-form-urlencoded"
       parameters:
-      - $ref: '#/parameters/Product'
+      - $ref: '#/parameters/ProductID'
       - $ref: '#/parameters/Content'
-      - $ref: '#/parameters/Parent_comment'
+      - $ref: '#/parameters/ParentCommentID'
       responses:
         200:
           description: Successful response
-   
-
+  /api/comments/{comment_id}:
+    delete:
+      tags: 
+      - "Comment"
+      parameters: 
+      - name: comment_id
+        in: path
+        description: Comment ID in comment table
+        type: integer
+        required: true
+      summary: delete comment
+      description: xoá bình luận
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: success
+                
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -290,9 +310,9 @@ parameters:
     in: formData
     type: string
     required: true
-  Product:
+  ProductID:
     name: product_id
-    in: formData
+    in: path
     type: integer
     required: true
   Content:
@@ -300,7 +320,7 @@ parameters:
     in: formData
     type: string
     required: true
-  Parent_comment:
+  ParentCommentID:
     name: parent_comment_id
     in: formData
     type: integer

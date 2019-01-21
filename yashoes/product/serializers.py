@@ -23,6 +23,11 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id', 'name', 'description', 'rate', 'variants')
 
+class ProductFilterSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    price = serializers.IntegerField()
+    image_link = serializers.CharField()
 
 class ListProductSerializer(serializers.Serializer):
     id = serializers.IntegerField()

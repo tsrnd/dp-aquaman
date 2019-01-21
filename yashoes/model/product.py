@@ -10,11 +10,11 @@ class Product(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return "id: %s, name: %s, description: %s, rate: %s" % (self.id, self.name, self.description, self.rate)
+        return "id: %s, name: %s, description: %s, rate: %s" % (
+            self.id, self.name, self.description, self.rate)
 
     class Meta:
         db_table = "product"
-
 
 class ListProduct(object):
     def __init__(self, id, name, description, rate, image_link):

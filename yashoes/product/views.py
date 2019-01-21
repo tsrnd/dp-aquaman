@@ -1,7 +1,8 @@
 from yashoes.model.product import Product, ListProduct
 from yashoes.model.variant import Variant
 from yashoes.model.comment import Comment
-from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer
+
+from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer, ProductFilterSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -101,15 +102,28 @@ class CommentView(APIView):
 class FilterProduct(viewsets.ModelViewSet):
     permission_classes = ()
     queryset = Product.objects.all()
-    serializer_class = ProductDetailSerializer
+    serializer_class = ProductFilterSerializer
 
     def list(self, request):
-        size = request.GET['size']
-        try:
-            version = Variant.objects.filter(size=size)
-            queryset = Product.objects.filter(pk=version.first().product_id)
-            serializer = ProductDetailSerializer(queryset, many=True)
-            return Response(serializer.data)
-        except MultiValueDictKeyError:
-            return Response(status= 404)
-
+        size = request.GET.get('size', False)
+        color = request.GET.get('color', False)
+        price = request.GET.get('price', False)
+        query_sql = "Select *  from product INNER JOIN variant On product.id = variant.product_id where "
+        query_param = []
+        if size != False:
+            query_param.append("variant.size = '" + size + "' ")
+        if color != False:
+            if len(query_param) >= 1:
+                query_param.append("and ")
+            query_param.append("variant.color = '" + color + "' ")
+        if price != False:
+            price_arr = price.split("-")
+            if len(price_arr) == 2:
+                if len(query_param) >= 1:
+                    query_param.append("and ")
+            query_param.append("variant.price BETWEEN " + str(price_arr[0]) +
+                               " AND " + str(price_arr[1]))
+        query_sql = query_sql + ''.join(query_param)
+        raw_query = Product.objects.raw(query_sql)
+        serializer = ProductFilterSerializer(raw_query, many=True)
+        return Response({"products": serializer.data})

@@ -730,6 +730,16 @@ ul.cart-header li span,ul.cart-header1 li span,ul.cart-header2 li span{
 	font-size:1.2em;
 	text-align:center;
 }
+
+ul.transaction li span {
+	text-align: left;
+}
+ul.detail {
+	padding: 0px !important;
+}
+span.status {
+	width: 50%;
+}
 li.ring-in img{
 	margin: 0 auto;
 }
@@ -1809,5 +1819,18 @@ ul.product-categories li a {
 	font-size: 11px;
 	line-height: 1.6em;
 }
+}
+
+li.id-tran {
+	width: 10% !important;
+}
+li.list-pro {
+	width: 30% !important;
+}
+li.tran img {
+	 margin: 0;
+}
+li.stt span {
+	text-align: center !important;
 }
 /*---- responsive-design -----*/

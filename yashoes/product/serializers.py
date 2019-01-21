@@ -2,6 +2,7 @@ from rest_framework import serializers
 from yashoes.model.product import Product
 from yashoes.model.variant import Variant
 from yashoes.model.comment import Comment
+from yashoes.model.brand import Brand
 
 
 class VariantSerializer(serializers.ModelSerializer):
@@ -74,3 +75,9 @@ class PostCommentSerializer(serializers.ModelSerializer):
         comment.user = user
         comment.save()
         return comment
+
+
+class HomePageSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    brand_name = serializers.CharField()
+    products = ListProductSerializer(many=True)

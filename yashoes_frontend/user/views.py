@@ -8,3 +8,9 @@ from django.conf import settings
 
 def profile(request):
     return render(request, 'user/profile.html')
+
+def transaction(request):
+    return render(request, 'user/transaction.html')
+
+def transactiondetail(request):
+    return render(request, 'user/transaction-detail.html')

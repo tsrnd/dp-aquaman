@@ -12,6 +12,7 @@ from yashoes.model.rating import Rating
 from yashoes.model.transaction_variant import TransactionVariant
 from datetime import date, timedelta
 from rest_framework import status
+from django.db.models import Avg
 
 RESULT_LIMIT = 5
 
@@ -93,6 +94,12 @@ class RatingView(APIView):
                     serializer = RatingSerializer(data=data)
                     if serializer.is_valid():
                         serializer.save()
+                        product = Product.objects.get(pk=product_id)
+                        average_rating = Rating.objects.filter(
+                            product=product_id).aggregate(
+                                Avg('rate')).get('rate__avg')
+                        product.rate = round(average_rating, 1)
+                        product.save()
                         return Response({
                             "message": "success"
                         },
@@ -104,7 +111,7 @@ class RatingView(APIView):
                 else:
                     return Response({
                         "error":
-                        "You must buy this product on last 7 days"
+                        "Not found transaction with this product on last 7 days"
                     })
             else:
                 return Response({"error": "Rating must in range [1-5]"})

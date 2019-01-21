@@ -163,12 +163,15 @@ JWT_AUTH = {
 }
 
 
-### configuration frontend
-import yashoes_frontend
+### configuration frontend, and admin
+import yashoes_frontend, yashoes
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(os.path.dirname(yashoes_frontend.__file__), "share/templates/")],
+        'DIRS': [
+            os.path.join(os.path.dirname(yashoes_frontend.__file__), "share/templates/"),
+            os.path.join(os.path.dirname(yashoes.__file__), "templates/")
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

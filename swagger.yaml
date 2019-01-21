@@ -246,13 +246,29 @@ paths:
       consumes:
       - "application/x-www-form-urlencoded"
       parameters:
-      - $ref: '#/parameters/Product'
+      - $ref: '#/parameters/ProductID'
       - $ref: '#/parameters/Content'
-      - $ref: '#/parameters/Parent_comment'
+      - $ref: '#/parameters/ParentCommentID'
       responses:
         200:
           description: Successful response
-   
+  /api/products/{product_id}/rating:
+    post:
+      tags: 
+      - "Product"
+      summary: add rating 
+      parameters:
+      - $ref: '#/parameters/ProductID'
+      - name: rating
+        type: integer
+        required: true
+        in: formData
+      consumes:
+      - "application/x-www-form-urlencoded"
+      description: add rating for product
+      responses:
+        200:
+          description: OK
 
 securityDefinitions:
   petstore_auth:
@@ -290,9 +306,9 @@ parameters:
     in: formData
     type: string
     required: true
-  Product:
+  ProductID:
     name: product_id
-    in: formData
+    in: path
     type: integer
     required: true
   Content:
@@ -300,7 +316,7 @@ parameters:
     in: formData
     type: string
     required: true
-  Parent_comment:
+  ParentCommentID:
     name: parent_comment_id
     in: formData
     type: integer

@@ -198,6 +198,13 @@ STATICFILES_DIRS = [
     os.path.join(os.path.dirname(yashoes_frontend.__file__), "share/static/"),
 ]
 
+MINIO_SERVER = os.getenv('STORAGE_URL')
+MINIO_ACCESSKEY = 'AKIAIOSFODNN7EDAMPLP'
+MINIO_SECRET = 'wJalrXUtnFEMKJH7MDENJFTPxRfiCYEXAMPLEKEY'
+MINIO_BUCKET = 'mybucket'
+MINIO_SECURE = False
+DEFAULT_FILE_STORAGE = 'yashoes.helper.custom_minio_storage.CustomMinioStorage'
+
 API_HOST = 'http://localhost:8000/'
 
 SESSION_COOKIE_SECURE = True

@@ -4,7 +4,7 @@ import os
 
 
 def get_image_path(instance, filename):
-    return os.path.join('yashoes/static/product', str(instance.product.id),
+    return os.path.join('products', str(instance.product.id),
                         filename)
 
 
@@ -17,9 +17,9 @@ class Variant(models.Model):
     color = models.CharField(max_length=20, null=True, blank=True)
     image_link = models.ImageField(
         upload_to=get_image_path,
-        default='yashoes/static/product/None/no-imgage.png',
         blank=True,
-        null=True)
+        null=True,
+        max_length=50000)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)

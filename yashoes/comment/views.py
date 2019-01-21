@@ -17,11 +17,7 @@ class CommentView(APIView):
     def delete(self, request, pk):
         comment = get_object_or_404(Comment, pk=pk)
         if request.user.id == comment.user.id:
-            date_time = datetime.now()
-            comment.deleted_at = date_time
-            sub_comment = Comment.objects.filter(
-                parent_comment=comment.id).update(deleted_at=date_time)
-            comment.save()
+            comment.soft_delete()
             return Response({"message": "success"})
         else:
             return Response({"error": "Can not delete other comment"})

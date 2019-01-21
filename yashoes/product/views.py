@@ -2,10 +2,12 @@ from yashoes.model.product import Product, ListProduct
 from yashoes.model.variant import Variant
 from yashoes.model.transaction import Transaction
 from yashoes.model.rating import Rating
+from yashoes.model.brand import Brand
 from yashoes.model.transaction_variant import TransactionVariant
-from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer
+from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer, HomePageSerializer
 from yashoes.rating.serializers import RatingSerializer
 from yashoes.model.comment import Comment
+from yashoes.product.response import HomePageResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -105,7 +107,7 @@ class RatingView(APIView):
                         return Response({
                             "message": "success"
                         },
-                                        status=status.HTTP_200_OK)
+                            status=status.HTTP_200_OK)
                     else:
                         return Response(
                             serializer.errors,
@@ -121,7 +123,7 @@ class RatingView(APIView):
             return Response({
                 "error": "Rating is required"
             },
-                            status=status.HTTP_400_BAD_REQUEST)
+                status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentView(APIView):
@@ -153,4 +155,36 @@ class CommentView(APIView):
             return Response({
                 'error': "Login first"
             },
-                            status=status.HTTP_401_UNAUTHORIZED)
+                status=status.HTTP_401_UNAUTHORIZED)
+
+
+class HomePageApiView(APIView):
+    permission_classes = ()
+
+    def get(self, request):
+        """
+        Get some product for home page
+        With 1 brand will have 5 product
+        """
+        brands = Brand.objects.all().filter(deleted_at=None)[:5]
+
+        response = []
+        for brand in brands:
+            products = Product.objects.filter(
+                brand=brand.id, deleted_at=None)[:5]
+            products_tmp = []
+            for product in products:
+                image_link = ""
+                for variant in product.variant_set.all()[:1]:
+                    image_link = variant.image_link
+                    break
+                tmp = ListProduct(product.id, product.name, product.description,
+                                  product.rate, image_link)
+                products_tmp.append(tmp)
+
+            brand_tmp = HomePageResponse(
+                brand.id, brand.brand_name, products_tmp)
+            response.append(brand_tmp)
+
+        serializers = HomePageSerializer(response, many=True)
+        return Response({"result": serializers.data})

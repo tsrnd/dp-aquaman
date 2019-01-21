@@ -1,4 +1,5 @@
 from yashoes.model.product import Product, ListProduct
+from yashoes.model.variant import Variant
 from yashoes.model.comment import Comment
 from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer
 from rest_framework.response import Response
@@ -8,6 +9,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from rest_framework import viewsets
+from django.utils.datastructures import MultiValueDictKeyError
 
 RESULT_LIMIT = 5
 
@@ -89,4 +92,24 @@ class CommentView(APIView):
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'error': "Login first"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({
+                'error': "Login first"
+            },
+                            status=status.HTTP_401_UNAUTHORIZED)
+
+
+class FilterProduct(viewsets.ModelViewSet):
+    permission_classes = ()
+    queryset = Product.objects.all()
+    serializer_class = ProductDetailSerializer
+
+    def list(self, request):
+        size = request.GET['size']
+        try:
+            version = Variant.objects.filter(size=size)
+            queryset = Product.objects.filter(pk=version.first().product_id)
+            serializer = ProductDetailSerializer(queryset, many=True)
+            return Response(serializer.data)
+        except MultiValueDictKeyError:
+            return Response(status= 404)
+

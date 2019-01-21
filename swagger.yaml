@@ -5,6 +5,7 @@ info:
 tags:
 - name: "User"
 - name: "Product"
+- name: "Comment"
 schemes:
 - "https"
 - "http"
@@ -135,6 +136,124 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
+  /api/products/{id_product}:
+    get:
+      tags:
+      - "Product"
+      summary: "Get detail product from database"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+        - name: id_product
+          in: path
+          description: Product ID in product table
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+                description: 'Id of product'
+              name:
+                type: string
+                description: 'Name of product'
+              description:
+                type: string
+              rate:
+                type: number
+                example: 3.5
+              versions:
+                type: array
+                description: 'list of version(id, name, size, color, image_link, price, quantity)'
+                items:
+                  $ref: '#/definitions/Version'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/products/{product_id}/comments:
+    get:
+      tags: 
+      - "Comment"
+      summary: get comments about product
+      description: lấy bình luận về sản phẩm
+      parameters:
+        - name: product_id
+          in: path
+          description: Product ID in product table
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              data:
+                type: array
+                description: data
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                      description: 'Id of comment'
+                    username:
+                      type: string    
+                      example: sonvu
+                    content:
+                      type: string
+                      example: cui bap
+                    comments:
+                      type: array
+                      items:
+                        type: object
+                        properties: 
+                          id: 
+                            type: integer
+                            example: 2
+                            description: 'Id of comment'
+                          username:
+                            type: string    
+                            example: minhleo
+                          content:
+                            type: string
+                            example: cmnr
+                          created_at: 
+                            type: string
+                            format: date
+                    created_at: 
+                        type: string
+                        format: date       
+    post:
+      tags:
+      - "Comment"
+      summary: post a comment
+      description: đăng bình luận về sản phẩm
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - $ref: '#/parameters/Product'
+      - $ref: '#/parameters/Content'
+      - $ref: '#/parameters/Parent_comment'
+      responses:
+        200:
+          description: Successful response
+   
+
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -171,6 +290,21 @@ parameters:
     in: formData
     type: string
     required: true
+  Product:
+    name: product_id
+    in: formData
+    type: integer
+    required: true
+  Content:
+    name: content
+    in: formData
+    type: string
+    required: true
+  Parent_comment:
+    name: parent_comment_id
+    in: formData
+    type: integer
+    required: false
   Page:
     name: page
     in: query
@@ -186,7 +320,7 @@ parameters:
     type: integer
     description: |
       Limit count of response record of list.
-      if not set,response record limit is 50.
+      if not set,response record limit is 5.
       MIN = 1
       DEFAULT = 5
       MAX = 100
@@ -220,6 +354,24 @@ definitions:
         type: integer
         description: avg rating of product
         example: 4.5
+  Version:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: name of version
+      color:
+        type: string
+      price:
+        type: integer
+      size:
+        type: string
+      quantity:
+        type: integer
+      image_link:
+        type: string
+        example: image.jpeg
   ErrorDetails:
     title: Error details
     type: object

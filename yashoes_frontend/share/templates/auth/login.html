@@ -1,0 +1,45 @@
+{% extends 'layouts/base.html' %}
+
+{% block breadcum %}
+<div class="breadcrumbs">
+  <div class="container">
+    <div class="breadcrumbs-main">
+      <ol class="breadcrumb">
+        <li class="active">Home</li>
+        <li class="active">Login</li>
+      </ol>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="account">
+  <div class="container">
+    <div class="account-bottom">
+      <div class="col-md-6 account-left">
+        <form method="POST" novalidate>
+          {% csrf_token %}
+          <div class="account-top heading">
+            <h3>LOGIN</h3>
+          </div>
+          {% for field in form %}
+          <div class="address">
+            <span>{{ field.label }}</span>
+            {{ field }}
+          </div>
+          {% endfor %}
+          <div class="address">
+            <a class="forgot" href="#">Forgot Your Password?</a>
+            <input type="submit" value="Login">
+          </div>
+        </form>
+        {% if errors %}
+        <span>{{ errors.message }}</span>
+        {% endif %}
+        <div class="clearfix"> </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

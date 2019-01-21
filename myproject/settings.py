@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'myapp',
-    'yashoes',
+    'yashoes', 'yashoes_frontend',
 ]
 
 MIDDLEWARE = [
@@ -52,22 +52,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'myproject.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
@@ -129,8 +113,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
-
 AUTH_USER_MODEL = 'yashoes.User'
 
 REST_FRAMEWORK = {
@@ -152,10 +134,13 @@ JWT_AUTH = {
     'rest_framework_jwt.utils.jwt_decode_handler',
 
     'JWT_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_payload_handler',
+    'yashoes.helper.custom_jwt.jwt_payload_handler',
 
     'JWT_PAYLOAD_GET_USER_ID_HANDLER':
     'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
+    'yashoes.helper.custom_jwt.jwt_get_username_from_payload_handler',
 
     'JWT_RESPONSE_PAYLOAD_HANDLER':
     'rest_framework_jwt.utils.jwt_response_payload_handler',
@@ -176,3 +161,39 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 
 }
+
+
+### configuration frontend
+import yashoes_frontend
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(os.path.dirname(yashoes_frontend.__file__), "share/templates/")],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(os.path.dirname(yashoes_frontend.__file__), "share/static/"),
+]
+
+MINIO_SERVER = os.getenv('STORAGE_URL')
+MINIO_ACCESSKEY = 'AKIAIOSFODNN7EDAMPLP'
+MINIO_SECRET = 'wJalrXUtnFEMKJH7MDENJFTPxRfiCYEXAMPLEKEY'
+MINIO_BUCKET = 'mybucket'
+MINIO_SECURE = False
+DEFAULT_FILE_STORAGE = 'yashoes.helper.custom_minio_storage.CustomMinioStorage'
+
+API_HOST = 'http://localhost:8000/'
+
+SESSION_COOKIE_SECURE = True

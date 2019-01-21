@@ -1,10 +1,17 @@
 from yashoes.model.product import Product, ListProduct
 from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer
+from yashoes.rating.serializers import RatingSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
+from yashoes.model.variant import Variant
+from yashoes.model.transaction import Transaction
+from yashoes.model.rating import Rating
+from yashoes.model.transaction_variant import TransactionVariant
+from datetime import date, timedelta
+from rest_framework import status
 
 RESULT_LIMIT = 5
 
@@ -58,3 +65,51 @@ class ProductDetail(generics.RetrieveAPIView):
         product = get_object_or_404(Product, pk=pk)
         serializer = ProductDetailSerializer(instance=product)
         return Response(serializer.data)
+
+
+class RatingView(APIView):
+    def post(self, request, product_id):
+        rating = request.data.get("rating")
+        user_id = request.user.id
+        rating_range = range(1, 6)
+        if rating:
+            if int(rating) in rating_range:
+                enddate = date.today()
+                minimumdate = enddate - timedelta(days=7)
+                variant_ids = list(
+                    Variant.objects.filter(product=product_id).values_list(
+                        'id', flat=True))
+                transaction = Transaction.objects.filter(
+                    user=user_id,
+                    status=3,
+                    transactionvariant__variant__in=variant_ids,
+                    created_at__date__range=(minimumdate, enddate))
+                if transaction:
+                    data = {
+                        'product': product_id,
+                        'user': user_id,
+                        'rate': rating
+                    }
+                    serializer = RatingSerializer(data=data)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response({
+                            "message": "success"
+                        },
+                                        status=status.HTTP_200_OK)
+                    else:
+                        return Response(
+                            serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response({
+                        "error":
+                        "You must buy this product on last 7 days"
+                    })
+            else:
+                return Response({"error": "Rating must in range [1-5]"})
+        else:
+            return Response({
+                "error": "Rating is required"
+            },
+                            status=status.HTTP_400_BAD_REQUEST)

@@ -6,34 +6,25 @@ from yashoes.model.variant import Variant
 
 from yashoes.models import User
 
-
-class FieldMixin(object):
-    def get_field_names(self, *args, **kwargs):
-        field_names = self.context.get('fields', None)
-        if field_names:
-            return field_names
-        return super(FieldMixin, self).get_field_names(*args, **kwargs)
-
-class TransactionSerializer(FieldMixin, serializers.ModelSerializer):
-    transaction_id = serializers.IntegerField(source='id')
-    class Meta:
-        model = Transaction
-        fields = '__all__'
-
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('rate','description')
+        fields = ('name',)
 
 class VariantSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(many=False, read_only =True)
     class Meta:
         model = Variant
-        fields = ('name', 'size', 'color', 'product', 'price')
+        fields = ('name', 'size', 'color', 'price', 'image_link',)
 
 class TransactionVariantSerializer(serializers.ModelSerializer):
-    transaction_id = serializers.IntegerField(source='variant_id')
     variant = VariantSerializer(many=False, read_only=True)
     class Meta:
         model = TransactionVariant
-        fields = ('transaction_id', 'quantity', 'variant')
+        fields = ('quantity','variant')
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    transaction_id = serializers.IntegerField(source='id')
+    class Meta:
+        model = Transaction
+        fields = ('transaction_id','user_id','status','total','created_at')

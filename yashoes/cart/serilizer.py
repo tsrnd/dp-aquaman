@@ -11,6 +11,6 @@ class CartSerilizer(serializers.ModelSerializer):
         return UserVariant.objects.create(**valid_data)
 
     def update(self, instance, valid_data):
-        instance.quantity += self.initial_data['quantity']
+        instance.quantity += int(self.initial_data['quantity'])
         instance.save()
         return instance

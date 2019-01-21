@@ -1,6 +1,10 @@
 from yashoes.model.product import Product, ListProduct
 from yashoes.model.comment import Comment
-from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer
+from yashoes.model.brand import Brand
+from yashoes.product.serializers import (
+    ListProductSerializer, ProductDetailSerializer,
+    GetCommentsSerializer, PostCommentSerializer, HomePageSerializer)
+from yashoes.product.response import HomePageResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -90,3 +94,35 @@ class CommentView(APIView):
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'error': "Login first"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class HomePageApiView(APIView):
+    permission_classes = ()
+
+    def get(self, request):
+        """
+        Get some product for home page
+        With 1 brand will have 5 product
+        """
+        brands = Brand.objects.all().filter(deleted_at=None)[:5]
+
+        response = []
+        for brand in brands:
+            products = Product.objects.filter(
+                brand=brand.id, deleted_at=None)[:5]
+            products_tmp = []
+            for product in products:
+                image_link = ""
+                for variant in product.variant_set.all()[:1]:
+                    image_link = variant.image_link
+                    break
+                tmp = ListProduct(product.id, product.name, product.description,
+                                  product.rate, image_link)
+                products_tmp.append(tmp)
+
+            brand_tmp = HomePageResponse(
+                brand.id, brand.brand_name, products_tmp)
+            response.append(brand_tmp)
+
+        serializers = HomePageSerializer(response, many=True)
+        return Response({"result": serializers.data})

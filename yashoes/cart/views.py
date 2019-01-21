@@ -61,3 +61,4 @@ class Cart(viewsets.ViewSet):
             data={
                 'total': total,
             }, status=status.HTTP_200_OK)
+            

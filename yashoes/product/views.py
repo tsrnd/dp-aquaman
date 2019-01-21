@@ -1,12 +1,19 @@
 from yashoes.model.product import Product, ListProduct
-from yashoes.model.comment import Comment
+from yashoes.model.variant import Variant
+from yashoes.model.transaction import Transaction
+from yashoes.model.rating import Rating
+from yashoes.model.transaction_variant import TransactionVariant
 from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer
+from yashoes.rating.serializers import RatingSerializer
+from yashoes.model.comment import Comment
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
+from datetime import date, timedelta
 from rest_framework import status
+from django.db.models import Avg
 from rest_framework.permissions import AllowAny
 
 RESULT_LIMIT = 5
@@ -63,6 +70,60 @@ class ProductDetail(generics.RetrieveAPIView):
         return Response(serializer.data)
 
 
+class RatingView(APIView):
+    def post(self, request, product_id):
+        rating = request.data.get("rating")
+        user_id = request.user.id
+        rating_range = range(1, 6)
+        if rating:
+            if int(rating) in rating_range:
+                enddate = date.today()
+                minimumdate = enddate - timedelta(days=7)
+                variant_ids = list(
+                    Variant.objects.filter(product=product_id).values_list(
+                        'id', flat=True))
+                transaction = Transaction.objects.filter(
+                    user=user_id,
+                    status=3,
+                    transactionvariant__variant__in=variant_ids,
+                    created_at__date__range=(minimumdate, enddate))
+                if transaction:
+                    data = {
+                        'product': product_id,
+                        'user': user_id,
+                        'rate': rating
+                    }
+                    serializer = RatingSerializer(data=data)
+                    if serializer.is_valid():
+                        serializer.save()
+                        product = Product.objects.get(pk=product_id)
+                        average_rating = Rating.objects.filter(
+                            product=product_id).aggregate(
+                                Avg('rate')).get('rate__avg')
+                        product.rate = round(average_rating, 1)
+                        product.save()
+                        return Response({
+                            "message": "success"
+                        },
+                                        status=status.HTTP_200_OK)
+                    else:
+                        return Response(
+                            serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response({
+                        "error":
+                        "Not found transaction with this product on last 7 days"
+                    })
+            else:
+                return Response({"error": "Rating must in range [1-5]"})
+        else:
+            return Response({
+                "error": "Rating is required"
+            },
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
 class CommentView(APIView):
     permission_classes = (AllowAny, )
 
@@ -89,4 +150,7 @@ class CommentView(APIView):
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'error': "Login first"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({
+                'error': "Login first"
+            },
+                            status=status.HTTP_401_UNAUTHORIZED)

@@ -6,5 +6,5 @@ router = DefaultRouter()
 router.register('', views.Cart, basename='cart')
 
 urlpatterns = router.urls + [
-    path('variant/', views.CreateCartVariant.as_view())
+    path('variant/', views.UserVariantView.as_view())
 ]

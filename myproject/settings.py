@@ -1,4 +1,3 @@
-import yashoes_frontend
 """
 Django settings for myproject project.
 
@@ -164,7 +163,8 @@ JWT_AUTH = {
 }
 
 
-# configuration frontend
+### configuration frontend
+import yashoes_frontend
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -197,20 +197,3 @@ DEFAULT_FILE_STORAGE = 'yashoes.helper.custom_minio_storage.CustomMinioStorage'
 API_HOST = 'http://localhost:8000/'
 
 SESSION_COOKIE_SECURE = True
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    }
-}

@@ -182,6 +182,44 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
+  /api/products/homepage:
+    get:
+      tags:
+      - "Product"
+      summary: "Get product for homepage"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              result:
+                type: array
+                description: "list product for homepage"
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    brand_name:
+                      type: string    
+                      example: "nike"
+                    product:
+                      $ref: '#/definitions/Product' 
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+            
   /api/products/{product_id}/comments:
     get:
       tags: 
@@ -252,7 +290,6 @@ paths:
       responses:
         200:
           description: Successful response
-   
 
 securityDefinitions:
   petstore_auth:
@@ -292,7 +329,7 @@ parameters:
     required: true
   Product:
     name: product_id
-    in: formData
+    in: path
     type: integer
     required: true
   Content:
@@ -354,6 +391,9 @@ definitions:
         type: integer
         description: avg rating of product
         example: 4.5
+      image_link:
+        type: string
+        example: "localhost:9000/users/1/product/1/abc.jpg"
   Version:
     type: object
     properties:

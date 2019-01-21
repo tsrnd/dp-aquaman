@@ -43,19 +43,3 @@ class AuthView(viewsets.ViewSet):
             'status': 200
         })
         return Response(data=data_response, status=200)
-
-class DetailView(viewsets.ViewSet):
-
-    permission_classes = (IsAuthenticated,)
-
-    @action(detail=True, url_path='detail', url_name='detail')
-    def user_detail(self, request, pk=None):
-        user = get_object_or_404(User, pk=pk, deleted_at=None)
-        return Response(data={
-            'email': user.email,
-            'username': user.username,
-            'address': user.address,
-            'phone_number': user.phone_number,
-            'image_profile': user.image_profile.storage.url(user.image_profile.name),
-        }, status=200)
-        

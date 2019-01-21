@@ -35,10 +35,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin', 'django.contrib.auth',
-    'django.contrib.contenttypes', 'django.contrib.sessions',
-    'django.contrib.messages', 'django.contrib.staticfiles', 'myapp',
-    'yashoes', 'yashoes_frontend',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'myapp',
+    'yashoes',
+    'yashoes_frontend',
 ]
 
 MIDDLEWARE = [
@@ -116,9 +121,8 @@ USE_TZ = True
 AUTH_USER_MODEL = 'yashoes.User'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    'DEFAULT_PERMISSION_CLASSES':
+    ('rest_framework.permissions.IsAuthenticated', ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -129,47 +133,54 @@ REST_FRAMEWORK = {
 JWT_AUTH = {
     'JWT_ENCODE_HANDLER':
     'rest_framework_jwt.utils.jwt_encode_handler',
-
     'JWT_DECODE_HANDLER':
     'rest_framework_jwt.utils.jwt_decode_handler',
-
     'JWT_PAYLOAD_HANDLER':
     'yashoes.helper.custom_jwt.jwt_payload_handler',
-
     'JWT_PAYLOAD_GET_USER_ID_HANDLER':
     'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
-
     'JWT_PAYLOAD_GET_USERNAME_HANDLER':
     'yashoes.helper.custom_jwt.jwt_get_username_from_payload_handler',
-
     'JWT_RESPONSE_PAYLOAD_HANDLER':
     'rest_framework_jwt.utils.jwt_response_payload_handler',
-
-    'JWT_SECRET_KEY': SECRET_KEY,
-    'JWT_GET_USER_SECRET_KEY': None,
-    'JWT_ALGORITHM': 'HS256',
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=3),
-    'JWT_AUDIENCE': 'team4+team1',
-    'JWT_ISSUER': 'team4+team1',
-
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
-
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-
+    'JWT_SECRET_KEY':
+    SECRET_KEY,
+    'JWT_GET_USER_SECRET_KEY':
+    None,
+    'JWT_ALGORITHM':
+    'HS256',
+    'JWT_VERIFY':
+    True,
+    'JWT_VERIFY_EXPIRATION':
+    True,
+    'JWT_LEEWAY':
+    0,
+    'JWT_EXPIRATION_DELTA':
+    datetime.timedelta(days=3),
+    'JWT_AUDIENCE':
+    'team4+team1',
+    'JWT_ISSUER':
+    'team4+team1',
+    'JWT_ALLOW_REFRESH':
+    True,
+    'JWT_REFRESH_EXPIRATION_DELTA':
+    datetime.timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX':
+    'Bearer',
 }
-
 
 ### configuration frontend
 import yashoes_frontend
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(os.path.dirname(yashoes_frontend.__file__), "share/templates/")],
-        'APP_DIRS': True,
+        'BACKEND':
+        'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(
+                os.path.dirname(yashoes_frontend.__file__), "share/templates/")
+        ],
+        'APP_DIRS':
+        True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -197,3 +208,20 @@ DEFAULT_FILE_STORAGE = 'yashoes.helper.custom_minio_storage.CustomMinioStorage'
 API_HOST = 'http://localhost:8000/'
 
 SESSION_COOKIE_SECURE = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    }
+}

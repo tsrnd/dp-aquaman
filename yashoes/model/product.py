@@ -1,16 +1,19 @@
 from django.db import models
+from yashoes.model.brand import Brand
 
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255, null=True, blank=True)
     rate = models.FloatField(default=0)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return "id: %s, name: %s, description: %s, rate: %s" % (self.id, self.name, self.description, self.rate)
+        return "id: %s, name: %s, description: %s, rate: %s" % (
+            self.id, self.name, self.description, self.rate)
 
     class Meta:
         db_table = "product"

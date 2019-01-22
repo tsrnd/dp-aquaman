@@ -35,7 +35,7 @@ class ListProductSerializer(serializers.Serializer):
 
 class SubCommentSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
-    created_at = serializers.DateTimeField(format='%H:%M %Y/%m/%d')
+    created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
     user_image = serializers.CharField(source='user.image_profile.url')
 
     class Meta:
@@ -46,7 +46,7 @@ class SubCommentSerializer(serializers.ModelSerializer):
 class GetCommentsSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField('query_comments')
     username = serializers.CharField(source='user.username')
-    created_at = serializers.DateTimeField(format='%H:%M %Y/%m/%d')
+    created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
     user_image = serializers.CharField(source='user.image_profile.url')
 
 

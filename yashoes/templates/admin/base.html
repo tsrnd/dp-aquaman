@@ -31,19 +31,14 @@
         {% block usertools %}
         {% if has_permission %}
         {% if user.image_profile %}
-            <img style="border-radius: 50%;position: relative; top:0.5%; float: right; padding-left: 10px" src="{{ user.image_profile.url }}" width="50px">
+            <img style="border-radius: 50%;position: relative; top:0.5%; float: right; padding-left: 10px" src="{{ user.image_profile.url }}" width="45px">
         {% endif %}
         {% if not user.image_profile %}
-            <img style="border-radius: 50%;position: relative; top:0.5%; float: right; padding-left: 10px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaq7-laBSVtrAK2rlJgmgh60a3fAcoUPtAfNG38TiQMj-3Ebcp" width="50px">
+            <img style="border-radius: 50%;position: relative; top:0.5%; float: right; padding-left: 10px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaq7-laBSVtrAK2rlJgmgh60a3fAcoUPtAfNG38TiQMj-3Ebcp" width="45px">
         {% endif %}
         <div id="user-tools">
             {% block welcome-msg %}
             {% trans 'Welcome,' %}
-                {% if user.image_profile %}
-                {% endif %}
-                {% if not user.image_profile %}
-                    <img style="border-radius: 50%;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaq7-laBSVtrAK2rlJgmgh60a3fAcoUPtAfNG38TiQMj-3Ebcp" height="35" width="35">
-                {% endif %}
                 <strong>{% firstof user.get_short_name user.get_username %}</strong>.
             {% endblock %}
             {% block userlinks %}

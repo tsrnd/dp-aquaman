@@ -1,7 +1,4 @@
 from django.shortcuts import render, render_to_response, redirect
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.decorators import action
 from yashoes_frontend.auth.form import UserLoginForm, UserRegisterForm
 import requests
 from django.conf import settings
@@ -20,7 +17,7 @@ def login(request):
             if response.status_code == 200:
                 res = response.json()
                 link = redirect('register')
-                link.set_signed_cookie('token', res.get('token'))
+                link.set_cookie('token', res.get('token'))
                 return link
             elif response.status_code == 400:
                 return render(
@@ -49,7 +46,7 @@ def register(request):
             res = response.json()
             if response.status_code == 200:
                 link = redirect('register')
-                link.set_signed_cookie('token', res.get('token'))
+                link.set_cookie('token', res.get('token'))
                 return link
             elif response.status_code == 400:
                 return render(

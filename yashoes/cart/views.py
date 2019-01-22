@@ -55,9 +55,7 @@ class Cart(viewsets.ViewSet):
     @action(detail=False, url_path='information', url_name='information')
     def total_cart(self, request):
         user_id = request.user.id
-        total = UserVariant.objects.filter(
-            user__pk=user_id, deleted_at=None).count()
-        return Response(
-            data={
-                'total': total,
-            }, status=status.HTTP_200_OK)
+        total = UserVariant.objects.filter(user__pk=user_id, deleted_at=None).count()
+        return Response(data={
+            'total': total,
+        }, status=status.HTTP_200_OK)

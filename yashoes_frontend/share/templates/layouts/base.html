@@ -39,6 +39,10 @@
   <!-- override css -->
   <link href="{% static 'css/app.css' %}" rel="stylesheet" type="text/css" >
 
+  {% block css %}
+    <!-- define custom css -->
+  {% endblock %}
+
   {% block script %}
   <!-- define custom js -->
   {% endblock %}

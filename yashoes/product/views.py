@@ -17,6 +17,7 @@ from datetime import date, timedelta
 from rest_framework import status
 from django.db.models import Avg
 from rest_framework.permissions import AllowAny
+from datetime import date, timedelta, datetime
 
 RESULT_LIMIT = 5
 
@@ -107,7 +108,7 @@ class RatingView(APIView):
                         return Response({
                             "message": "success"
                         },
-                            status=status.HTTP_200_OK)
+                                        status=status.HTTP_200_OK)
                     else:
                         return Response(
                             serializer.errors,
@@ -123,15 +124,15 @@ class RatingView(APIView):
             return Response({
                 "error": "Rating is required"
             },
-                status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentView(APIView):
     permission_classes = (AllowAny, )
 
     def get(self, request, product_id):
-        comment = Comment.objects.filter(product=product_id).filter(
-            parent_comment=None)
+        comment = Comment.objects.filter(
+            product=product_id, deleted_at=None).filter(parent_comment=None)
         data = GetCommentsSerializer(comment, many=True).data
         return Response({"data": data})
 
@@ -152,10 +153,7 @@ class CommentView(APIView):
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({
-                'error': "Login first"
-            },
-                status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': "Login first"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class HomePageApiView(APIView):
@@ -178,12 +176,13 @@ class HomePageApiView(APIView):
                 for variant in product.variant_set.all()[:1]:
                     image_link = variant.image_link
                     break
-                tmp = ListProduct(product.id, product.name, product.description,
-                                  product.rate, image_link)
+                tmp = ListProduct(product.id, product.name,
+                                  product.description, product.rate,
+                                  image_link)
                 products_tmp.append(tmp)
 
-            brand_tmp = HomePageResponse(
-                brand.id, brand.brand_name, products_tmp)
+            brand_tmp = HomePageResponse(brand.id, brand.brand_name,
+                                         products_tmp)
             response.append(brand_tmp)
 
         serializers = HomePageSerializer(response, many=True)

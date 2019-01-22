@@ -1,0 +1,35 @@
+{% load static %}
+<div class="comment-content">
+  <div class="btn btn-default stat-item" id="btn-delete-comment">
+    <i class="fas fa-times"></i>
+  </div>
+  <div class="panel panel-white post panel-shadow">
+    <div class="post-heading">
+      <div class="pull-left image">
+        <img src="{% static avatar %}" class="img-circle avatar" alt="user profile image">
+      </div>
+      <div class="pull-left meta">
+        <div class="title h5">
+          <a href="#"><b>{{ username }}</b></a>
+        </div>
+        <h6 class="text-muted time">1 minute ago</h6>
+      </div>
+    </div>
+    <div class="post-description">
+      <p>{{ content }}</p>
+      <div class="stats">
+        <div class="btn btn-default stat-item" id="btn-reply">
+          <i class="fas fa-reply"></i> Reply
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="comment-box">
+    <div class="comment-content">
+      <textarea class="form-control" rows="3" id="comment"></textarea>
+      <button type="button" class="btn btn-info">Comment</button>
+      <button type="button" class="btn btn-warning" id="btn-reply-cancel">Cancel</button>
+    </div>
+  </div>
+</div>

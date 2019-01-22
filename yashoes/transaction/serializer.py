@@ -1,6 +1,7 @@
 from rest_framework import serializers
+
 from yashoes.model.transaction import Transaction
-from yashoes.models import User
+from yashoes.model.transaction_variant import TransactionVariant
 
 
 class FieldMixin(object):
@@ -10,7 +11,14 @@ class FieldMixin(object):
             return field_names
         return super(FieldMixin, self).get_field_names(*args, **kwargs)
 
+
 class TransactionSerializer(FieldMixin, serializers.ModelSerializer):
     class Meta:
         model = Transaction
+        fields = '__all__'
+
+
+class TransactionVariantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransactionVariant
         fields = '__all__'

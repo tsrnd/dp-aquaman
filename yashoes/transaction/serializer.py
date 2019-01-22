@@ -27,4 +27,5 @@ class TransactionSerializer(serializers.ModelSerializer):
     transaction_id = serializers.IntegerField(source='id')
     class Meta:
         model = Transaction
-        fields = ('transaction_id','user_id','status','total','created_at')
+        # fields = ('transaction_id','user_id','status','total','created_at')
+        fields = '__all__'

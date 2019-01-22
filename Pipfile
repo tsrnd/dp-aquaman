@@ -28,3 +28,4 @@ pillow = "*"
 python_version = "3.7"
 
 [scripts]
+shell = "python manage.py shell_plus"

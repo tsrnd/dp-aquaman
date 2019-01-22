@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'myapp',
     'yashoes',
     'yashoes_frontend',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

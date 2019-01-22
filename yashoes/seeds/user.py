@@ -12,9 +12,9 @@ CONST_ADMIN_LIST = [
         'password': 'chaunguyen',
     },
     {
-        'username': 'hoanguyen',
-        'email': 'hoa.nguyen@asiantech.vn',
-        'password': 'hoanguyen',
+        'username': 'hoahoang',
+        'email': 'hoa.hoang@asiantech.vn',
+        'password': 'hoahoang',
     },
     {
         'username': 'minhdao',

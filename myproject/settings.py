@@ -206,7 +206,7 @@ DEFAULT_FILE_STORAGE = 'yashoes.helper.custom_minio_storage.CustomMinioStorage'
 
 API_HOST = 'http://localhost:8000/'
 
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 LOGGING = {
     'version': 1,

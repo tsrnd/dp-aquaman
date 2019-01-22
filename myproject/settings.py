@@ -204,7 +204,7 @@ MINIO_BUCKET = 'mybucket'
 MINIO_SECURE = False
 DEFAULT_FILE_STORAGE = 'yashoes.helper.custom_minio_storage.CustomMinioStorage'
 
-API_HOST = 'http://localhost:8008/'
+API_HOST = 'http://localhost:8000/'
 
 # SESSION_COOKIE_SECURE = True
 

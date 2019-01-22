@@ -5,34 +5,55 @@ from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import User
 from yashoes.model import user_variant, category, comment, notification, product_category, product, rating, transaction_variant, transaction, variant
 from django.utils.translation import gettext_lazy as _
-
+from django.utils.safestring import mark_safe
 
 class CustomUserAdmin(UserAdmin):
     add_fieldsets = ((None, {
         'classes': ('wide', ),
         'fields': ('username', 'email', 'address', 'phone_number', 'image_profile', 'password1',
-                   'password2'),
+                   'password2', 'is_active', 'is_staff', 'is_superuser'),
     }), )
     fieldsets = (
         (None, {
             'fields': ('username', 'password')
         }),
         (_('Personal info'), {
-            'fields': ('address', 'phone_number', 'email', 'image_profile')
+            'fields': ('email', 'image_profile_link', 'image_profile')
         }),
         (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups',
-                       'user_permissions')
+            'fields': ('is_active', 'is_staff', 'is_superuser')
         }),
         (_('Important dates'), {
             'fields': ('last_login', )
         }),
     )
+    readonly_fields = ['image_profile_link']
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
     search_fields = ('username', 'email')
     model = User
     list_display = ['email', 'username', 'is_superuser']
+    def get_fieldsets(self, request, obj=None):
+        if not obj:
+            return self.add_fieldsets
+        if obj.is_superuser == False:
+            return (
+                (None, {
+                    'fields': ('username', 'password')
+                }),
+                (_('Personal info'), {
+                    'fields': ('address', 'phone_number', 'email', 'image_profile_link', 'image_profile')
+                }),
+                (_('Permissions'), {
+                    'fields': ('is_active', 'is_staff', 'is_superuser')
+                }),
+            )
+        return self.fieldsets
+    def image_profile_link(self, obj):
+        return mark_safe('<img src="{url}" width="100px" height=100px />'.format(
+            url = obj.image_profile.url,
+            )
+    )
 
 
 admin.site.register(User, CustomUserAdmin)

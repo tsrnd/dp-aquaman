@@ -4,8 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import action
 import requests
 from django.conf import settings
-import datetime
-from django.utils.dateparse import parse_datetime
+
 
 
 def home(request):

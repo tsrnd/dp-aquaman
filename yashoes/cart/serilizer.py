@@ -18,9 +18,12 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer1(serializers.Serializer):
-    id = serializers.IntegerField(source='variant_id')
+    variant_id = serializers.IntegerField()
     product_name = serializers.CharField(source='variant__product__name')
     quantity = serializers.IntegerField(source='variant__quantity')
+    price = serializers.IntegerField(source='variant__price')
+    color = serializers.CharField(source='variant__color')
+    size = serializers.IntegerField(source='variant__size')
     image_link = serializers.CharField(source='variant__image_link')
 
     def update(self, instance, validated_data):

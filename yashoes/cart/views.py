@@ -46,13 +46,12 @@ class UserVariantView(APIView):
 
 
 class Cart(viewsets.ViewSet):
-    permission_classes = ()
-
     @staticmethod
     def list(request):
         user_id = request.user.id
         queryset = UserVariant.objects.filter(user__pk=user_id).values(
-            'variant_id', 'variant__product__name', 'variant__price', 'variant__quantity', 'variant__image_link'
+            'variant_id', 'variant__product__name', 'variant__price', 'variant__quantity',
+            'variant__price', 'variant__color', 'variant__size', 'variant__image_link'
         )
         serializer = CartSerializer1(queryset, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)

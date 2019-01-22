@@ -35,6 +35,7 @@ class ListProductSerializer(serializers.Serializer):
 
 class SubCommentSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
+    created_at = serializers.DateTimeField(format='%H:%M %Y/%m/%d')
 
     class Meta:
         model = Comment
@@ -44,6 +45,7 @@ class SubCommentSerializer(serializers.ModelSerializer):
 class GetCommentsSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField('query_comments')
     username = serializers.CharField(source='user.username')
+    created_at = serializers.DateTimeField(format='%H:%M %Y/%m/%d')
 
     def query_comments(self, comment):
         comments = Comment.objects.filter(parent_comment=comment.id)

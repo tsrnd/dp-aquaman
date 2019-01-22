@@ -21,7 +21,7 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 4
   },
-  "python.pythonPath": "/Users/chauhoangq./.local/share/virtualenvs/dp-yashoes-607ECURl/bin/python",
+  "python.pythonPath": ".venv/bin/python",
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
   "python.linting.maxNumberOfProblems": 20,

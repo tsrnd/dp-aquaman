@@ -182,6 +182,44 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
+  /api/products/homepage:
+    get:
+      tags:
+      - "Product"
+      summary: "Get product for homepage"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              result:
+                type: array
+                description: "list product for homepage"
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    brand_name:
+                      type: string    
+                      example: "nike"
+                    product:
+                      $ref: '#/definitions/Product' 
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+            
   /api/products/{product_id}/comments:
     get:
       tags: 
@@ -255,18 +293,24 @@ paths:
   /api/comments/{comment_id}:
     delete:
       tags: 
-        - "Comment"
-      summary: "Delete comment"
-      description: ""
-      parameters:
-        - name: comment_id
-          in: path
-          description: "Comment ID in comment table"
-          required: true
-          type: integer
+      - "Comment"
+      parameters: 
+      - name: comment_id
+        in: path
+        description: Comment ID in comment table
+        type: integer
+        required: true
+      summary: delete comment
+      description: xoá bình luận
       responses:
         200:
-          description: OK
+          description: Success
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: success
     put:
       tags: 
         - "Comment"
@@ -282,7 +326,24 @@ paths:
         200:
           description: OK
     
-    
+                
+  /api/products/{product_id}/rating:
+    post:
+      tags: 
+      - "Product"
+      summary: add rating 
+      parameters:
+      - $ref: '#/parameters/ProductID'
+      - name: rating
+        type: integer
+        required: true
+        in: formData
+      consumes:
+      - "application/x-www-form-urlencoded"
+      description: add rating for product
+      responses:
+        200:
+          description: OK
 
 securityDefinitions:
   petstore_auth:
@@ -384,6 +445,9 @@ definitions:
         type: integer
         description: avg rating of product
         example: 4.5
+      image_link:
+        type: string
+        example: "localhost:9000/users/1/product/1/abc.jpg"
   Version:
     type: object
     properties:

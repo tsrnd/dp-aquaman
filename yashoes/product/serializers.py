@@ -2,6 +2,7 @@ from rest_framework import serializers
 from yashoes.model.product import Product
 from yashoes.model.variant import Variant
 from yashoes.model.comment import Comment
+from yashoes.model.brand import Brand
 
 
 class VariantSerializer(serializers.ModelSerializer):
@@ -12,7 +13,12 @@ class VariantSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    variants = VariantSerializer(many=True, read_only=True)
+    variants = serializers.SerializerMethodField('is_variant_set')
+
+    def is_variant_set(self, product):
+        variant = Variant.objects.filter(product=product).order_by('id')
+        serializers = VariantSerializer(variant, many=True)
+        return serializers.data
 
     class Meta:
         model = Product
@@ -64,3 +70,9 @@ class PostCommentSerializer(serializers.ModelSerializer):
         comment.user = user
         comment.save()
         return comment
+
+
+class HomePageSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    brand_name = serializers.CharField()
+    products = ListProductSerializer(many=True)

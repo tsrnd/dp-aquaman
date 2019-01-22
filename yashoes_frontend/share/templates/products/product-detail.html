@@ -120,11 +120,11 @@
     <div class="row">
       {% for comment in comments %}
       <div class="col-sm-8">
-        {% include 'layouts/comment.html' with avatar='images/s1.jpg' username=comment.username content=comment.content comment_date=comment.created_at%}
+        {% include 'layouts/comment.html' with avatar=comment.user_image username=comment.username content=comment.content comment_date=comment.created_at%}
       </div>
         {% for comment in comment.comments %}
       <div class="col-sm-8 card-inner">
-        {% include 'layouts/comment.html' with avatar='images/s2.jpg' username=comment.username content=comment.content comment_date=comment.created_at%}
+        {% include 'layouts/comment.html' with avatar=comment.user_image username=comment.username content=comment.content comment_date=comment.created_at%}
       </div>
         {% endfor %}
       {% endfor %}

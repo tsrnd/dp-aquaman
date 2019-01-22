@@ -36,16 +36,19 @@ class ListProductSerializer(serializers.Serializer):
 class SubCommentSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
     created_at = serializers.DateTimeField(format='%H:%M %Y/%m/%d')
+    user_image = serializers.CharField(source='user.image_profile.url')
 
     class Meta:
         model = Comment
-        fields = ('id', 'username', 'content', 'created_at')
+        fields = ('id', 'username', 'user_image', 'content', 'created_at')
 
 
 class GetCommentsSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField('query_comments')
     username = serializers.CharField(source='user.username')
     created_at = serializers.DateTimeField(format='%H:%M %Y/%m/%d')
+    user_image = serializers.CharField(source='user.image_profile.url')
+
 
     def query_comments(self, comment):
         comments = Comment.objects.filter(parent_comment=comment.id)
@@ -54,7 +57,8 @@ class GetCommentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'username', 'content', 'comments', 'created_at')
+        fields = ('id', 'username', 'user_image', 'content', 'comments',
+                  'created_at')
 
 
 class PostCommentSerializer(serializers.ModelSerializer):

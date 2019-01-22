@@ -290,6 +290,28 @@ paths:
       responses:
         200:
           description: Successful response
+  /api/comments/{comment_id}:
+    delete:
+      tags: 
+      - "Comment"
+      parameters: 
+      - name: comment_id
+        in: path
+        description: Comment ID in comment table
+        type: integer
+        required: true
+      summary: delete comment
+      description: xoá bình luận
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: success
+                
   /api/products/{product_id}/rating:
     post:
       tags: 

@@ -20,7 +20,7 @@ def login(request):
             if response.status_code == 200:
                 res = response.json()
                 link = redirect('register')
-                link.set_signed_cookie('token', res.get('token'))
+                link.set_cookie('token', res.get('token'))
                 return link
             elif response.status_code == 400:
                 return render(

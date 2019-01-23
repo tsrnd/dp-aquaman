@@ -29,5 +29,5 @@ class UserView(viewsets.ViewSet):
             'username': user.username,
             'address': user.address,
             'phone_number': user.phone_number,
-            'image_profile': user.image_profile.storage.url(user.image_profile.name),
+            'image_profile': user.image_profile.url,
         }, status=200)

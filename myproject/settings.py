@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'myapp',
     'yashoes',
     'yashoes_frontend',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -169,18 +170,17 @@ JWT_AUTH = {
     'Bearer',
 }
 
-### configuration frontend
-import yashoes_frontend
+
+### configuration frontend, and admin
+import yashoes_frontend, yashoes
 TEMPLATES = [
     {
-        'BACKEND':
-        'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(
-                os.path.dirname(yashoes_frontend.__file__), "share/templates/")
+            os.path.join(os.path.dirname(yashoes_frontend.__file__), "share/templates/"),
+            os.path.join(os.path.dirname(yashoes.__file__), "templates/")
         ],
-        'APP_DIRS':
-        True,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -207,7 +207,7 @@ DEFAULT_FILE_STORAGE = 'yashoes.helper.custom_minio_storage.CustomMinioStorage'
 
 API_HOST = 'http://localhost:8000/'
 
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 LOGGING = {
     'version': 1,

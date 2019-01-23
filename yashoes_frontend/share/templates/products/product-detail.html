@@ -42,18 +42,19 @@
               <link rel="stylesheet" href="{% static 'css/flexslider.css' %}" type="text/css" media="screen"/>
 
               <script>
-                  // Can also be used with $(document).ready()
-                  $(window).load(function () {
-                      $('.flexslider').flexslider({
-                          animation: "slide",
-                          controlNav: "thumbnails"
-                      });
+                // Can also be used with $(document).ready()
+                $(window).load(function () {
+                  $('.flexslider').flexslider({
+                    animation: "slide",
+                    controlNav: "thumbnails"
                   });
+                });
               </script>
             </div>
             <div class="col-md-7 single-top-right">
               <div class="details-left-info simpleCart_shelfItem">
                 <h3>Accessories Latest</h3>
+                <div id="rateYo"></div>
                 <p class="availability">Availability: <span class="color">In stock</span></p>
                 <div class="price_single">
                   <span class="actual item_price">$600.00</span><a href="#">click for offer</a>
@@ -105,9 +106,41 @@
       </div>
     </div>
   </div>
+
+  <div class="container">
+    <div class="row">
+      <h3><b>Commments</b></h3>
+    </div>
+    <div>
+      <div class="primary-comment-box">
+        <textarea class="form-control" rows="7" id="comment"></textarea>
+        <button type="button" class="btn btn-info" id="btn-comment">Comment</button>
+      </div>
+    </div>
+    <div class="row">
+      {% for comment in comments %}
+      <div class="col-sm-8">
+        {% include 'layouts/comment.html' with avatar=comment.user_image username=comment.username content=comment.content comment_date=comment.created_at%}
+      </div>
+        {% for comment in comment.comments %}
+      <div class="col-sm-8 card-inner">
+        {% include 'layouts/comment.html' with avatar=comment.user_image username=comment.username content=comment.content comment_date=comment.created_at%}
+      </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
   <script src="{% static 'js/jquery.miranda.min.js' %}"></script>
 {% endblock %}
 
 {% block script %}
   <script src="{% static 'js/cart.js' %}"></script>
+  <script src="{% static 'js/jquery.rateyo.js' %}"></script>
+  <script src="{% static 'js/comment.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+  <link href="{% static 'css/bootstrap-rating.css' %}" rel="stylesheet" type="text/css" media="all"/>
+  <link href="{% static 'css/comment.css' %}" rel="stylesheet" type="text/css" media="all"/>
+  <link rel="stylesheet" href="{% static 'css/jquery.rateyo.css' %}"/>
 {% endblock %}

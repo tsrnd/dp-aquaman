@@ -13,13 +13,13 @@ $(document).ready(function () {
 
   $(document).on("click", "#btn-comment", function () {
     parent = $(this).parent()
-    postComment('http://localhost:8000/api/products/1/comments', parent)
+    commentBoxClass = $(this).parent().parent()
+    postComment('http://localhost:8000/api/products/1/comments', parent, commentBoxClass)
   });
 });
 
-function postComment(url, parent) {
+function postComment(url, parent, commentBox) {
   var content = parent.find('#content-comment').val()
-  console.log(parent.attr('id'))
   $.ajax({
     url: url,
     headers: {

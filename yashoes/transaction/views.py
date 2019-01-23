@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.authentication import get_authorization_header
@@ -7,7 +8,8 @@ from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
 
 from yashoes.model.transaction import Transaction
-from .serializer import TransactionSerializer, TransactionVariantSerializer
+from yashoes.model.variant import Variant
+from .serializer import TransactionSerializer, TransactionVariantSerializer, VariantSerializer
 
 jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 
@@ -46,16 +48,33 @@ class TransactionView(APIView):
                 serializer.save()
                 transaction_id = serializer.data.get('id')
                 for trans in transactions:
-                    tv_data = {
-                        'quantity': trans.get('quantity'),
-                        'variant': trans.get('variant_id'),
-                        'transaction': transaction_id
-                    }
-                    tv_serializer = TransactionVariantSerializer(data=tv_data)
-                    if tv_serializer.is_valid():
-                        tv_serializer.save()
+                    variant_id = trans.get('variant_id')
+                    quantity = trans.get('quantity')
+                    variant = get_object_or_404(Variant, pk=variant_id)
+                    if variant.quantity >= quantity:
+                        variant_data = {
+                            'quantity': variant.quantity - quantity
+                        }
+                        variant_serializer = VariantSerializer(variant, data=variant_data)
+                        if variant_serializer.is_valid():
+                            variant_serializer.save()
+                        else:
+                            transaction.savepoint_rollback(sid)
+                            return Response(variant_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                        tv_data = {
+                            'quantity': quantity,
+                            'variant': variant_id,
+                            'transaction': transaction_id
+                        }
+                        tv_serializer = TransactionVariantSerializer(data=tv_data)
+                        if tv_serializer.is_valid():
+                            tv_serializer.save()
+                        else:
+                            transaction.savepoint_rollback(sid)
+                            return Response(tv_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                     else:
                         transaction.savepoint_rollback(sid)
-                        return Response(tv_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                        return Response({'variant_id': variant_id, 'message': 'quantity not enough'},
+                                        status=status.HTTP_400_BAD_REQUEST)
                 return Response({'message': 'success'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

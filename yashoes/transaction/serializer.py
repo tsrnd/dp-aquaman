@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from yashoes.model.transaction import Transaction
 from yashoes.model.transaction_variant import TransactionVariant
+from yashoes.model.variant import Variant
 
 
 class FieldMixin(object):
@@ -22,3 +23,14 @@ class TransactionVariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = TransactionVariant
         fields = '__all__'
+
+
+class VariantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Variant
+        fields = ['quantity']
+
+    def update(self, instance, validated_data):
+        instance.quantity = validated_data.get('quantity')
+        instance.save()
+        return instance

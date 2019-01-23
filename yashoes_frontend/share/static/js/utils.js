@@ -15,7 +15,7 @@ function refreshCart() {
     headers: {
       'Authorization': 'Bearer ' + readCookie('token'),
     },
-    url: 'http://localhost:8000/api/user/cart/information/',
+    url: 'http:///api/user/cart/information/',
     success: function (response) {
       $('#cart-quantity').text(response.total)
     },

@@ -3,7 +3,6 @@ from yashoes.model.variant import Variant
 from yashoes.model.transaction import Transaction
 from yashoes.model.rating import Rating
 from yashoes.model.brand import Brand
-from yashoes.model.transaction_variant import TransactionVariant
 from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer, HomePageSerializer
 from yashoes.rating.serializers import RatingSerializer
 from yashoes.model.comment import Comment

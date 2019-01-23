@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from yashoes.model.transaction import Transaction
-from yashoes.model.transaction_variant import TransactionVariant
+from yashoes.model.transaction import Transaction, TransactionVariant
 from yashoes.model.variant import Variant
 
 

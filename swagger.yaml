@@ -6,6 +6,7 @@ tags:
 - name: "User"
 - name: "Product"
 - name: "Comment"
+- name: "Brand"
 schemes:
 - "https"
 - "http"
@@ -329,6 +330,35 @@ paths:
       responses:
         200:
           description: OK
+  /api/brands:
+    get:
+      tags:
+      - "Brand"
+      summary: "Get all product from database"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/ResultLimit'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              result:
+                type: array
+                items:
+                  $ref: '#/definitions/Brand'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
 
 securityDefinitions:
   petstore_auth:
@@ -433,6 +463,14 @@ definitions:
       image_link:
         type: string
         example: "localhost:9000/users/1/product/1/abc.jpg"
+  Brand:
+    type: object
+    properties:
+      id:
+        type: string
+      brand_name:
+        type: string
+        example: "nike"
   Version:
     type: object
     properties:

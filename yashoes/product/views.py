@@ -148,7 +148,24 @@ class CommentView(APIView):
                 data=data, context={"user": request.user})
             if serializer.is_valid():
                 serializer.save()
-                return Response(status=status.HTTP_200_OK)
+                comment = Comment.objects.get(pk=serializer.data["id"])
+                response = {
+                    "id":
+                    serializer.data["id"],
+                    "username":
+                    request.user.username,
+                    "user_image":
+                    request.user.image_profile.url,
+                    "content":
+                    serializer.data["content"],
+                    "parent_comment_id":
+                    serializer.data["parent_comment"],
+                    "created_at": comment.created_at.strftime('%H:%M %Y/%m/%d')
+                }
+                return Response({
+                    "comment": response
+                },
+                                status=status.HTTP_200_OK)
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:

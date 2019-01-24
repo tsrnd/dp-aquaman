@@ -3,7 +3,7 @@ from rest_framework import serializers
 from yashoes.model.user_variant import UserVariant
 
 
-class CartSerializer(serializers.ModelSerializer):
+class UserVariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserVariant
         fields = ['user', 'variant', 'quantity']
@@ -17,10 +17,10 @@ class CartSerializer(serializers.ModelSerializer):
         return instance
 
 
-class CartSerializer1(serializers.Serializer):
+class CartSerializer(serializers.Serializer):
     variant_id = serializers.IntegerField()
     product_name = serializers.CharField(source='variant__product__name')
-    quantity = serializers.IntegerField(source='variant__quantity')
+    quantity = serializers.IntegerField()
     price = serializers.IntegerField(source='variant__price')
     color = serializers.CharField(source='variant__color')
     size = serializers.IntegerField(source='variant__size')

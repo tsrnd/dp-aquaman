@@ -61,6 +61,7 @@ class CustomUserAdmin(UserAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('brand', 'name', 'description', 'created_at')
     list_filter = ('brand',)
+    exclude = ('rate',)
 
 admin.site.site_header = 'Yashoes Admin Dashboard'
 admin.site.register(User, CustomUserAdmin)

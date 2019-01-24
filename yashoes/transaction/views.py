@@ -11,19 +11,6 @@ from yashoes.model.transaction import Transaction
 from yashoes.model.variant import Variant
 from .serializer import TransactionSerializer, TransactionVariantSerializer, VariantSerializer
 
-jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
-
-
-class Transaction_detailView(viewsets.ViewSet):
-    def list(self, request):
-        token = get_authorization_header(request)
-        trulyToken = token.split()[1].decode('utf-8')
-        user_information = jwt_decode_handler(trulyToken)
-        queryset = Transaction.objects.filter(user_id=user_information.get('user_id'))
-        serializer = TransactionSerializer(queryset, context={
-            'fields': ['user_id', 'address', 'phone_number', 'status', 'total']}, many=True)
-        return Response(serializer.data, status=200)
-
 
 class TransactionView(APIView):
     @staticmethod

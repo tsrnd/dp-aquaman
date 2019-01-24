@@ -229,7 +229,10 @@ LOGGING = {
 
 CRONJOBS = [
     # job update shipping run 7am every day
-    ('0 7 * * *', 'yashoes.cronjobs.cron_update_shipping.update_shipping')
+    ('0 7 * * *', 'yashoes.cronjobs.cron_update_shipping.update_shipping'),
+    
+    # job update shipping run 9pm every day
+    ('0 21 * * *', 'yashoes.cronjobs.random_cancel_or_done_transaction.random_cancel_done_transaction')
 ]
 
 CRONTAB_LOCK_JOBS = True

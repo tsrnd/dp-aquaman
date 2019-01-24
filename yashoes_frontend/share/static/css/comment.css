@@ -236,7 +236,7 @@
   float: right;
 }
 
-#btn-delete-comment {
+.btn-delete-comment {
   position: relative;
   float: right;
   top: 0px;

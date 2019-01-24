@@ -11,10 +11,37 @@ $(document).ready(function () {
     rating: 3.7
   });
 
-  $(document).on("click", "#btn-comment", function () {
+  $('#btn-comment').click(function (){
+    var url = window.location.pathname;
+    var id = url.substring(url.lastIndexOf('/') + 1);
     parent = $(this).parent()
     commentBoxClass = $(this).parent().parent()
-    postComment('http://localhost:8000/api/products/1/comments', parent, commentBoxClass)
+    postComment('http://localhost:8000/api/products/'+id+'/comments', parent, commentBoxClass)
+  });
+
+  $('.btn-delete-comment').click(function(){
+    if (confirm("Do you want delete this comment?")) {
+      parent = $(this).parent()
+      var id = parent.attr('id')
+      $.ajax({
+        url: 'http://localhost:8000/api/comments/'+id,
+        headers: {
+          'Authorization': 'Bearer ' + readCookie('token'),
+        },
+        type:'DELETE',
+        data: {
+          CSRF: $('meta[name="csrf-token"]').attr('content'),
+        },
+        success: function(data) {
+          console.log(200)
+        },
+        statusCode: {
+          200: function(response){
+            $("#"+id).remove()
+          }
+        }
+      })
+    }
   });
 });
 

@@ -44,14 +44,6 @@
 					<li><a href="#">7</a> <span class="count">(8)</span></li>
 					<li><a href="#">7.5</a> <span class="count">(11)</span></li>
 				</ul>
-				<h3>Price</h3>
-				<ul class="product-categories p1">
-					<li><a href="#">600$-700$</a> <span class="count">(14)</span></li>
-					<li><a href="#">700$-800$</a> <span class="count">(2)</span></li>
-					<li><a href="#">800$-900$</a> <span class="count">(2)</span></li>
-					<li><a href="#">900$-1000$</a> <span class="count">(8)</span></li>
-					<li><a href="#">1000$-1100$</a> <span class="count">(11)</span></li>
-				</ul>
 			</div>
 			<!-- order -->
 			<nav class="col-md-9 p-left" style="margin-bottom: 10px;">
@@ -75,122 +67,24 @@
 			</nav>
 			<div class="col-md-9 p-left">
 				<div class="product-one">
-					<div class="col-md-4 product-left single-left">
-						<div class="p-one simpleCart_shelfItem">
-							<a href="single.html">
-								<img src="{% static 'images/shoes-1.png' %}" alt="" />
-								<div class="mask mask1">
-									<span>Quick View</span>
-								</div>
-							</a>
-							<h4>Aenean placerat</h4>
-							<p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-						</div>
-					</div>
-					<div class="col-md-4 product-left single-left">
-						<div class="p-one simpleCart_shelfItem">
-							<a href="single.html">
-								<img src="{% static 'images/shoes-2.png' %}" alt="" />
-								<div class="mask mask1">
-									<span>Quick View</span>
-								</div>
-							</a>
-							<h4>Aenean placerat</h4>
-							<p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-						</div>
-					</div>
-					<div class="col-md-4 product-left single-left">
-						<div class="p-one simpleCart_shelfItem">
-							<a href="single.html">
-								<img src="{% static 'images/shoes-3.png' %}" alt="" />
-								<div class="mask mask1">
-									<span>Quick View</span>
-								</div>
-							</a>
-							<h4>Aenean placerat</h4>
-							<p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-						</div>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-				<div class="product-one">
-					<div class="col-md-4 product-left single-left">
-						<div class="p-one simpleCart_shelfItem">
-							<a href="single.html">
-								<img src="{% static 'images/shoes-4.png' %}" alt="" />
-								<div class="mask mask1">
-									<span>Quick View</span>
-								</div>
-							</a>
-							<h4>Aenean placerat</h4>
-							<p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-						</div>
-					</div>
-					<div class="col-md-4 product-left single-left">
-						<div class="p-one simpleCart_shelfItem">
-							<a href="single.html">
-								<img src="{% static 'images/shoes-5.png' %}" alt="" />
-								<div class="mask mask1">
-									<span>Quick View</span>
-								</div>
-							</a>
-							<h4>Aenean placerat</h4>
-							<p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-						</div>
-					</div>
-					<div class="col-md-4 product-left single-left">
-						<div class="p-one simpleCart_shelfItem">
-							<a href="single.html">
-								<img src="{% static 'images/shoes-7.png' %}" alt="" />
-								<div class="mask mask1">
-									<span>Quick View</span>
-								</div>
-							</a>
-							<h4>Aenean placerat</h4>
-							<p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-						</div>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-				<div class="product-one">
-					<div class="col-md-4 product-left single-left">
-						<div class="p-one simpleCart_shelfItem">
-							<a href="single.html">
-								<img src="{% static 'images/shoes-15.png' %}" alt="" />
-								<div class="mask mask1">
-									<span>Quick View</span>
-								</div>
-							</a>
-							<h4>Aenean placerat</h4>
-							<p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-
-						</div>
-					</div>
-					<div class="col-md-4 product-left single-left">
-						<div class="p-one simpleCart_shelfItem">
-							<a href="single.html">
-								<img src="{% static 'images/shoes-10.png' %}" alt="" />
-								<div class="mask mask1">
-									<span>Quick View</span>
-								</div>
-							</a>
-							<h4>Aenean placerat</h4>
-							<p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-
-						</div>
-					</div>
-					<div class="col-md-4 product-left single-left">
-						<div class="p-one simpleCart_shelfItem">
-							<a href="single.html">
-								<img src="{% static 'images/shoes-11.png' %}" alt="" />
-								<div class="mask mask1">
-									<span>Quick View</span>
-								</div>
-							</a>
-							<h4>Aenean placerat</h4>
-							<p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-						</div>
-					</div>
+					{% for product in products.result %}
+          <div class="col-md-4 product-left single-left">
+              <div class="p-one simpleCart_shelfItem">
+                <a href="{% url 'product-detail' product.id %}">
+                  {% if product.image_link == 'image_not_found' %}
+                    <img src="{% static 'images/shoes-1.png' %}" alt="" />
+                  {% else %}
+                    <img src="{{ product.image_link }}" alt="" />
+                  {% endif %}
+                  <div class="mask mask1">
+                    <span>Quick View</span>
+                  </div>
+                </a>
+                <h4>{{ product.name }}</h4>
+                <p><a class="item_add" href="#"><i></i> <span class=" item_price">${{ product.price }}</span></a></p>
+              </div>
+            </div>
+					{% endfor %}
 					<div class="clearfix"> </div>
 				</div>
 			</div>

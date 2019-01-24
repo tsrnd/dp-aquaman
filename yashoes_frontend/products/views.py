@@ -7,7 +7,13 @@ def home(request):
     return render(request, 'products/index.html')
 
 def products(request):
-    return render(request, 'products/products.html')
+    if request.method == "GET":
+        response = requests.get(settings.API_HOST + "api/products/")
+        if response.status_code == 200:
+            products = response.json()
+            print(products)
+
+    return render(request, 'products/products.html', {'products': products })
 
 def productsdetail(request, product_id):
     # TODO: Call api product detail

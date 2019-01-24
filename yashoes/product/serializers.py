@@ -30,6 +30,7 @@ class ListProductSerializer(serializers.Serializer):
     name = serializers.CharField()
     description = serializers.CharField()
     rate = serializers.FloatField()
+    price = serializers.IntegerField()
     image_link = serializers.CharField()
 
 

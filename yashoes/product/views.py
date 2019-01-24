@@ -18,7 +18,7 @@ from django.db.models import Avg
 from rest_framework.permissions import AllowAny
 from datetime import date, timedelta, datetime
 
-RESULT_LIMIT = 5
+RESULT_LIMIT = 9
 
 
 class ProductsAPIView(APIView):
@@ -47,10 +47,11 @@ class ProductsAPIView(APIView):
         for product in products:
             image_link = ""
             for variant in product.variant_set.all():
-                image_link = variant.image_link
+                image_link = variant.image_link.name if not variant.image_link.name else variant.image_link.url
+                price = variant.price
                 break
             tmp = ListProduct(product.id, product.name, product.description,
-                              product.rate, image_link)
+                              product.rate, price,image_link)
             response.append(tmp)
 
         serializer = ListProductSerializer(response, many=True)
@@ -191,9 +192,10 @@ class HomePageApiView(APIView):
                 image_link = ""
                 for variant in product.variant_set.all()[:1]:
                     image_link = variant.image_link
+                    price = variant.price
                     break
                 tmp = ListProduct(product.id, product.name,
-                                  product.description, product.rate,
+                                  product.description, product.rate, price,
                                   image_link)
                 products_tmp.append(tmp)
 

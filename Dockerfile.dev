@@ -36,6 +36,7 @@ WORKDIR /code
 # these flags are used in `runserver` command only
 ENV AUTO_MIGRATE=1 \
     AUTO_SEED=1 \
-    AUTO_COLLECT_STATIC=0
+    AUTO_COLLECT_STATIC=0 \
+    AUTO_CRONJOBS=1
 
 ENTRYPOINT [ "/entrypoint.sh" ]

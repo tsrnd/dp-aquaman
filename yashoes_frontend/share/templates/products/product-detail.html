@@ -62,16 +62,20 @@
                 <p class="quick_desc"> {{ product.description }}</p>
                 <ul class="size">
                   <h3>available Colors ::</h3>
-                  {% for variant in product.variants %}
-                    <li><a href="#">{{ variant.color }}</a></li>
-                  {% endfor %}
+                  <select id="product-single-color">
+                    {% for variant in product.variants %}
+                      <option value="red">{{ variant.color }}</option>
+                    {% endfor %}
+                  </select>
                   <div class="clear"></div>
                 </ul>
                 <ul class="size">
                   <h3>Size</h3>
-                  {% for variant in product.variants %}
-                    <li><a href="#">{{ variant.size }}</a></li>
-                  {% endfor %}
+                  <select id="product-single-size">
+                      {% for variant in product.variants %}
+                        <option value="L">{{ variant.size }}</option>
+                      {% endfor %}
+                  </select>
                 </ul>
                 <div class="quantity_box">
                   <ul class="product-qty">
@@ -88,7 +92,7 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="single-but item_add">
-                  <input id="btn-add-cart" type="button" value="add to cart"/>
+                  <input id="btn-add-cart" onclick="addCart()" type="button" value="add to cart"/>
                 </div>
               </div>
             </div>
@@ -109,18 +113,18 @@
     <div>
       <div class="primary-comment-box">
         <textarea class="form-control" rows="7" id="content-comment"></textarea>
-        <button type="button" class="btn btn-info" id="btn-comment">Comment</button>
+        <button type="button" class="btn btn-info btn-comment" id="btn-comment">Comment</button>
       </div>
     </div>
   </form>
     <div class="row" id="comments">
       {% for comment in comments %}
       <div class="col-sm-8" >
-        {% include 'layouts/comment.html' with avatar=comment.user_image username=comment.username content=comment.content comment_date=comment.created_at parent_comment_id=comment.id%}
+        {% include 'layouts/comment.html' with avatar=comment.user_image username=comment.username content=comment.content comment_date=comment.created_at parent_comment_id=comment.id comment_id=comment.id%}
       </div>
         {% for subcomment in comment.comments %}
       <div class="col-sm-8 card-inner" id={{comment.id}}>
-        {% include 'layouts/comment.html' with avatar=subcomment.user_image username=subcomment.username content=subcomment.content comment_date=subcomment.created_at parent_comment_id=comment.id%}
+        {% include 'layouts/comment.html' with avatar=subcomment.user_image username=subcomment.username content=subcomment.content comment_date=subcomment.created_at parent_comment_id=comment.id comment_id=subcomment.id%}
       </div>
         {% endfor %}
       {% endfor %}

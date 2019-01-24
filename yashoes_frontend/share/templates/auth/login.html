@@ -1,5 +1,6 @@
 {% extends 'layouts/base.html' %}
 
+{% load static %}
 {% block breadcum %}
 <div class="breadcrumbs">
   <div class="container">
@@ -18,7 +19,7 @@
   <div class="container">
     <div class="account-bottom">
       <div class="col-md-6 account-left">
-        <form method="POST" novalidate>
+        <form method="POST" novalidate id="login-form">
           {% csrf_token %}
           <div class="account-top heading">
             <h3>LOGIN</h3>
@@ -42,4 +43,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'js/login.js' %}"></script>
 {% endblock %}

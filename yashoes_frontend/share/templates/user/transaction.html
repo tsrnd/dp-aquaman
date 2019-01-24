@@ -29,62 +29,16 @@
             <li><span>Status</span></li>
             <div class="clearfix"> </div>
           </ul>
+      {% for transaction in data %}
           <ul class="cart-header transaction">
-            <li class="id-tran"><span>1</span></li>
-            <li class="list-pro"><a href="#"><span>Bút, Viết, Sách...</span></a></li>
-            <li><span>$ 290.00</span></li>
-            <li><span>21/01/2019</span></li>
-            <li><span class="label label-default status">Cancel</span></li>
+            <li class="id-tran"><span>{{ transaction.transaction_id }}</span></li>
+            <li class="list-pro"><a href="{{ transaction.transaction_id }}"><span>{{ transaction.product }}</span></a></li>
+            <li><span>{{ transaction.total }}</span></li>
+            <li><span>{{ transaction.created_at }}</span></li>
+            <li><span class="label label-default status">{{ transaction.status }}</span></li>
             <div class="clearfix"> </div>
           </ul>
-          <ul class="cart-header transaction">
-            <li class="id-tran"><span>2</span></li>
-            <li class="list-pro"><a href="#"><span>Bút, Viết, Sách...</span></a></li>
-            <li><span>$ 290.00</span></li>
-            <li><span>21/01/2019</span></li>
-            <li><span class="label label-warning status">Processing</span></li>
-            <div class="clearfix"> </div>
-          </ul>
-          <ul class="cart-header transaction">
-            <li class="id-tran"><span>3</span></li>
-            <li class="list-pro"><span>Bút, Viết, Sách...</span></li>
-            <li><span>$ 290.00</span></li>
-            <li><span>21/01/2019</span></li>
-            <li><span class="label label-info status">Delivery</span></li>
-            <div class="clearfix"> </div>
-          </ul>
-          <ul class="cart-header transaction">
-            <li class="id-tran"><span>4</span></li>
-            <li class="list-pro"><span>Bút, Viết, Sách...</span></li>
-            <li><span>$ 290.00</span></li>
-            <li><span>21/01/2019</span></li>
-            <li><span class="label label-success status">Success</span></li>
-            <div class="clearfix"> </div>
-          </ul>
-          <ul class="cart-header transaction">
-            <li class="id-tran"><span>5</span></li>
-            <li class="list-pro"><span>Bút, Viết, Sách...</span></li>
-            <li><span>$ 290.00</span></li>
-            <li><span>21/01/2019</span></li>
-            <li><span class="label label-success status">Success</span></li>
-            <div class="clearfix"> </div>
-          </ul>
-          <ul class="cart-header transaction">
-            <li class="id-tran"><span>6</span></li>
-            <li class="list-pro"><span>Bút, Viết, Sách...</span></li>
-            <li><span>$ 290.00</span></li>
-            <li><span>21/01/2019</span></li>
-            <li><span class="label label-success status">Success</span></li>
-            <div class="clearfix"> </div>
-          </ul>
-          <ul class="cart-header transaction">
-            <li class="id-tran"><span>7</span></li>
-            <li class="list-pro"><span>Bút, Viết, Sách...</span></li>
-            <li><span>$ 290.00</span></li>
-            <li><span>21/01/2019</span></li>
-            <li><span class="label label-success status">Success</span></li>
-            <div class="clearfix"> </div>
-          </ul>                    
+      {% endfor %}                    
         </div>
       </div>
     </div>

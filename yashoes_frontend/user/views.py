@@ -10,7 +10,21 @@ def profile(request):
     return render(request, 'user/profile.html')
 
 def transaction(request):
-    return render(request, 'user/transaction.html')
+    token = request.COOKIES.get('token')
+    headers = {'Authorization': 'Bearer ' + str(token)}
+    response = requests.get(settings.API_HOST + 'api/user/transactions/', headers=headers)
+    if response.status_code == 401:
+        return render(request, 'user/transaction.html')
+    else:
+        data = response.json()
+        return render(request, 'user/transaction.html', {'data': data})
 
-def transactiondetail(request):
-    return render(request, 'user/transaction-detail.html')
+def transactiondetail(request, id):
+    token = request.COOKIES.get('token')
+    headers = {'Authorization': 'Bearer ' + str(token)}
+    response = requests.get(settings.API_HOST + 'api/user/transactions/'+ str(id), headers=headers)
+    if response.status_code == 401:
+        return render(request, 'user/transaction-detail.html')
+    else:
+        data = response.json()
+    return render(request, 'user/transaction-detail.html', {'data': data})

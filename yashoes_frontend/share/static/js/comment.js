@@ -11,7 +11,7 @@ $(document).ready(function () {
     rating: 3.7
   });
 
-  $('#btn-comment').click(function (){
+  $('.btn-comment').click(function (){
     var url = window.location.pathname;
     var id = url.substring(url.lastIndexOf('/') + 1);
     parent = $(this).parent()

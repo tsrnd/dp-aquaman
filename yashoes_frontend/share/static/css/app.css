@@ -28,3 +28,22 @@
 	text-transform: uppercase;
 	border: none;
 }
+
+.close {
+	background: url(../images/close-1.png) no-repeat 0px 0px;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    left: 8px;
+    top: 52px;
+}
+
+ul.unit li {
+    text-align: center;
+}
+
+#btn-cart-done {
+    width: 100%;
+    line-height: 2;
+}

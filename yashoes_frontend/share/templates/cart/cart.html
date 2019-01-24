@@ -1,93 +1,74 @@
 {% extends 'layouts/base.html' %}
-
+{% load static %}
 {% block breadcum %}
-<div class="breadcrumbs">
-  <div class="container">
-    <div class="breadcrumbs-main">
-      <ol class="breadcrumb">
-        <li class="active">Home</li>
-        <li class="active">Cart</li>
-      </ol>
+  <div class="breadcrumbs">
+    <div class="container">
+      <div class="breadcrumbs-main">
+        <ol class="breadcrumb">
+          <li class="active">Home</li>
+          <li class="active">Cart</li>
+        </ol>
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}
 
 {% block content %}
-<!--start-ckeckout-->
-<div class="ckeckout">
-  <div class="container">
-    <div class="ckeckout-top">
-      <div class=" cart-items heading">
-        <h3>My Shopping Bag (3)</h3>
-        <script>$(document).ready(function (c) {
-            $('.close1').on('click', function (c) {
-              $('.cart-header').fadeOut('slow', function (c) {
-                $('.cart-header').remove();
-              });
-            });
-          });
-        </script>
-        <script>$(document).ready(function (c) {
-            $('.close2').on('click', function (c) {
-              $('.cart-header1').fadeOut('slow', function (c) {
-                $('.cart-header1').remove();
-              });
-            });
-          });
-        </script>
-        <script>$(document).ready(function (c) {
-            $('.close3').on('click', function (c) {
-              $('.cart-header2').fadeOut('slow', function (c) {
-                $('.cart-header2').remove();
-              });
-            });
-          });
-        </script>
-
-        <div class="in-check">
-          <ul class="unit">
-            <li><span>Item</span></li>
-            <li><span>Product Name</span></li>
-            <li><span>Unit Price</span></li>
-            <li><span>Stock Status</span></li>
-            <li> </li>
-            <div class="clearfix"> </div>
-          </ul>
-          <ul class="cart-header">
-            <div class="close1"> </div>
-            <li class="ring-in"><a href="single.html"><img src="images/s-1.jpg" class="img-responsive" alt=""></a>
-            </li>
-            <li><span>Woo Dress</span></li>
-            <li><span>$ 290.00</span></li>
-            <li><span>In Stock</span></li>
-            <li> <a href="single.html" class="add-cart cart-check">ADD TO CART</a></li>
-            <div class="clearfix"> </div>
-          </ul>
-          <ul class=" cart-header1">
-            <div class="close2"> </div>
-            <li class="ring-in"><a href="single.html"><img src="images/s-2.jpg" class="img-responsive" alt=""></a>
-            </li>
-            <li><span>Elliot Shoes</span></li>
-            <li><span>$ 300.00</span></li>
-            <li><span>In Stock</span></li>
-            <li> <a href="single.html" class="add-cart cart-check">ADD TO CART</a></li>
-            <div class="clearfix"> </div>
-          </ul>
-          <ul class="cart-header2">
-            <div class="close3"> </div>
-            <li class="ring-in"><a href="single.html"><img src="images/s-4.jpg" class="img-responsive" alt=""></a>
-            </li>
-            <li><span>Woo Dress</span></li>
-            <li><span>$ 360.00</span></li>
-            <li><span>In Stock</span></li>
-            <li> <a href="single.html" class="add-cart cart-check">ADD TO CART</a></li>
-            <div class="clearfix"> </div>
-          </ul>
+  <!--start-ckeckout-->
+  <div class="ckeckout">
+    <div class="container">
+      <div class="ckeckout-top">
+        <div class="cart-items heading">
+          <h3>My Shopping Bag</h3>
+          <div class="in-check">
+            <ul class="unit">
+              <li><span>Item</span></li>
+              <li><span>Product Name</span></li>
+              <li><span>Unit Price</span></li>
+              <li><span>Quantity</span></li>
+              <div class="clearfix"></div>
+            </ul>
+            {% if not data %}
+              <div id="cart-content">
+                <script>
+                  renderLocalCart()
+                </script>
+              </div>
+            {% else %}
+              {% for item in data %}
+                <ul id="{{ item.variant_id }}" class="cart-header">
+                  <div class="close"></div>
+                  <li class="ring-in"><a href="single.html"><img src="{{ item.image_link }}"
+                                                                 class="img-responsive"
+                                                                 alt="img"></a>
+                  </li>
+                  <li><span>{{ item.product_name }}</span></li>
+                  <li><span>$ {{ item.price }}</span></li>
+                  <li>
+                    <div class="input-group">
+                      <input type="button" value="-" id="btn-minus" class="button-minus btn-change-quantity" data-field="quantity">
+                      <input type="number" step="1" max="" value="{{ item.quantity }}" name="quantity" class="quantity-field">
+                      <input type="button" value="+" id="btn-plus" class="button-plus btn-change-quantity" data-field="quantity">
+                    </div>
+                  </li>
+                  <div class="clearfix"></div>
+                </ul>
+              {% endfor %}
+            {% endif %}
+          </div>
+          <button type="button" id="btn-cart-done" class="btn btn-success">DONE</button>
         </div>
       </div>
     </div>
   </div>
-</div>
-<!--end-ckeckout-->
+  <!--end-ckeckout-->
+{% endblock %}
+
+{% block script %}
+  {% csrf_token %}
+  <script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+  <link href="{% static 'css/cart.css' %}" rel="stylesheet" type="text/css" media="all"/>
 {% endblock %}

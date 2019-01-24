@@ -15,4 +15,4 @@ def productsdetail(request, product_id):
         response = requests.get(settings.API_HOST + "api/products/"  + str(product_id) + "/comments")
         if response.status_code == 200:
             comments = response.json().get('data')
-    return render(request, 'products/product-detail.html', {'comments': comments })
+        return render(request, 'products/product-detail.html', {'comments': comments })

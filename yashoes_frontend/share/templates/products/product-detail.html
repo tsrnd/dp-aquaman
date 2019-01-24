@@ -98,24 +98,27 @@
     </div>
   </div>
 
+  <form method="post" action="javascript:void(0);">
+  {% csrf_token %}
   <div class="container">
     <div class="row">
       <h3><b>Commments</b></h3>
     </div>
     <div>
       <div class="primary-comment-box">
-        <textarea class="form-control" rows="7" id="comment"></textarea>
+        <textarea class="form-control" rows="7" id="content-comment"></textarea>
         <button type="button" class="btn btn-info" id="btn-comment">Comment</button>
       </div>
     </div>
-    <div class="row">
+  </form>
+    <div class="row" id="comments">
       {% for comment in comments %}
-      <div class="col-sm-8">
-        {% include 'layouts/comment.html' with avatar=comment.user_image username=comment.username content=comment.content comment_date=comment.created_at%}
+      <div class="col-sm-8" >
+        {% include 'layouts/comment.html' with avatar=comment.user_image username=comment.username content=comment.content comment_date=comment.created_at parent_comment_id=comment.id%}
       </div>
-        {% for comment in comment.comments %}
-      <div class="col-sm-8 card-inner">
-        {% include 'layouts/comment.html' with avatar=comment.user_image username=comment.username content=comment.content comment_date=comment.created_at%}
+        {% for subcomment in comment.comments %}
+      <div class="col-sm-8 card-inner" id={{comment.id}}>
+        {% include 'layouts/comment.html' with avatar=subcomment.user_image username=subcomment.username content=subcomment.content comment_date=subcomment.created_at parent_comment_id=comment.id%}
       </div>
         {% endfor %}
       {% endfor %}

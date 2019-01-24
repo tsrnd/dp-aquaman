@@ -17,7 +17,7 @@ def login(request):
             response = requests.post(
                 settings.API_HOST + "api/user/login/", data=data)
             if response.status_code == 200:
-                link = redirect('register')
+                link = redirect('home')
                 res = response.json()
                 cart_request = request.POST.get('cart')
                 if cart_request:

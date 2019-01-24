@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'yashoes',
     'yashoes_frontend',
     'django_extensions',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -225,3 +226,10 @@ LOGGING = {
         },
     }
 }
+
+CRONJOBS = [
+    # job update shipping run 7am every day
+    ('0 7 * * *', 'yashoes.cronjobs.cron_update_shipping.update_shipping')
+]
+
+CRONTAB_LOCK_JOBS = True

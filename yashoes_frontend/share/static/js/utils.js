@@ -23,15 +23,17 @@ function refreshCart() {
 }
 
 function sendRequest(method, url, dataRequest, callback) {
-  header = {};
+  headers = {
+    'X-CSRFToken': $('meta[name="csrf-token"]').attr('content'),
+  };
   if (dataRequest.token != null) {
-    header.Authorization = 'Bearer ' + dataRequest.token;
+    headers.Authorization = 'Bearer ' + dataRequest.token;
   }
   $.ajax({
     type: method,
-    headers: header,
-    url: url, //will be replace by api url if api implemented
+    url: url,
     data: dataRequest.data,
-    success: callback
+    headers: headers,
+    success: callback,
   });
 }

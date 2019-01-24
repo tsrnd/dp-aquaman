@@ -2,6 +2,7 @@ from rest_framework import serializers
 from yashoes.model.product import Product
 from yashoes.model.variant import Variant
 from yashoes.model.comment import Comment
+from yashoes.model.brand import Brand
 
 
 class VariantSerializer(serializers.ModelSerializer):
@@ -34,15 +35,20 @@ class ListProductSerializer(serializers.Serializer):
 
 class SubCommentSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
+    created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
+    user_image = serializers.CharField(source='user.image_profile.url')
 
     class Meta:
         model = Comment
-        fields = ('id', 'username', 'content', 'created_at')
+        fields = ('id', 'username', 'user_image', 'content', 'created_at')
 
 
 class GetCommentsSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField('query_comments')
     username = serializers.CharField(source='user.username')
+    created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
+    user_image = serializers.CharField(source='user.image_profile.url')
+
 
     def query_comments(self, comment):
         comments = Comment.objects.filter(parent_comment=comment.id)
@@ -51,7 +57,8 @@ class GetCommentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'username', 'content', 'comments', 'created_at')
+        fields = ('id', 'username', 'user_image', 'content', 'comments',
+                  'created_at')
 
 
 class PostCommentSerializer(serializers.ModelSerializer):
@@ -69,3 +76,9 @@ class PostCommentSerializer(serializers.ModelSerializer):
         comment.user = user
         comment.save()
         return comment
+
+
+class HomePageSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    brand_name = serializers.CharField()
+    products = ListProductSerializer(many=True)

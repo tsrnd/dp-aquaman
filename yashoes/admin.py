@@ -6,6 +6,7 @@ from .models import User
 from django.contrib.auth.models import Group
 from yashoes.model.product import Product
 from yashoes.model import user_variant, category, comment, notification, product_category, product, rating, transaction_variant, transaction, variant
+from yashoes.model import user_variant, category, comment, notification, product_category, product, rating, transaction, variant
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 

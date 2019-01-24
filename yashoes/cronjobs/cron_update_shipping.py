@@ -14,7 +14,7 @@ def update_shipping():
                 nested_q_trans = Transaction.objects.filter(status=1, deleted_at=None, updated_at__gte=timezone.now()-timedelta(days=3)).order_by('-updated_at')[:RESULT_LIMIT]
                 d = 0
                 if nested_q_trans:
-                    Transaction.objects.filter(pk__in=nested_q_trans).update(status=2)
+                    Transaction.objects.filter(pk__in=nested_q_trans).update(status=2, updated_at=datetime.now())
                     for tran in nested_q_trans:
                         Notification.objects.create(
                             user_id=tran.user_id,

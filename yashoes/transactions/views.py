@@ -17,7 +17,7 @@ from yashoes.models import User
 class TransactionViews(viewsets.ViewSet):
     def list(self, request):
         user = get_object_or_404(User, pk=request.user.id)
-        queryset = Transaction.objects.raw("SELECT product.name, transaction.* from product inner join variant on product.id = variant.product_id inner join transactions_variants on variant.id = transactions_variants.variant_id inner join transaction on transactions_variants.transaction_id = transaction.id")
+        queryset = Transaction.objects.raw("SELECT product.name, transaction.* from product inner join variant on product.id = variant.product_id inner join transactions_variants on variant.id = transactions_variants.variant_id inner join transaction on transactions_variants.transaction_id = transaction.id where user_id=%s",[user.id])
         serializer = TransactionSerializer(queryset, many=True)
         return Response(serializer.data, status=200)
 

@@ -94,6 +94,37 @@ $(document).ready(function (c) {
       }, 5000);
     }
   });
+
+  $('#btn-cart-done').click(function () {
+    let current = $(this)
+    $(this).attr('disabled', 'disabled');
+    let token = readCookie('token');
+    if (token != null) {
+      let url = 'http://localhost:8000/api/transaction/';
+      let address = 'Da Nang';
+      let phone_number = '0123456789';
+      let dataRequest = {
+        token: token,
+        data: {
+          'address': address,
+          'phone_number': phone_number
+        }
+      };
+      sendRequest('POST', url, dataRequest, function () {
+        window.location.replace('http://localhost:8000/user/transactions/');
+        current.removeAttr('disabled');
+      }, function (data) {
+        current.removeAttr('disabled');
+        // console.log(data);
+        let response = data.responseJSON;
+        if (response != null && response.message != null) {
+          alert(response.message)
+        }
+      })
+    } else {
+      alert('You are not login!');
+    }
+  })
 });
 
 //adding handle button decrease increase
@@ -150,21 +181,21 @@ function renderLocalCart() {
   cart = client.getItem('cart');
   cartData = JSON.parse(cart);
   itemCart = $("<ul id=\"test\" class=\"cart-header\">\n" +
-      "              <div class=\"close\"></div>\n" +
-      "              <li class=\"ring-in\"><a><img id='product-image' src='' alt='img' class=\"img-responsive\"\n" +
-      "                                                             alt=\"\"></a>\n" +
-      "              </li>\n" +
-      "              <li><span id='product-name'>Elliot Shoes</span></li>\n" +
-      "              <li><span id='product-price'>$ 300.00</span></li>\n" +
-      "              <li>\n" +
-      "                <div class=\"input-group\">\n" +
-      "                  <input type=\"button\" value=\"-\" id='btn-minus' class=\"button-minus btn-change-quantity\" data-field=\"quantity\">\n" +
-      "                  <input id='product-quantity' type=\"number\" step=\"1\" max=\"\" value=\"1\" name=\"quantity\" class=\"quantity-field\">\n" +
-      "                  <input type=\"button\" value=\"+\" id='btn-plus' class=\"button-plus btn-change-quantity\" data-field=\"quantity\">\n" +
-      "                </div>\n" +
-      "              </li>\n" +
-      "              <div class=\"clearfix\"></div>\n" +
-      "            </ul>");
+    "              <div class=\"close\"></div>\n" +
+    "              <li class=\"ring-in\"><a><img id='product-image' src='' alt='img' class=\"img-responsive\"\n" +
+    "                                                             alt=\"\"></a>\n" +
+    "              </li>\n" +
+    "              <li><span id='product-name'>Elliot Shoes</span></li>\n" +
+    "              <li><span id='product-price'>$ 300.00</span></li>\n" +
+    "              <li>\n" +
+    "                <div class=\"input-group\">\n" +
+    "                  <input type=\"button\" value=\"-\" id='btn-minus' class=\"button-minus btn-change-quantity\" data-field=\"quantity\">\n" +
+    "                  <input id='product-quantity' type=\"number\" step=\"1\" max=\"\" value=\"1\" name=\"quantity\" class=\"quantity-field\">\n" +
+    "                  <input type=\"button\" value=\"+\" id='btn-plus' class=\"button-plus btn-change-quantity\" data-field=\"quantity\">\n" +
+    "                </div>\n" +
+    "              </li>\n" +
+    "              <div class=\"clearfix\"></div>\n" +
+    "            </ul>");
   $('#cart-content').html(function () {
     for (var i = 0; i < cartData.length; i++) {
       itemCart.attr('id', cartData[i].variant_id);
@@ -184,4 +215,4 @@ $(document).ready(function (c) {
       localStorage.removeItem('cart');
     }
   });
-})
+});

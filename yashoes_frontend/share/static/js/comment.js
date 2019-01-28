@@ -37,12 +37,11 @@ $(document).ready(function () {
             $("#rateYo").rateYo("option", "rating", response.average_rating)
           },
           400: function (response) {
-            console.log(response)
             alert(response.responseJSON.message_error)
           },
           405: function (response) {
             alert('You can vote only one time')
-          },
+          }
         }
       })
     }

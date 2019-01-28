@@ -33,7 +33,7 @@ $(document).ready(function () {
         }, statusCode: {
           200: function (response) {
             alert("success")
-            $("#rateYo").rateYo("option", "readOnly", true);  // make readonly
+            $("#rateYo").rateYo("option", "readOnly", true);
             $("#rateYo").rateYo("option", "rating", response.average_rating)
           },
           400: function (response) {

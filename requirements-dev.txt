@@ -19,10 +19,10 @@ locustio==0.9.0
 markupsafe==1.1.0
 mccabe==0.6.1
 more-itertools==5.0.0
-msgpack==0.6.0
+msgpack==0.6.1
 pep8==1.7.1
 pluggy==0.8.1
-ptvsd==4.2.0
+ptvsd==4.2.2
 py==1.7.0
 pycodestyle==2.4.0
 pylint-django==2.0.5

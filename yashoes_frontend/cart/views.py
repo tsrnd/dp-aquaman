@@ -17,7 +17,6 @@ def cart_view(request):
 
 def sync_cart(request):
     token = request.COOKIES.get('token')
-    print("SAI ROI NHE ML XXXA", request.POST.get('cart'))
     if request.POST:
         cartDatas = json.loads(request.POST.get('cart'))
     else:

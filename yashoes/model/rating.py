@@ -14,3 +14,4 @@ class Rating(models.Model):
 
     class Meta:
         db_table = "rating"
+        unique_together = ('user', 'product')

@@ -113,25 +113,29 @@ class RatingView(APIView):
                         product.rate = round(average_rating, 1)
                         product.save()
                         return Response({
-                            "message": "success"
+                            "average_rating": product.rate
                         },
                                         status=status.HTTP_200_OK)
                     else:
                         return Response(
                             serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_405_METHOD_NOT_ALLOWED)
                 else:
                     return Response({
-                        "error":
+                        "message_error":
                         "Not found transaction with this product on last 7 days"
-                    })
+                    },
+                                    status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({"error": "Rating must in range [1-5]"})
+                return Response({
+                    "message_error": "Rating must in range [1-5]"
+                },
+                                status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({
-                "error": "Rating is required"
+                "message_error": "Rating is required"
             },
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class CommentView(APIView):

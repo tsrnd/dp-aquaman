@@ -22,8 +22,8 @@ function refreshCart() {
   });
 }
 
-function sendRequest(method, url, dataRequest, callback) {
-  headers = {
+function sendRequest(method, url, dataRequest, onSuccess, onFailed = {}) {
+  let headers = {
     'X-CSRFToken': $('meta[name="csrf-token"]').attr('content'),
   };
   if (dataRequest.token != null) {
@@ -34,6 +34,7 @@ function sendRequest(method, url, dataRequest, callback) {
     url: url,
     data: dataRequest.data,
     headers: headers,
-    success: callback,
+    success: onSuccess,
+    error: onFailed
   });
 }

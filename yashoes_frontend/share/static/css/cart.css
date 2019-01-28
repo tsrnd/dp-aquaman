@@ -63,3 +63,9 @@ input[type="number"] {
 #product-image {
   width: 30%;
 }
+
+label.error {
+  display: inline-block;
+  color: red;
+  margin-left: 10px;
+}

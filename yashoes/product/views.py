@@ -45,7 +45,8 @@ class ProductsAPIView(APIView):
 
         response = []
         for product in products:
-            image_link = ""
+            image_link = "image_not_found"
+            price = 0
             for variant in product.variant_set.all():
                 image_link = variant.image_link.name if not variant.image_link.name else variant.image_link.url
                 price = variant.price
@@ -56,6 +57,12 @@ class ProductsAPIView(APIView):
 
         serializer = ListProductSerializer(response, many=True)
         content = {
+            'links': {
+                'has_other_pages': products.has_other_pages(),
+                'has_previous': products.has_previous(),
+                'has_next': products.has_next(),
+                'num_pages': paginator.num_pages,
+            },
             'result_count': product_list.count(),
             'page': page,
             'next_page_flg': products.has_next(),

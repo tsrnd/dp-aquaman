@@ -224,13 +224,15 @@ function renderLocalCart() {
     "              <div class=\"clearfix\"></div>\n" +
     "            </ul>");
   $('#cart-content').html(function () {
-    for (var i = 0; i < cartData.length; i++) {
-      itemCart.attr('id', cartData[i].variant_id);
-      itemCart.find('#product-name').text(cartData[i].product_name);
-      itemCart.find('#product-image').attr('src', cartData[i].product_image);
-      itemCart.find('#product-price').text(cartData[i].product_price);
-      itemCart.find('#product-quantity').attr('value', cartData[i].quantity);
-      content = content.add(itemCart).clone();
+    if (cartData != null) {
+      for (var i = 0; i < cartData.length; i++) {
+        itemCart.attr('id', cartData[i].variant_id);
+        itemCart.find('#product-name').text(cartData[i].product_name);
+        itemCart.find('#product-image').attr('src', cartData[i].product_image);
+        itemCart.find('#product-price').text(cartData[i].product_price);
+        itemCart.find('#product-quantity').attr('value', cartData[i].quantity);
+        content = content.add(itemCart).clone();
+      }
     }
     return content
   })

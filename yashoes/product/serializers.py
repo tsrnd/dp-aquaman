@@ -30,13 +30,14 @@ class ListProductSerializer(serializers.Serializer):
     name = serializers.CharField()
     description = serializers.CharField()
     rate = serializers.FloatField()
+    price = serializers.IntegerField()
     image_link = serializers.CharField()
 
 
 class SubCommentSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
     created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
-    user_image = serializers.CharField(source='user.image_profile.url')
+    user_image = serializers.CharField(source='user.image_profile_url')
 
     class Meta:
         model = Comment
@@ -47,11 +48,12 @@ class GetCommentsSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField('query_comments')
     username = serializers.CharField(source='user.username')
     created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
-    user_image = serializers.CharField(source='user.image_profile.url')
-
+    user_image = serializers.CharField(
+        source='user.image_profile_url', allow_null=True)
 
     def query_comments(self, comment):
-        comments = Comment.objects.filter(parent_comment=comment.id)
+        comments = Comment.objects.filter(
+            parent_comment=comment.id, deleted_at=None)
         serializers = SubCommentSerializer(comments, many=True)
         return serializers.data
 

@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 import os
 
 def get_image_path(instance, filename):
-    return os.path.join('users', str(instance.id), filename) 
+    return os.path.join('users', str(instance.id), filename)
 
 
 class CustomUserManager(BaseUserManager):
@@ -116,6 +116,11 @@ class User(CustomAbstractUser):
 
     def __str__(self):
         return self.username
+
+    def _get_image_profile_url(self):
+        return '' if not self.image_profile.name else self.image_profile.url
+
+    image_profile_url = property(_get_image_profile_url)
 
     class Meta:
         db_table = "user"

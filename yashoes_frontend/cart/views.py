@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
-import requests, json
+import json
+import requests
 from django.conf import settings
+from django.shortcuts import render, redirect
 
 
 def cart_view(request):

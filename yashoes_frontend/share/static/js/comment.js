@@ -7,9 +7,46 @@ $(document).ready(function () {
     $(this).parent().parent().css('display', 'none')
   });
 
+
   $("#rateYo").rateYo({
-    rating: 3.7
+    rating: $("#rateYo").attr('value'),
+    fullStar: true,
+    onSet: function (e, data) {
+      vote(data.rating())
+    },
+    starWidth: "40px"
   });
+
+  function vote(rating) {
+    var url = window.location.pathname;
+    var id = url.substring(url.lastIndexOf('/') + 1);
+    if (confirm("Do you want vote " + rating + " star for this product?")) {
+      $.ajax({
+        url: 'http://localhost:8000/api/products/' + id + '/rating',
+        headers: {
+          'Authorization': 'Bearer ' + readCookie('token'),
+        },
+        type: 'POST',
+        data: {
+          CSRF: $('meta[name="csrf-token"]').attr('content'),
+          rating: rating
+        }, statusCode: {
+          200: function (response) {
+            alert("success")
+            $("#rateYo").rateYo("option", "readOnly", true);  // make readonly
+            $("#rateYo").rateYo("option", "rating", response.average_rating)
+          },
+          400: function (response) {
+            console.log(response)
+            alert(response.responseJSON.message_error)
+          },
+          405: function (response) {
+            alert('You can vote only one time')
+          },
+        }
+      })
+    }
+  }
 
   $('.btn-comment').click(function (){
     var url = window.location.pathname;
@@ -65,15 +102,15 @@ function postComment(url, parent, commentBox) {
       200: function (response) {
         location.reload()
       },
+      400: function (response) {
+        alert('400', response)
+      },
       401: function (response) {
         alert(401)
       },
       404: function (response) {
         alert(404)
-      },
-      400: function (response) {
-        alert('400', response)
-      },
+      }
     }
   })
 }

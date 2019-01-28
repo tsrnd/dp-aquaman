@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 
 from yashoes.cart.serilizer import CartSerializer, UserVariantSerializer
 from yashoes.model.user_variant import UserVariant
+from yashoes.models import User
 
 success_response = {'message': 'success'}
 
@@ -54,7 +55,19 @@ class Cart(viewsets.ViewSet):
             'variant__price', 'variant__color', 'variant__size', 'variant__image_link'
         )
         serializer = CartSerializer(queryset, many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        users = User.objects.filter(pk=user_id)
+        address = ""
+        phone_number = None
+        if users:
+            if users[0].address:
+                address = users[0].address
+            phone_number = users[0].phone_number
+        data = {
+            'address': address,
+            'phone_number': phone_number,
+            'cart': serializer.data
+        }
+        return Response(data=data, status=status.HTTP_200_OK)
 
     @action(detail=False, url_path='information', url_name='information')
     def total_cart(self, request):

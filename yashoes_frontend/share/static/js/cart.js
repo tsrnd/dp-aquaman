@@ -29,6 +29,29 @@ function addCart() {
 
 //cart handler
 $(document).ready(function (c) {
+  $('#form-user-info-transaction').validate({
+    rules: {
+      address: {
+        required: true
+      },
+      phone_number: {
+        required: true,
+        minlength: 10,
+        maxlength: 11
+      }
+    },
+    messages: {
+      address: {
+        required: "Field is required"
+      },
+      phone_number: {
+        required: "Field is required",
+        minlength: "Phone number not valid",
+        maxlength: "Phone number not valid"
+      }
+    }
+  });
+
   $('.close').click(function () {
     parent = $(this).parent();
     token = readCookie('token');
@@ -96,33 +119,37 @@ $(document).ready(function (c) {
   });
 
   $('#btn-cart-done').click(function () {
-    let current = $(this)
+    let current = $(this);
     $(this).attr('disabled', 'disabled');
-    let token = readCookie('token');
-    if (token != null) {
-      let url = 'http://localhost:8000/api/transaction/';
-      let address = 'Da Nang';
-      let phone_number = '0123456789';
-      let dataRequest = {
-        token: token,
-        data: {
-          'address': address,
-          'phone_number': phone_number
-        }
-      };
-      sendRequest('POST', url, dataRequest, function () {
-        window.location.replace('http://localhost:8000/user/transactions/');
-        current.removeAttr('disabled');
-      }, function (data) {
-        current.removeAttr('disabled');
-        // console.log(data);
-        let response = data.responseJSON;
-        if (response != null && response.message != null) {
-          alert(response.message)
-        }
-      })
+    if ($('#form-user-info-transaction').valid()) {
+      let token = readCookie('token');
+      if (token != null) {
+        let url = 'http://localhost:8000/api/transaction/';
+        let address = 'Da Nang';
+        let phone_number = '0123456789';
+        let dataRequest = {
+          token: token,
+          data: {
+            'address': address,
+            'phone_number': phone_number
+          }
+        };
+        sendRequest('POST', url, dataRequest, function () {
+          window.location.replace('http://localhost:8000/user/transactions/');
+          current.removeAttr('disabled');
+        }, function (data) {
+          current.removeAttr('disabled');
+          // console.log(data);
+          let response = data.responseJSON;
+          if (response != null && response.message != null) {
+            alert(response.message)
+          }
+        })
+      } else {
+        alert('You are not login!');
+      }
     } else {
-      alert('You are not login!');
+      current.removeAttr('disabled')
     }
   })
 });

@@ -28,14 +28,14 @@
               <li><span>Quantity</span></li>
               <div class="clearfix"></div>
             </ul>
-            {% if not data %}
+            {% if not data.cart %}
               <div id="cart-content">
                 <script>
                   renderLocalCart()
                 </script>
               </div>
             {% else %}
-              {% for item in data %}
+              {% for item in data.cart %}
                 <ul id="{{ item.variant_id }}" class="cart-header">
                   <div class="close"></div>
                   <li class="ring-in"><a href="single.html"><img src="{{ item.image_link }}"
@@ -46,16 +46,32 @@
                   <li><span>$ {{ item.price }}</span></li>
                   <li>
                     <div class="input-group">
-                      <input type="button" value="-" id="btn-minus" class="button-minus btn-change-quantity" data-field="quantity">
-                      <input type="number" step="1" max="" value="{{ item.quantity }}" name="quantity" class="quantity-field">
-                      <input type="button" value="+" id="btn-plus" class="button-plus btn-change-quantity" data-field="quantity">
+                      <input type="button" value="-" id="btn-minus" class="button-minus btn-change-quantity"
+                             data-field="quantity">
+                      <input type="number" step="1" max="" value="{{ item.quantity }}" name="quantity"
+                             class="quantity-field">
+                      <input type="button" value="+" id="btn-plus" class="button-plus btn-change-quantity"
+                             data-field="quantity">
                     </div>
                   </li>
                   <div class="clearfix"></div>
                 </ul>
               {% endfor %}
+              </div>
+              <form id="form-user-info-transaction">
+                <label>
+                  Address
+                  <br>
+                  <textarea rows="4" cols="50" name="address">{{ data.address }}</textarea>
+                </label>
+                <br>
+                <label>
+                  Phone number
+                  <br>
+                  <input type="number" name="phone_number" value="{{ data.phone_number }}">
+                </label>
+              </form>
             {% endif %}
-          </div>
           <button type="button" id="btn-cart-done" class="btn btn-success">DONE</button>
         </div>
       </div>
@@ -67,6 +83,7 @@
 {% block script %}
   {% csrf_token %}
   <script src="{% static 'js/cart.js' %}"></script>
+  <script src="{% static 'js/jquery.validate.min.js' %}"></script>
 {% endblock %}
 
 {% block css %}

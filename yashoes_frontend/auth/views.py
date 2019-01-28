@@ -1,13 +1,12 @@
 from django.shortcuts import render, render_to_response, redirect
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.decorators import action
 from yashoes_frontend.auth.form import UserLoginForm, UserRegisterForm
-import requests
+import requests, json
 from django.conf import settings
 
 
 def login(request):
+    if request.COOKIES.get('token'):
+        return redirect('home')
     if request.POST:
         form = UserLoginForm(request.POST)
         if form.is_valid():
@@ -18,8 +17,13 @@ def login(request):
             response = requests.post(
                 settings.API_HOST + "api/user/login/", data=data)
             if response.status_code == 200:
+                link = redirect('home')
                 res = response.json()
-                link = redirect('register')
+                cart_request = request.POST.get('cart')
+                if cart_request:
+                    cart_data = json.loads(cart_request)
+                    request.session['cart'] = cart_data
+                    link = redirect('sync')
                 link.set_cookie('token', res.get('token'))
                 return link
             elif response.status_code == 400:
@@ -35,6 +39,8 @@ def login(request):
 
 
 def register(request):
+    if request.COOKIES.get('token'):
+        return redirect('home')
     if request.POST:
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -48,8 +54,7 @@ def register(request):
                 settings.API_HOST + "api/user/register/", data=data)
             res = response.json()
             if response.status_code == 200:
-                link = redirect('register')
-                link.set_signed_cookie('token', res.get('token'))
+                link = redirect('login')
                 return link
             elif response.status_code == 400:
                 return render(

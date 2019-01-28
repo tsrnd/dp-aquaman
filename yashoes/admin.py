@@ -3,6 +3,8 @@ from django.contrib.auth.backends import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import User
+from django.contrib.auth.models import Group
+from yashoes.model.product import Product
 from yashoes.model import user_variant, category, comment, notification, product_category, product, rating, transaction, variant
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -55,5 +57,12 @@ class CustomUserAdmin(UserAdmin):
             )
     )
 
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('brand', 'name', 'description', 'created_at')
+    list_filter = ('brand',)
+    exclude = ('rate',)
 
+admin.site.site_header = 'Yashoes Admin Dashboard'
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Product, ProductAdmin)
+admin.site.unregister(Group)

@@ -50,6 +50,7 @@ class TransactionView(APIView):
                             transaction.savepoint_rollback(sid)
                             return Response(variant_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                         tv_data = {
+                            'price': trans.get('variant__price'),
                             'quantity': quantity,
                             'variant': variant_id,
                             'transaction': transaction_id

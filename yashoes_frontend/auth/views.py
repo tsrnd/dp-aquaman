@@ -64,3 +64,16 @@ def register(request):
                     })
     form = UserRegisterForm()
     return render(request, 'auth/register.html', {'form': form})
+
+
+def active_account(request):
+    uid = request.GET.get('uidb64')
+    data = {
+        'uid': uid,
+    }
+    response = requests.post(
+        settings.API_HOST + "api/user/activate/", data=data)
+    if response.status_code == 200:
+        return redirect('home')
+    else:
+        return redirect('login')

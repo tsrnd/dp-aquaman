@@ -8,6 +8,9 @@ from yashoes.model.product import Product
 from yashoes.model import user_variant, category, comment, notification, product_category, product, rating, transaction, variant
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
+from django.contrib import admin
+from yashoes.model.comment import Comment
+
 
 class CustomUserAdmin(UserAdmin):
     add_fieldsets = ((None, {
@@ -55,14 +58,26 @@ class CustomUserAdmin(UserAdmin):
         return mark_safe('<img src="{url}" width="100px" height=100px />'.format(
             url = obj.image_profile.url,
             )
-    )
+        )
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('brand', 'name', 'description', 'created_at')
     list_filter = ('brand',)
     exclude = ('rate',)
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'content', 'created_at')
+    search_fields = ['product__name','user__username']
+    list_filter = ('product__brand',)
+    list_display_links = None 
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
+
 admin.site.site_header = 'Yashoes Admin Dashboard'
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.unregister(Group)
+admin.site.register(Comment, CommentAdmin)

@@ -25,6 +25,8 @@ djangorestframework-jwt = "~=1.11.0"
 pillow = "*"
 django-crontab = "*"
 django-extensions = "*"
+celery = "~=4.2.1"
+django_celery_results = "~=1.0.4"
 
 [requires]
 python_version = "3.7"

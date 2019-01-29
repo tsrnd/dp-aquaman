@@ -5,6 +5,7 @@ from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import User
 from django.contrib.auth.models import Group
 from yashoes.model.product import Product
+from yashoes.model.brand import Brand
 from yashoes.model import user_variant, category, comment, notification, product_category, product, rating, transaction, variant
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -80,7 +81,6 @@ class ProductAdmin(admin.ModelAdmin):
 
     inlines = [VariantInline]
 
-
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'product', 'content', 'created_at')
     search_fields = ['product__name','user__username']
@@ -90,8 +90,12 @@ class CommentAdmin(admin.ModelAdmin):
     def has_add_permission(self, request, obj=None):
         return False
 
+class BrandAdmin(admin.ModelAdmin):
+    list_display = ('brand_name', 'created_at')
+
 admin.site.site_header = 'Yashoes Admin Dashboard'
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.unregister(Group)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Brand, BrandAdmin)

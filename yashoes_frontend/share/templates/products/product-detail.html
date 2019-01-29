@@ -29,7 +29,7 @@
                         <img src="{% static 'images/s1.jpg' %}"/>
                       </li>
                     {% else %}
-                      <li data-thumb="{% static 'images/s1.jpg' %}">
+                      <li data-thumb="{{ variant.image_link }}">
                         <img src="{{ variant.image_link }}"/>
                       </li>
                     {% endif %}

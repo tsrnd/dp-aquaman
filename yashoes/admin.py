@@ -12,11 +12,13 @@ from django.contrib import admin
 from yashoes.model.comment import Comment
 
 
+
 class CustomUserAdmin(UserAdmin):
     add_fieldsets = ((None, {
         'classes': ('wide', ),
-        'fields': ('username', 'email', 'address', 'phone_number', 'image_profile', 'password1',
-                   'password2', 'is_active', 'is_staff', 'is_superuser'),
+        'fields':
+        ('username', 'email', 'address', 'phone_number', 'image_profile',
+         'password1', 'password2', 'is_active', 'is_staff', 'is_superuser'),
     }), )
     fieldsets = (
         (None, {
@@ -38,6 +40,7 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('username', 'email')
     model = User
     list_display = ['email', 'username', 'is_superuser']
+
     def get_fieldsets(self, request, obj=None):
         if not obj:
             return self.add_fieldsets
@@ -47,23 +50,36 @@ class CustomUserAdmin(UserAdmin):
                     'fields': ('username', 'password')
                 }),
                 (_('Personal info'), {
-                    'fields': ('address', 'phone_number', 'email', 'image_profile_link', 'image_profile')
+                    'fields': ('address', 'phone_number', 'email',
+                               'image_profile_link', 'image_profile')
                 }),
                 (_('Permissions'), {
                     'fields': ('is_active', 'is_staff', 'is_superuser')
                 }),
             )
         return self.fieldsets
+
     def image_profile_link(self, obj):
         return mark_safe('<img src="{url}" width="100px" height=100px />'.format(
             url = obj.image_profile.url,
             )
         )
 
+class VariantInline(admin.StackedInline):
+    model = variant.Variant
+    extra = 0
+
+    exclude = ('deleted_at', )
+
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('brand', 'name', 'description', 'created_at')
-    list_filter = ('brand',)
-    exclude = ('rate',)
+    list_display = ('name', 'brand', 'description', 'created_at')
+    list_filter = ('brand', )
+    exclude = ('rate', 'deleted_at')
+
+    search_fields = ('name', 'brand__brand_name')
+
+    inlines = [VariantInline]
+
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'product', 'content', 'created_at')
@@ -73,8 +89,6 @@ class CommentAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request, obj=None):
         return False
-
-
 
 admin.site.site_header = 'Yashoes Admin Dashboard'
 admin.site.register(User, CustomUserAdmin)

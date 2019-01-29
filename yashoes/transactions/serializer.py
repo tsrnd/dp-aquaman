@@ -1,13 +1,14 @@
 from rest_framework import serializers
+
+from yashoes.model.transaction import TransactionVariant
 from yashoes.model.variant import Variant
-from yashoes.model.product import Product
-from yashoes.models import User
-from yashoes.model.transaction import Transaction, TransactionVariant
 
 
 class TransactionSerializer(serializers.Serializer):
-    def get_status_as_char(self, obj):
-       return  obj.get_status_display()
+    @staticmethod
+    def get_status_as_char(obj):
+        return obj.get_status_display()
+
     user_id = serializers.IntegerField()
     transaction_id = serializers.IntegerField(source='id')
     product = serializers.CharField(source='name')
@@ -17,12 +18,16 @@ class TransactionSerializer(serializers.Serializer):
     phone_number = serializers.IntegerField()
     created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
 
+
 class DetailVariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variant
-        fields = ('name', 'size', 'color', 'price', 'image_link',)
+        fields = ('name', 'size', 'color', 'image_link',)
+
+
 class TransactionDetailSerializer(serializers.ModelSerializer):
     variant = DetailVariantSerializer(many=False, read_only=True)
+
     class Meta:
         model = TransactionVariant
-        fields = ('id','quantity','variant')
+        fields = ('id', 'quantity', 'price', 'variant')

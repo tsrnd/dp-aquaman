@@ -1,5 +1,6 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
+
 from yashoes.model.variant import Variant
 
 
@@ -24,12 +25,15 @@ class Transaction(models.Model):
     class Meta:
         db_table = "transaction"
 
+
 class TransactionVariant(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
+    price = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
+
     class Meta:
         db_table = "transactions_variants"

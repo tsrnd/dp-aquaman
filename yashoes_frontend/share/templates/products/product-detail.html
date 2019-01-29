@@ -24,12 +24,12 @@
               <div class="flexslider">
                 <ul class="slides">
                   {% for variant in product.variants %}
-                    {% if variant.image_link == 'image_not_found' %}
+                    {% if variant.image_link == 'image_not_found' or variant.image_link is None %}
                       <li id="{{ variant.id }}" data-thumb="{% static 'images/s1.jpg' %}">
                         <img src="{% static 'images/s1.jpg' %}"/>
                       </li>
                     {% else %}
-                      <li id="{{ variant.id }}" data-thumb="{% static 'images/s1.jpg' %}">
+                      <li id="{{ variant.id }}" data-thumb="{{ variant.image_link }}">
                         <img src="{{ variant.image_link }}"/>
                       </li>
                     {% endif %}
@@ -117,6 +117,7 @@
       </div>
     </div>
   </form>
+  {% if comments %}
     <div class="row" id="comments">
       {% for comment in comments %}
       <div class="col-sm-8" >
@@ -129,6 +130,7 @@
         {% endfor %}
       {% endfor %}
     </div>
+  {% endif %}
   </div>
   <script src="{% static 'js/jquery.miranda.min.js' %}"></script>
 {% endblock %}

@@ -5,7 +5,7 @@ function addCart() {
   url = 'http://localhost:8000/api/user/cart/variant/';
   data = {
     'quantity': $('#slc-product-quantity').val(), //this will be replace by getting value when product detail data render implemented
-    'variant_id': 4, //this will be replace by getting value when product detail data render implemented
+    'variant_id': $('.flex-active-slide').attr('id'), //this will be replace by getting value when product detail data render implemented
   };
   token = readCookie('token');
   if (token != null) {

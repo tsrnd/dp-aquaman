@@ -77,3 +77,10 @@ def active_account(request):
         return redirect('home')
     else:
         return redirect('login')
+
+
+def logout(request):
+    response = redirect('login')
+    if request.COOKIES.get('token'):
+        response.delete_cookie('token')
+    return response

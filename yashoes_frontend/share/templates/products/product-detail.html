@@ -117,6 +117,7 @@
       </div>
     </div>
   </form>
+  {% if comments %}
     <div class="row" id="comments">
       {% for comment in comments %}
       <div class="col-sm-8" >
@@ -129,6 +130,7 @@
         {% endfor %}
       {% endfor %}
     </div>
+  {% endif %}
   </div>
   <script src="{% static 'js/jquery.miranda.min.js' %}"></script>
 {% endblock %}

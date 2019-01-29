@@ -8,6 +8,9 @@ from yashoes.model.product import Product
 from yashoes.model import user_variant, category, comment, notification, product_category, product, rating, transaction, variant
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
+from django.contrib import admin
+from yashoes.model.comment import Comment
+
 
 
 class CustomUserAdmin(UserAdmin):
@@ -57,17 +60,16 @@ class CustomUserAdmin(UserAdmin):
         return self.fieldsets
 
     def image_profile_link(self, obj):
-        return mark_safe(
-            '<img src="{url}" width="100px" height=100px />'.format(
-                url=obj.image_profile.url, ))
-
+        return mark_safe('<img src="{url}" width="100px" height=100px />'.format(
+            url = obj.image_profile.url,
+            )
+        )
 
 class VariantInline(admin.StackedInline):
     model = variant.Variant
     extra = 0
 
     exclude = ('deleted_at', )
-
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'brand', 'description', 'created_at')
@@ -79,7 +81,17 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [VariantInline]
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'content', 'created_at')
+    search_fields = ['product__name','user__username']
+    list_filter = ('product__brand',)
+    list_display_links = None 
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
 admin.site.site_header = 'Yashoes Admin Dashboard'
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.unregister(Group)
+admin.site.register(Comment, CommentAdmin)

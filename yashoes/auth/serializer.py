@@ -27,6 +27,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=self.initial_data['email'],
             address = valid_data.get('address'),
             phone_number = valid_data.get('phone_number'),
+            is_active=False,
         )
         user.set_password(self.initial_data['password'])
         user.save()

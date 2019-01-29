@@ -45,10 +45,6 @@ class AuthView(viewsets.ViewSet):
                 username = user.username
                 email = user.email
                 pk = user.pk
-                u = get_user_model()()
-                test = jwt_payload_handler(u)
-                tk = jwt_encode_handler(test)
-                print("THATSHOULD", tk)
                 send_mail.s(pk, username, email, site).apply_async()
             except SMTPException:
                 return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -78,7 +74,7 @@ class AuthView(viewsets.ViewSet):
         return Response(status=200)
 
 
-@shared_task
+@shared_task(autoretry_for=(Exception,), retry_kwargs={'max_retries': 3, 'countdown': 60})
 def send_mail(pk, username, email, site):
     subject = 'Active account mail'
     content = render_to_string('mail/active_mail_template.html', {

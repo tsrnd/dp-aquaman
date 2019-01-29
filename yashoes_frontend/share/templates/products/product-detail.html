@@ -25,11 +25,11 @@
                 <ul class="slides">
                   {% for variant in product.variants %}
                     {% if variant.image_link == 'image_not_found' %}
-                      <li data-thumb="{% static 'images/s1.jpg' %}">
+                      <li id="{{ variant.id }}" data-thumb="{% static 'images/s1.jpg' %}">
                         <img src="{% static 'images/s1.jpg' %}"/>
                       </li>
                     {% else %}
-                      <li data-thumb="{% static 'images/s1.jpg' %}">
+                      <li id="{{ variant.id }}" data-thumb="{% static 'images/s1.jpg' %}">
                         <img src="{{ variant.image_link }}"/>
                       </li>
                     {% endif %}
@@ -52,11 +52,11 @@
             </div>
             <div class="col-md-7 single-top-right">
               <div class="details-left-info simpleCart_shelfItem">
-                <h3>{{ product.name }}</h3>
+                <h3 id="product-single-name">{{ product.name }}</h3>
                 <div id="rateYo" value="{{ product.rate }}"></div>
                 <p class="availability">Availability: <span class="color">In stock</span></p>
                 <div class="price_single">
-                  <span class="actual item_price">$600.00</span>
+                  <span id="product-single-price" class="actual item_price">$600.00</span>
                 </div>
                 <h2 class="quick">Quick Overview:</h2>
                 <p class="quick_desc"> {{ product.description }}</p>
@@ -135,6 +135,7 @@
 
 {% block script %}
   <script src="{% static 'js/cart.js' %}"></script>
+  <script src="{% static 'js/product.js' %}"></script>
   <script src="{% static 'js/jquery.validate.min.js' %}"></script>
   <script src="{% static 'js/jquery.rateyo.js' %}"></script>
   <script src="{% static 'js/comment.js' %}"></script>

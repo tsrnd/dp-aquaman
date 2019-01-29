@@ -15,12 +15,31 @@
         <div class="cart box_1">
           <a href="{% url 'cart' %}">
             <h3>
-              <div class="total">
-                (<span id="cart-quantity"></span>
-                items)</div>
+              Your Cart
               <img src="{% static 'images/cart-1.png' %}" alt="" />
+            </h3>
           </a>
-          <p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
+          {% if request.COOKIES.token %}
+          <div class="dropdown">
+            <a class="dropbtn">
+              <h3 id="profile-shortcut">
+                Your Profile
+                <i id="icon-user" class="fas fa-user-circle"></i>
+              </h3>
+            </a>
+            <div class="dropdown-content">
+              <a href="{% url 'profile' %}">Profile</a>
+              <a href="{% url 'transaction' %}">Transaction History</a>
+              <a href="{% url 'logout' %}">Logout</a>
+            </div>
+          </div>
+          {% else %}
+            <a href="{% url 'login' %}">
+              <h3>
+                Login
+              </h3>
+            </a>
+          {% endif %}
           <div class="clearfix"> </div>
         </div>
       </div>
@@ -34,7 +53,7 @@
   <div class="container">
     <div class="top-nav">
       <ul class="memenu skyblue">
-        <li class="active"><a href="index.html">Home</a></li>
+        <li class="active"><a href="{% url 'home' %}">Home</a></li>
         <li class="grid"><a href="#">Men</a>
           <div class="mepanel">
             <div class="row">
@@ -92,5 +111,9 @@
 </div>
 
 {% block script %}
-<script src="{% static 'js/brand.js' %}"></script>
+  <script src="{% static 'js/brand.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+  <link href="{% static 'css/header.css' %}" rel="stylesheet" type="text/css" media="all"/>
 {% endblock %}

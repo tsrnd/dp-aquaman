@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'yashoes_frontend',
     'django_extensions',
     'django_crontab',
-    'yashoes_cron',
     'django_celery_results',
 ]
 

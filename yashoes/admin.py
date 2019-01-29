@@ -10,6 +10,8 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.contrib import admin
 from yashoes.model.comment import Comment
+from yashoes.model.transaction import Transaction, TransactionVariant
+
 
 
 class CustomUserAdmin(UserAdmin):
@@ -69,10 +71,34 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'product', 'content', 'created_at')
     search_fields = ['product__name','user__username']
     list_filter = ('product__brand',)
-    list_display_links = None 
+    list_display_links = None
 
     def has_add_permission(self, request, obj=None):
         return False
+
+class TransactionAdmin(admin.ModelAdmin):
+    fieldsets = (('Product Detail', {
+        'fields': ('user', 'address', 'phone_number')
+    }), ('Status', {
+        'fields': ('status', )
+    }), ('Products', {
+        'fields': ('variants_list', )
+    }))
+    list_display = ('id','user', 'address', 'phone_number', 'total', 'status', 'created_at', 'updated_at')
+    exclude = ('deleted_at',)
+    list_filter = ('status',)
+    readonly_fields = [
+        'user', 'address', 'phone_number', 'total', 'variants_list'
+    ]
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def variants_list(self, obj):
+        return obj.variants_list()
 
 
 
@@ -81,3 +107,4 @@ admin.site.register(User, CustomUserAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.unregister(Group)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Transaction, TransactionAdmin)

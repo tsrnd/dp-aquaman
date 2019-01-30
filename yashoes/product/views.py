@@ -28,11 +28,18 @@ class ProductsAPIView(APIView):
     permission_classes = ()
 
     def get(self, request, format=None):
-        product_list = Product.objects.all()
+        sort = request.GET.get('sort', 'id')
+        color = request.GET.get('color', None)
+        if 'price' not in sort:
+            if color:
+                product_list = Product.objects.filter(variant__color=color).order_by(sort)
+            else:
+                product_list = Product.objects.all().order_by(sort)
+        else:
+            product_list = Product.objects.all()
 
         page = request.GET.get('page', 1)
         result_limit = request.GET.get('result_limit', RESULT_LIMIT)
-
         paginator = Paginator(product_list, result_limit)
 
         try:
@@ -52,8 +59,12 @@ class ProductsAPIView(APIView):
                 price = variant.price
                 break
             tmp = ListProduct(product.id, product.name, product.description,
-                              product.rate, price,image_link)
+                              product.rate, price, image_link)
             response.append(tmp)
+        if sort == 'price_desc':
+            response.sort(key=lambda x: x.price, reverse=True)
+        elif sort == 'price_asc':
+            response.sort(key=lambda x: x.price, reverse=False)
 
         serializer = ListProductSerializer(response, many=True)
         content = {
@@ -68,7 +79,8 @@ class ProductsAPIView(APIView):
             'next_page_flg': products.has_next(),
             'result': serializer.data,
         }
-        return Response(content)
+        res = Response(content)
+        return res
 
 
 class ProductDetail(generics.RetrieveAPIView):

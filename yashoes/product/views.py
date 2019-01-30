@@ -185,7 +185,7 @@ class CommentView(APIView):
                     "username":
                     request.user.username,
                     "user_image":
-                    request.user.image_profile.url,
+                    request.user.image_profile_url,
                     "content":
                     serializer.data["content"],
                     "parent_comment_id":

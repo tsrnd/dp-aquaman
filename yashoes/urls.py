@@ -10,4 +10,5 @@ urlpatterns = [
     path('brands/', include('yashoes.brand.urls')),
     path('', include('yashoes.transactions.urls')),
     path('categories/', include('yashoes.variant.urls')),
+    path('', include('yashoes.category.urls')),
 ]

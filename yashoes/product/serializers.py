@@ -6,6 +6,7 @@ from yashoes.model.brand import Brand
 
 
 class VariantSerializer(serializers.ModelSerializer):
+    image_link = serializers.CharField(source='image_link_url')
     class Meta:
         model = Variant
         fields = ('id', 'name', 'size', 'color', 'price', 'quantity',

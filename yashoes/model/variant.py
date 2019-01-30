@@ -35,5 +35,8 @@ class Variant(models.Model):
 
     image_link_url = property(_get_image_link_url)
 
+    def __str__(self):
+        return self.name
+        
     class Meta:
         db_table = "variant"

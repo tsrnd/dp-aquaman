@@ -20,13 +20,15 @@ def products(request):
     sort = request.GET.get('sort', 'id')
     color = request.GET.get('color', None)
     size = request.GET.get('size', None)
+    brand_id = request.GET.get('brand_id', None)
     if request.method == "GET":
         payload = {
             'page': page,
             'result_limit': result_limit,
             'sort': sort,
             'color': color,
-            'size': size
+            'size': size,
+            'brand_id': brand_id
         }
         response = requests.get(settings.API_HOST + "api/products/", params=payload)
         products = {}

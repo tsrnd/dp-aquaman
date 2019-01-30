@@ -21,13 +21,9 @@ class Transaction(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
-    def variants_list(self):
-        variant_ids = list(
-            TransactionVariant.objects.filter(transaction=self.id).values_list('variant', flat=True))
-        return Variant.objects.filter(id__in=variant_ids)
-
     def __str__(self):
         return 'TransactionID: ' + str(self.id)
+
     class Meta:
         db_table = "transaction"
 
@@ -40,5 +36,9 @@ class TransactionVariant(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return ''
+
     class Meta:
         db_table = "transactions_variants"

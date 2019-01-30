@@ -7,7 +7,7 @@ $(document).ready(function () {
             if (Array.isArray(brands) && brands.length) {
                 brands.forEach(function (brand) {
                     $('#list-brand ul')
-                        .append('<li><a href="products.html">'+brand['brand_name']+'</a></li>')
+                        .append('<li><a href="?brand_id='+brand['id']+'">'+brand['brand_name']+'</a></li>')
                 })
             }
         }

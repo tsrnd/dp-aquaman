@@ -24,5 +24,7 @@ class Variant(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
     class Meta:
         db_table = "variant"

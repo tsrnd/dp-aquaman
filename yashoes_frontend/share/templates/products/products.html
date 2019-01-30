@@ -28,18 +28,16 @@
 					<li><a href="#">Jazz Shoe</a> <span class="count">(3)</span></li>
 				</ul>
 				<h3>Colors</h3>
-				<ul class="product-categories" id="color">
+				<ul class="product-categories">
 					{% for color in colors.result %}
 						<li><a href="?color={{color.color}}">{{ color.color }}</a> <span class="count">({{ color.count }})</span></li>
 					{% endfor %}
 				</ul>
 				<h3>Sizes</h3>
-				<ul class="product-categories" id="size">
-					<li><a href="#">5.5</a> <span class="count">(14)</span></li>
-					<li><a href="#">6</a> <span class="count">(2)</span></li>
-					<li><a href="#">6.5</a> <span class="count">(2)</span></li>
-					<li><a href="#">7</a> <span class="count">(8)</span></li>
-					<li><a href="#">7.5</a> <span class="count">(11)</span></li>
+				<ul class="product-categories">
+					{% for size in sizes.result %}
+						<li><a href="?size={{size.size}}">{{ size.size }}</a> <span class="count">({{ size.count }})</span></li>
+					{% endfor %}
 				</ul>
 			</div>
 			<!-- order -->

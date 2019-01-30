@@ -12,3 +12,17 @@ class ColorVariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variant
         fields = ['color', 'count']
+
+
+class SizeVariantSerializer(serializers.ModelSerializer):
+    count = serializers.SerializerMethodField('query_count')
+
+    def query_count(self, queryset):
+        count = Variant.objects.raw(
+            'SELECT * FROM product as p INNER JOIN variant as v ON p.id = v.product_id WHERE size = %s',
+            [queryset.size])
+        return len(count)
+
+    class Meta:
+        model = Variant
+        fields = ['size', 'count']

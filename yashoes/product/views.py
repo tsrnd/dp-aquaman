@@ -30,9 +30,12 @@ class ProductsAPIView(APIView):
     def get(self, request, format=None):
         sort = request.GET.get('sort', 'id')
         color = request.GET.get('color', None)
+        size = request.GET.get('size', None)
         if 'price' not in sort:
             if color:
                 product_list = Product.objects.filter(variant__color=color).order_by(sort)
+            elif size:
+                product_list = Product.objects.filter(variant__size=size).order_by(sort)
             else:
                 product_list = Product.objects.all().order_by(sort)
         else:

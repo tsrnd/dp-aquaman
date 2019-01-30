@@ -1,0 +1,33 @@
+#profile-shortcut {
+  margin-top: 10px;
+}
+
+#icon-user {
+  margin: 4px 0px 0px 3px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #af9393b0;
+  min-width: 137px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 3px;
+}
+
+.dropdown-content a {
+  color: #6d6f68;
+  padding: 0px 7px;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}

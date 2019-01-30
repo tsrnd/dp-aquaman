@@ -16,6 +16,9 @@ if [ "$CMD" = "python manage.py runserver 0.0.0.0:8000" ]; then
 
   if [ "$AUTO_SEED" = '1' ]; then
     python manage.py seed_admin
+    python manage.py seed_brand
+    python manage.py seed_product
+    python manage.py seed_variant
   fi
 
   if [ "$AUTO_COLLECT_STATIC" = '1' ]; then

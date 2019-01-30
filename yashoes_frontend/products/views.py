@@ -1,11 +1,18 @@
-from django.shortcuts import render
 import requests
 from django.conf import settings
+from django.shortcuts import render
+from rest_framework import status
 
 RESULT_LIMIT = 9
 
+
 def home(request):
-    return render(request, 'products/index.html')
+    response = requests.get(settings.API_HOST + 'api/products/homepage/')
+    data = []
+    if response.status_code == status.HTTP_200_OK:
+        data = response.json().get('result')
+    return render(request, 'products/index.html', {'data': data})
+
 
 def products(request):
     page = request.GET.get('page', 1)
@@ -30,13 +37,13 @@ def products(request):
 
     return render(request, 'products/products.html', {'products': products, 'colors': colors })
 
-def productsdetail(request, product_id):
+def products_detail(request, product_id):
     if request.method == "GET":
-        response_comments = requests.get(settings.API_HOST + "api/products/"  + str(product_id) + "/comments")
+        response_comments = requests.get(settings.API_HOST + "api/products/" + str(product_id) + "/comments")
         if response_comments.status_code == 200:
             comments = response_comments.json().get('data')
 
-        response_product = requests.get(settings.API_HOST + "api/products/"  + str(product_id))
+        response_product = requests.get(settings.API_HOST + "api/products/" + str(product_id))
         if response_product.status_code == 200:
             product = response_product.json()
 

@@ -311,6 +311,21 @@ paths:
               message:
                 type: string
                 example: success
+    put:
+      tags: 
+        - "Comment"
+      summary: "Edit comment"
+      description: ""
+      parameters:
+        - name: comment_id
+          in: path
+          description: "Comment ID in comment table"
+          required: true
+          type: integer
+      responses:
+        200:
+          description: OK
+    
                 
   /api/products/{product_id}/rating:
     post:

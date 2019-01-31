@@ -26,7 +26,7 @@ class Variant(models.Model):
 
     def _get_image_link_url(self):
         image_link = 'image_not_found'
-        if self.image_link == '':
+        if self.image_link != '':
             if "http" in self.image_link.name:
                 image_link = self.image_link
             else:

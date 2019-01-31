@@ -45,11 +45,22 @@ def products(request):
         if size_response.status_code == 200:
             sizes = size_response.json()
 
-    return render(request, 'products/products.html', {
-        'products': products,
-        'colors': colors,
-        'sizes': sizes
-    })
+        category_response = requests.get(settings.API_HOST + "api/categories/",
+            params={ 'brand_id': brand_id })
+        categories_data = {}
+        if category_response.status_code == 200:
+            categories_data = category_response.json()
+        categories = categories_data.get("data").get("categories")
+        is_brand = categories_data.get("data").get("is_brand")
+
+    return render(
+        request, 'products/products.html', {
+            'products': products,
+            'colors': colors,
+            'sizes': sizes,
+            'categories': categories,
+            'is_brand': is_brand
+        })
 
 def products_detail(request, product_id):
     if request.method == "GET":

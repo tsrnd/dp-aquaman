@@ -54,12 +54,15 @@ $(document).ready(function (c) {
 
   $('.close').click(function () {
     parent = $(this).parent();
-    token = readCookie('token');
-    currentTab = parent.parent().children().length - 2;
-    if (currentTab == 0) {
-      $('#btn-cart-done').fadeOut('fast', function (c) {
+    let token = readCookie('token');
+    let currentTab = parent.parent().children().length - 2;
+    if (currentTab === 0) {
+      $('#btn-cart-done').fadeOut('fast', function () {
         parent.remove();
-      })
+      });
+      $('#form-user-info-transaction').fadeOut('fast', function () {
+        parent.remove()
+      });
     }
     data = {
       CSRF: $('meta[name="csrf-token"]').attr('content'),

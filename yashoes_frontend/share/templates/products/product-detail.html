@@ -58,8 +58,6 @@
                 <div class="price_single">
                   <span id="product-single-price" class="actual item_price">$600.00</span>
                 </div>
-                <h2 class="quick">Quick Overview:</h2>
-                <p class="quick_desc"> {{ product.description }}</p>
                 <ul class="size">
                   <h3>available Colors ::</h3>
                   <select id="product-single-color">
@@ -97,6 +95,10 @@
               </div>
             </div>
             <div class="clearfix"></div>
+          </div>
+          <div class="sngl-bottom">
+            <h2 class="quick">Quick Overview:</h2>
+            <p class="quick_desc"> {{ product.description | safe }}</p>
           </div>
         </div>
         <div class="clearfix"></div>

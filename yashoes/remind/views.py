@@ -17,7 +17,7 @@ class RemindViews(viewsets.ModelViewSet):
         try:
             queryset = Variant.objects.get(pk=request.data.get('variant'), quantity=0)
         except Variant.DoesNotExist:
-            return Response(status=404)
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = RemindSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)

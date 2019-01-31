@@ -9,4 +9,5 @@ urlpatterns = [
     path('comments/', include('yashoes.comment.urls')),
     path('brands/', include('yashoes.brand.urls')),
     path('', include('yashoes.transactions.urls')),
+    path('', include('yashoes.remind.urls')),
 ]

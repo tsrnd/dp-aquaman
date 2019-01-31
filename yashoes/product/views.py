@@ -60,10 +60,11 @@ class ProductsAPIView(APIView):
             image_link = "image_not_found"
             price = 0
             for variant in product.variant_set.all()[:1]:
-                if "http" in variant.image_link.name:
-                    image_link = variant.image_link
-                else:
-                    image_link = variant.image_link.name if not variant.image_link.name else variant.image_link.url
+                if variant.image_link.name is not None:
+                    if "http" in variant.image_link.name:
+                        image_link = variant.image_link
+                    else:
+                        image_link = variant.image_link.name if not variant.image_link.name else variant.image_link.url
                 price = variant.price
                 break
             tmp = ListProduct(product.id, product.name, product.description,

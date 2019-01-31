@@ -1,10 +1,11 @@
 from django.db import models
 from yashoes.model.brand import Brand
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, null=True, blank=True)
+    description = RichTextUploadingField(null=True, blank=True)
     rate = models.FloatField(default=0)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)

@@ -47,7 +47,11 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_crontab',
     'django_celery_results',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

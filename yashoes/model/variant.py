@@ -24,5 +24,19 @@ class Variant(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
+    def _get_image_link_url(self):
+        image_link = 'image_not_found'
+        if self.image_link != '':
+            if "http" in self.image_link.name:
+                image_link = self.image_link
+            else:
+                image_link = self.image_link.name if not self.image_link.name else self.image_link.url
+        return image_link
+
+    image_link_url = property(_get_image_link_url)
+
+    def __str__(self):
+        return self.name
+        
     class Meta:
         db_table = "variant"

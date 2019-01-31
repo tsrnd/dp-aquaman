@@ -11,6 +11,8 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.contrib import admin
 from yashoes.model.comment import Comment
+from yashoes.model.transaction import Transaction, TransactionVariant
+
 
 
 
@@ -72,11 +74,30 @@ class VariantInline(admin.StackedInline):
 
     exclude = ('deleted_at', )
 
+class VariantTransactionInLine(admin.TabularInline):
+    model = Transaction.variants.through
+    list_display = (
+        'variant',
+        'quantity',
+        'price'
+    )
+    readonly_fields = [
+        'variant',
+        'quantity',
+        'price',
+    ]
+    exclude = ('deleted_at',)
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'brand', 'description', 'created_at')
     list_filter = ('brand', )
     exclude = ('rate', 'deleted_at')
-
     search_fields = ('name', 'brand__brand_name')
 
     inlines = [VariantInline]
@@ -85,10 +106,34 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'product', 'content', 'created_at')
     search_fields = ['product__name','user__username']
     list_filter = ('product__brand',)
-    list_display_links = None 
+    list_display_links = None
 
     def has_add_permission(self, request, obj=None):
         return False
+
+class TransactionAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('Product Detail', {
+            'fields': ('user', 'address', 'phone_number')
+        }),
+        ('Status', {
+            'fields': ('total', 'status')
+        }),
+    )
+    list_display = ('id','user', 'address', 'phone_number', 'total', 'status', 'created_at', 'updated_at')
+    exclude = ('deleted_at',)
+    list_filter = ('status', 'created_at')
+    readonly_fields = [
+        'user', 'address', 'phone_number', 'total'
+    ]
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    inlines = [VariantTransactionInLine]
 
 class BrandAdmin(admin.ModelAdmin):
     list_display = ('brand_name', 'created_at')
@@ -98,4 +143,5 @@ admin.site.register(User, CustomUserAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.unregister(Group)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Brand, BrandAdmin)

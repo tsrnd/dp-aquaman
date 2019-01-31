@@ -39,6 +39,9 @@ $(document).ready(function () {
           400: function (response) {
             alert(response.responseJSON.message_error)
           },
+          401: function (response) {
+            alert('Login is required')
+          },
           405: function (response) {
             alert('You can vote only one time')
           }
@@ -74,6 +77,12 @@ $(document).ready(function () {
         statusCode: {
           200: function(response){
             $("#"+id).remove()
+          },
+          401: function(response) {
+            alert('Login is required')
+          }, 
+          400: function(response) {
+            alert('Can not delete comment of other')
           }
         }
       })

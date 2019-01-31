@@ -1,6 +1,5 @@
 .title-product-branch {
     background-color: black;
-    /*height: fit-content;*/
     color: white;
     width: fit-content;
     margin-left: 15px;
@@ -9,4 +8,10 @@
 
 #product-home {
     margin-top: 20px;
+}
+
+#product-name {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }

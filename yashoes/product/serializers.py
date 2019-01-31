@@ -6,6 +6,7 @@ from yashoes.model.brand import Brand
 
 
 class VariantSerializer(serializers.ModelSerializer):
+    image_link = serializers.CharField(source='image_link_url')
     class Meta:
         model = Variant
         fields = ('id', 'name', 'size', 'color', 'price', 'quantity',
@@ -36,8 +37,9 @@ class ListProductSerializer(serializers.Serializer):
 
 class SubCommentSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
-    created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
-    user_image = serializers.CharField(source='user.image_profile_url')
+    created_at = serializers.DateTimeField(format='%d %b %Y - %H:%M')
+    user_image = serializers.CharField(
+        source='user.image_profile_url', allow_null=True)
 
     class Meta:
         model = Comment
@@ -47,7 +49,7 @@ class SubCommentSerializer(serializers.ModelSerializer):
 class GetCommentsSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField('query_comments')
     username = serializers.CharField(source='user.username')
-    created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
+    created_at = serializers.DateTimeField(format='%d %b %Y - %H:%M')
     user_image = serializers.CharField(
         source='user.image_profile_url', allow_null=True)
 

@@ -17,15 +17,39 @@ def home(request):
 def products(request):
     page = request.GET.get('page', 1)
     result_limit = request.GET.get('result_limit', RESULT_LIMIT)
+    sort = request.GET.get('sort', 'id')
+    color = request.GET.get('color', None)
+    size = request.GET.get('size', None)
+    brand_id = request.GET.get('brand_id', None)
     if request.method == "GET":
-        payload = {'page': page, 'result_limit': result_limit}
+        payload = {
+            'page': page,
+            'result_limit': result_limit,
+            'sort': sort,
+            'color': color,
+            'size': size,
+            'brand_id': brand_id
+        }
         response = requests.get(settings.API_HOST + "api/products/", params=payload)
+        products = {}
         if response.status_code == 200:
             products = response.json()
-            print(products)
 
-    return render(request, 'products/products.html', {'products': products})
+        color_response = requests.get(settings.API_HOST + "api/categories/color/")
+        colors = {}
+        if color_response.status_code == 200:
+            colors = color_response.json()
 
+        size_response = requests.get(settings.API_HOST + "api/categories/size/")
+        sizes = {}
+        if size_response.status_code == 200:
+            sizes = size_response.json()
+
+    return render(request, 'products/products.html', {
+        'products': products,
+        'colors': colors,
+        'sizes': sizes
+    })
 
 def products_detail(request, product_id):
     if request.method == "GET":

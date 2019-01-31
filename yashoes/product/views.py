@@ -28,11 +28,24 @@ class ProductsAPIView(APIView):
     permission_classes = ()
 
     def get(self, request, format=None):
-        product_list = Product.objects.all()
+        sort = request.GET.get('sort', 'id')
+        color = request.GET.get('color', None)
+        size = request.GET.get('size', None)
+        brand_id = request.GET.get('brand_id', None)
+        if 'price' not in sort:
+            if color:
+                product_list = Product.objects.filter(variant__color=color).order_by(sort)
+            elif size:
+                product_list = Product.objects.filter(variant__size=size).order_by(sort)
+            elif brand_id:
+                product_list = Product.objects.filter(brand_id=brand_id).order_by(sort)
+            else:
+                product_list = Product.objects.all().order_by(sort)
+        else:
+            product_list = Product.objects.all()
 
         page = request.GET.get('page', 1)
         result_limit = request.GET.get('result_limit', RESULT_LIMIT)
-
         paginator = Paginator(product_list, result_limit)
 
         try:
@@ -47,13 +60,21 @@ class ProductsAPIView(APIView):
         for product in products:
             image_link = "image_not_found"
             price = 0
-            for variant in product.variant_set.all():
-                image_link = variant.image_link.name if not variant.image_link.name else variant.image_link.url
+            for variant in product.variant_set.all()[:1]:
+                if variant.image_link.name is not None:
+                    if "http" in variant.image_link.name:
+                        image_link = variant.image_link
+                    else:
+                        image_link = variant.image_link.name if not variant.image_link.name else variant.image_link.url
                 price = variant.price
                 break
             tmp = ListProduct(product.id, product.name, product.description,
-                              product.rate, price,image_link)
+                              product.rate, price, image_link)
             response.append(tmp)
+        if sort == 'price_desc':
+            response.sort(key=lambda x: x.price, reverse=True)
+        elif sort == 'price_asc':
+            response.sort(key=lambda x: x.price, reverse=False)
 
         serializer = ListProductSerializer(response, many=True)
         content = {
@@ -68,7 +89,8 @@ class ProductsAPIView(APIView):
             'next_page_flg': products.has_next(),
             'result': serializer.data,
         }
-        return Response(content)
+        res = Response(content)
+        return res
 
 
 class ProductDetail(generics.RetrieveAPIView):
@@ -167,7 +189,7 @@ class CommentView(APIView):
                     "username":
                     request.user.username,
                     "user_image":
-                    request.user.image_profile.url,
+                    request.user.image_profile_url,
                     "content":
                     serializer.data["content"],
                     "parent_comment_id":
@@ -201,8 +223,12 @@ class HomePageApiView(APIView):
             products_tmp = []
             for product in products:
                 image_link = ""
+                price = 0
                 for variant in product.variant_set.all()[:1]:
-                    image_link = variant.image_link
+                    if "http" in variant.image_link.name:
+                        image_link = variant.image_link
+                    else:
+                        image_link = variant.image_link.name if not variant.image_link.name else variant.image_link.url
                     price = variant.price
                     break
                 tmp = ListProduct(product.id, product.name,

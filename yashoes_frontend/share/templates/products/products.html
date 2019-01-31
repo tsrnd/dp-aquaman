@@ -29,20 +29,15 @@
 				</ul>
 				<h3>Colors</h3>
 				<ul class="product-categories">
-					<li><a href="#">Green</a> <span class="count">(14)</span></li>
-					<li><a href="#">Blue</a> <span class="count">(2)</span></li>
-					<li><a href="#">Red</a> <span class="count">(2)</span></li>
-					<li><a href="#">Gray</a> <span class="count">(8)</span></li>
-					<li><a href="#">Green</a> <span class="count">(11)</span></li>
-					<li><a href="#">Yellow</a> <span class="count">(2)</span></li>
+					{% for color in colors.result %}
+						<li><a href="?color={{color.color}}">{{ color.color }}</a> <span class="count">({{ color.count }})</span></li>
+					{% endfor %}
 				</ul>
 				<h3>Sizes</h3>
 				<ul class="product-categories">
-					<li><a href="#">5.5</a> <span class="count">(14)</span></li>
-					<li><a href="#">6</a> <span class="count">(2)</span></li>
-					<li><a href="#">6.5</a> <span class="count">(2)</span></li>
-					<li><a href="#">7</a> <span class="count">(8)</span></li>
-					<li><a href="#">7.5</a> <span class="count">(11)</span></li>
+					{% for size in sizes.result %}
+						<li><a href="?size={{size.size}}">{{ size.size }}</a> <span class="count">({{ size.count }})</span></li>
+					{% endfor %}
 				</ul>
 			</div>
 			<!-- order -->
@@ -51,10 +46,10 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="#">Hàng mới<span class="sr-only">(current)</span></a></li>
-							<li><a href="#">Hàng bán chạy</a></li>
-							<li><a href="#">Giá cao</a></li>
-							<li><a href="#">Giá thấp</a></li>
+							<li class="active"><a href="?sort=-created_at">Hàng mới<span class="sr-only">(current)</span></a></li>
+							<li><a href="">Hàng bán chạy</a></li>
+							<li><a href="?sort=price_desc">Giá cao</a></li>
+							<li><a href="?sort=price_asc">Giá thấp</a></li>
 						</ul>
 						<form class="navbar-form navbar-left">
 							<div class="form-group">

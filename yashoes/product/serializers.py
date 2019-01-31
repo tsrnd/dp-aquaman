@@ -6,6 +6,7 @@ from yashoes.model.brand import Brand
 
 
 class VariantSerializer(serializers.ModelSerializer):
+    image_link = serializers.CharField(source='image_link_url')
     class Meta:
         model = Variant
         fields = ('id', 'name', 'size', 'color', 'price', 'quantity',
@@ -30,13 +31,15 @@ class ListProductSerializer(serializers.Serializer):
     name = serializers.CharField()
     description = serializers.CharField()
     rate = serializers.FloatField()
+    price = serializers.IntegerField()
     image_link = serializers.CharField()
 
 
 class SubCommentSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
-    created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
-    user_image = serializers.CharField(source='user.image_profile.url')
+    created_at = serializers.DateTimeField(format='%d %b %Y - %H:%M')
+    user_image = serializers.CharField(
+        source='user.image_profile_url', allow_null=True)
 
     class Meta:
         model = Comment
@@ -46,12 +49,13 @@ class SubCommentSerializer(serializers.ModelSerializer):
 class GetCommentsSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField('query_comments')
     username = serializers.CharField(source='user.username')
-    created_at = serializers.DateTimeField(format='%H:%M %d %b %Y')
-    user_image = serializers.CharField(source='user.image_profile.url')
-
+    created_at = serializers.DateTimeField(format='%d %b %Y - %H:%M')
+    user_image = serializers.CharField(
+        source='user.image_profile_url', allow_null=True)
 
     def query_comments(self, comment):
-        comments = Comment.objects.filter(parent_comment=comment.id)
+        comments = Comment.objects.filter(
+            parent_comment=comment.id, deleted_at=None)
         serializers = SubCommentSerializer(comments, many=True)
         return serializers.data
 

@@ -1,8 +1,8 @@
 {% load static %}
-<div class="comment-content">
-  <div class="btn btn-default stat-item" id="btn-delete-comment">
+<div class="comment-content" id = {{comment_id}}>
+  <button type="button" class="btn btn-default stat-item btn-delete-comment" id="btn-delete-comment">
     <i class="fas fa-times"></i>
-  </div>
+  </button>
   <div class="panel panel-white post panel-shadow">
     <div class="post-heading">
       <div class="pull-left image">
@@ -17,7 +17,7 @@
     </div>
     <div class="post-description">
       <p>{{ content }}</p>
-      <div class="stats">
+      <div class="stats" >
         <div class="btn btn-default stat-item" id="btn-reply">
           <i class="fas fa-reply"></i> Reply
         </div>
@@ -26,9 +26,9 @@
   </div>
 
   <div class="comment-box">
-    <div class="comment-content">
-      <textarea class="form-control" rows="3" id="comment"></textarea>
-      <button type="button" class="btn btn-info">Comment</button>
+    <div class="comment-content" id={{parent_comment_id}}>
+      <textarea class="form-control" rows="3" id="content-comment"></textarea>
+      <button type="button" class="btn btn-info btn-comment" id="btn-comment">Comment</button>
       <button type="button" class="btn btn-warning" id="btn-reply-cancel">Cancel</button>
     </div>
   </div>

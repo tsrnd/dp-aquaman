@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'yashoes',
     'yashoes_frontend',
     'django_extensions',
+    'django_crontab',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -83,23 +85,23 @@ CACHES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME':
-        'django.contrib.auth.password_validation'
-        '.UserAttributeSimilarityValidator',
+            'django.contrib.auth.password_validation'
+            '.UserAttributeSimilarityValidator',
     },
     {
         'NAME':
-        'django.contrib.auth.password_validation'
-        '.MinimumLengthValidator',
+            'django.contrib.auth.password_validation'
+            '.MinimumLengthValidator',
     },
     {
         'NAME':
-        'django.contrib.auth.password_validation'
-        '.CommonPasswordValidator',
+            'django.contrib.auth.password_validation'
+            '.CommonPasswordValidator',
     },
     {
         'NAME':
-        'django.contrib.auth.password_validation'
-        '.NumericPasswordValidator',
+            'django.contrib.auth.password_validation'
+            '.NumericPasswordValidator',
     },
 ]
 
@@ -123,7 +125,7 @@ AUTH_USER_MODEL = 'yashoes.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES':
-    ('rest_framework.permissions.IsAuthenticated', ),
+        ('rest_framework.permissions.IsAuthenticated',),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -133,46 +135,46 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {
     'JWT_ENCODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_encode_handler',
+        'rest_framework_jwt.utils.jwt_encode_handler',
     'JWT_DECODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_decode_handler',
+        'rest_framework_jwt.utils.jwt_decode_handler',
     'JWT_PAYLOAD_HANDLER':
-    'yashoes.helper.custom_jwt.jwt_payload_handler',
+        'yashoes.helper.custom_jwt.jwt_payload_handler',
     'JWT_PAYLOAD_GET_USER_ID_HANDLER':
-    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+        'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
     'JWT_PAYLOAD_GET_USERNAME_HANDLER':
-    'yashoes.helper.custom_jwt.jwt_get_username_from_payload_handler',
+        'yashoes.helper.custom_jwt.jwt_get_username_from_payload_handler',
     'JWT_RESPONSE_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_response_payload_handler',
+        'rest_framework_jwt.utils.jwt_response_payload_handler',
     'JWT_SECRET_KEY':
-    SECRET_KEY,
+        SECRET_KEY,
     'JWT_GET_USER_SECRET_KEY':
-    None,
+        None,
     'JWT_ALGORITHM':
-    'HS256',
+        'HS256',
     'JWT_VERIFY':
-    True,
+        True,
     'JWT_VERIFY_EXPIRATION':
-    True,
+        True,
     'JWT_LEEWAY':
-    0,
+        0,
     'JWT_EXPIRATION_DELTA':
-    datetime.timedelta(days=3),
+        datetime.timedelta(days=3),
     'JWT_AUDIENCE':
-    'team4+team1',
+        'team4+team1',
     'JWT_ISSUER':
-    'team4+team1',
+        'team4+team1',
     'JWT_ALLOW_REFRESH':
-    True,
+        True,
     'JWT_REFRESH_EXPIRATION_DELTA':
-    datetime.timedelta(days=7),
+        datetime.timedelta(minutes=2),
     'JWT_AUTH_HEADER_PREFIX':
-    'Bearer',
+        'Bearer',
 }
-
 
 ### configuration frontend, and admin
 import yashoes_frontend, yashoes
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -216,12 +218,50 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
+        },
+        'celery': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         }
+    },
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(message)s',
+            'datefmt': '%y %b %d, %H:%M:%S',
+        },
     },
     'loggers': {
         'django.db.backends': {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
+        'celery': {
+            'handlers': ['celery'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
     }
 }
+
+CRONJOBS = [
+    # job update shipping run 7am every day
+    ('0 7 * * *', 'yashoes.cronjobs.cron_update_shipping.update_shipping'),
+
+    # job update shipping run 9pm every day
+    ('0 21 * * *', 'yashoes.cronjobs.random_cancel_or_done_transaction.random_cancel_done_transaction')
+]
+
+CRONTAB_LOCK_JOBS = True
+
+# apply settings for cron_ce
+CELERY_BROKER_URL = 'redis://cache:6379/0'
+CELERY_RESULT_BACKEND = 'django-cache'
+
+# settings mail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'yashoes4@gmail.com'
+EMAIL_HOST_PASSWORD = 'zmsatnrldxmerkas'

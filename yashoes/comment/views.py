@@ -20,7 +20,7 @@ class CommentView(APIView):
             comment.soft_delete()
             return Response({"message": "success"})
         else:
-            return Response({"error": "Can not delete other comment"})
+            return Response({"error": "Can not delete other comment"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
     def put(self, request, pk):

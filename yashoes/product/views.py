@@ -3,7 +3,6 @@ from yashoes.model.variant import Variant
 from yashoes.model.transaction import Transaction
 from yashoes.model.rating import Rating
 from yashoes.model.brand import Brand
-from yashoes.model.transaction_variant import TransactionVariant
 from yashoes.product.serializers import ListProductSerializer, ProductDetailSerializer, GetCommentsSerializer, PostCommentSerializer, HomePageSerializer
 from yashoes.rating.serializers import RatingSerializer
 from yashoes.model.comment import Comment
@@ -19,7 +18,7 @@ from django.db.models import Avg
 from rest_framework.permissions import AllowAny
 from datetime import date, timedelta, datetime
 
-RESULT_LIMIT = 5
+RESULT_LIMIT = 9
 
 
 class ProductsAPIView(APIView):
@@ -29,11 +28,24 @@ class ProductsAPIView(APIView):
     permission_classes = ()
 
     def get(self, request, format=None):
-        product_list = Product.objects.all()
+        sort = request.GET.get('sort', 'id')
+        color = request.GET.get('color', None)
+        size = request.GET.get('size', None)
+        brand_id = request.GET.get('brand_id', None)
+        if 'price' not in sort:
+            if color:
+                product_list = Product.objects.filter(variant__color=color).order_by(sort)
+            elif size:
+                product_list = Product.objects.filter(variant__size=size).order_by(sort)
+            elif brand_id:
+                product_list = Product.objects.filter(brand_id=brand_id).order_by(sort)
+            else:
+                product_list = Product.objects.all().order_by(sort)
+        else:
+            product_list = Product.objects.all()
 
         page = request.GET.get('page', 1)
         result_limit = request.GET.get('result_limit', RESULT_LIMIT)
-
         paginator = Paginator(product_list, result_limit)
 
         try:
@@ -46,22 +58,39 @@ class ProductsAPIView(APIView):
 
         response = []
         for product in products:
-            image_link = ""
-            for variant in product.variant_set.all():
-                image_link = variant.image_link
+            image_link = "image_not_found"
+            price = 0
+            for variant in product.variant_set.all()[:1]:
+                if variant.image_link.name is not None:
+                    if "http" in variant.image_link.name:
+                        image_link = variant.image_link
+                    else:
+                        image_link = variant.image_link.name if not variant.image_link.name else variant.image_link.url
+                price = variant.price
                 break
             tmp = ListProduct(product.id, product.name, product.description,
-                              product.rate, image_link)
+                              product.rate, price, image_link)
             response.append(tmp)
+        if sort == 'price_desc':
+            response.sort(key=lambda x: x.price, reverse=True)
+        elif sort == 'price_asc':
+            response.sort(key=lambda x: x.price, reverse=False)
 
         serializer = ListProductSerializer(response, many=True)
         content = {
+            'links': {
+                'has_other_pages': products.has_other_pages(),
+                'has_previous': products.has_previous(),
+                'has_next': products.has_next(),
+                'num_pages': paginator.num_pages,
+            },
             'result_count': product_list.count(),
             'page': page,
             'next_page_flg': products.has_next(),
             'result': serializer.data,
         }
-        return Response(content)
+        res = Response(content)
+        return res
 
 
 class ProductDetail(generics.RetrieveAPIView):
@@ -106,25 +135,29 @@ class RatingView(APIView):
                         product.rate = round(average_rating, 1)
                         product.save()
                         return Response({
-                            "message": "success"
+                            "average_rating": product.rate
                         },
                                         status=status.HTTP_200_OK)
                     else:
                         return Response(
                             serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_405_METHOD_NOT_ALLOWED)
                 else:
                     return Response({
-                        "error":
+                        "message_error":
                         "Not found transaction with this product on last 7 days"
-                    })
+                    },
+                                    status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({"error": "Rating must in range [1-5]"})
+                return Response({
+                    "message_error": "Rating must in range [1-5]"
+                },
+                                status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({
-                "error": "Rating is required"
+                "message_error": "Rating is required"
             },
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class CommentView(APIView):
@@ -149,7 +182,24 @@ class CommentView(APIView):
                 data=data, context={"user": request.user})
             if serializer.is_valid():
                 serializer.save()
-                return Response(status=status.HTTP_200_OK)
+                comment = Comment.objects.get(pk=serializer.data["id"])
+                response = {
+                    "id":
+                    serializer.data["id"],
+                    "username":
+                    request.user.username,
+                    "user_image":
+                    request.user.image_profile_url,
+                    "content":
+                    serializer.data["content"],
+                    "parent_comment_id":
+                    serializer.data["parent_comment"],
+                    "created_at": comment.created_at.strftime('%H:%M %Y/%m/%d')
+                }
+                return Response({
+                    "comment": response
+                },
+                                status=status.HTTP_200_OK)
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -173,11 +223,16 @@ class HomePageApiView(APIView):
             products_tmp = []
             for product in products:
                 image_link = ""
+                price = 0
                 for variant in product.variant_set.all()[:1]:
-                    image_link = variant.image_link
+                    if "http" in variant.image_link.name:
+                        image_link = variant.image_link
+                    else:
+                        image_link = variant.image_link.name if not variant.image_link.name else variant.image_link.url
+                    price = variant.price
                     break
                 tmp = ListProduct(product.id, product.name,
-                                  product.description, product.rate,
+                                  product.description, product.rate, price,
                                   image_link)
                 products_tmp.append(tmp)
 

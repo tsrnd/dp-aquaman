@@ -84,9 +84,3 @@ def logout(request):
     if request.COOKIES.get('token'):
         response.delete_cookie('token')
     return response
-
-from celery import shared_task
-
-@shared_task(bind=True)
-def test():
-    print("AIHHIHIH")

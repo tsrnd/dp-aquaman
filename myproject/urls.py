@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('yashoes.urls')),
     path('', include('yashoes_frontend.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]

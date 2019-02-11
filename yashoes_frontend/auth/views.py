@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response, redirect
+from django.shortcuts import render, redirect
 from yashoes_frontend.auth.form import UserLoginForm, UserRegisterForm
 import requests, json
 from django.conf import settings
@@ -84,3 +84,9 @@ def logout(request):
     if request.COOKIES.get('token'):
         response.delete_cookie('token')
     return response
+
+from celery import shared_task
+
+@shared_task(bind=True)
+def test():
+    print("AIHHIHIH")

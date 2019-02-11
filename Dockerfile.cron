@@ -1,0 +1,42 @@
+FROM python:3.7-alpine
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    INSIDE_DOCKER=1
+
+ADD requirements* /
+
+RUN set -ex \
+    && apk add -U --no-cache --virtual .build-deps \
+        g++ \
+        gcc \
+        make \
+        libc-dev \
+        musl-dev \
+        linux-headers \
+        pcre-dev \
+        postgresql-dev \
+    && apk add build-base python-dev py-pip jpeg-dev zlib-dev \
+    && pip install -U Pillow \
+    && pip install -U django-extensions \
+    && pip install -U django_minio \
+    && pip install -U -r requirements.txt --no-cache-dir \
+    && pip install -U -r requirements-dev.txt --no-cache-dir \
+    && apk del .build-deps \
+    && apk add -U --no-cache \
+        postgresql-client \
+        redis
+
+ADD ./scripts/cron-entrypoint.sh /
+RUN chmod +x /cron-entrypoint.sh
+
+RUN mkdir -p /code
+WORKDIR /code
+
+# these flags are used in `runserver` command only
+ENV AUTO_MIGRATE=1 \
+    AUTO_SEED=1 \
+    AUTO_COLLECT_STATIC=0 \
+    AUTO_CRONJOBS=1
+
+ENTRYPOINT [ "/cron-entrypoint.sh" ]

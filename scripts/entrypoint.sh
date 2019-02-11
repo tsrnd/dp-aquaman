@@ -25,10 +25,10 @@ if [ "$CMD" = "python manage.py runserver 0.0.0.0:8000" ]; then
     python manage.py collectstatic --noinput
   fi
 
-  if [ "$AUTO_CRONJOBS" = '1' ]; then
-    python manage.py crontab remove
-    python manage.py crontab add
-  fi
+#  if [ "$AUTO_CRONJOBS" = '1' ]; then
+#    python manage.py crontab remove
+#    python manage.py crontab add
+#  fi
 fi
 
 exec "$@"

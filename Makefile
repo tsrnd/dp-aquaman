@@ -11,6 +11,20 @@ up: build
 	@docker-compose up -d app
 	@docker-compose logs -f app
 
+cron:
+	@pipenv lock -r > requirements.txt
+	@pipenv lock -d -r > requirements-dev.txt
+	@docker-compose up --build cron
+	@docker-compose logs -f cron
+
+#clear-log:
+#ifdef worker_name
+##	@rm *.pid *.
+#	@echo ^.*worker_name.*$
+#else
+#	@echo 'no toto around'
+#endif
+
 stop:
 	@docker-compose stop
 

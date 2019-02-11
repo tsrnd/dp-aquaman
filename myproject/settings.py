@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'myapp',
     'yashoes',
     'yashoes_frontend',
+    'yashoes_cron',
+    'yashoes_batchjob',
     'django_extensions',
     'django_crontab',
     'django_celery_results',
@@ -253,10 +255,6 @@ CRONJOBS = [
 ]
 
 CRONTAB_LOCK_JOBS = True
-
-# apply settings for cron_ce
-CELERY_BROKER_URL = 'redis://cache:6379/0'
-CELERY_RESULT_BACKEND = 'django-cache'
 
 # settings mail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

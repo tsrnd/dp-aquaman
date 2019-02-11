@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'myapp',
     'yashoes',
     'yashoes_frontend',
-    'yashoes_cron',
     'yashoes_batchjob',
     'django_extensions',
     'django_crontab',

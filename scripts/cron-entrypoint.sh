@@ -14,19 +14,19 @@ if [ "$CMD" = "celery flower -A myproject" ]; then
 
     celery worker -A myproject -Ofair -n yashoes1@debug_worker \
         --autoscale=4,3 \
-        --pidfile="./logs/%n.pid" \
+        --pidfile="./%n.pid" \
         --logfile="./logs/%n%I.log" \
         --detach
 
     celery worker -A myproject -Ofair -n yashoes2@debug_worker \
         --autoscale=7,3 \
-        --pidfile="./logs/%n.pid" \
+        --pidfile="./%n.pid" \
         --logfile="./logs/%n%I.log" \
         --detach
 
-#    celery -A yashoes_cron beat \
-#        --detach \
-#        --pidfile="./logs/schedule.pid"
+    celery -A myproject beat \
+        --detach \
+        --pidfile="./schedule.pid"
 fi
 
 exec "$@"

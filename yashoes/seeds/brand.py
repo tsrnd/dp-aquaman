@@ -23,6 +23,8 @@ CONST_BRAND_LIST = [
 def create_brand():
     for brand in CONST_BRAND_LIST:
         try:
-            Brand.objects.get(pk=brand.get('id'))
+            obj = Brand.objects.get(pk=brand.get('id'))
+            obj.brand_name = brand.get('brand_name')
+            obj.save()
         except Brand.DoesNotExist:
             Brand.objects.create(**brand)

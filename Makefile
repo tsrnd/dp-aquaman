@@ -11,6 +11,12 @@ up: build
 	@docker-compose up -d app
 	@docker-compose logs -f app
 
+cron:
+	@pipenv lock -r > requirements.txt
+	@pipenv lock -d -r > requirements-dev.txt
+	@docker-compose up --build cron
+	@docker-compose logs -f cron
+
 stop:
 	@docker-compose stop
 

@@ -61,8 +61,13 @@ CONST_PRODUCT_LIST = [
 
 
 def create_product():
-    for brand in CONST_PRODUCT_LIST:
+    for product in CONST_PRODUCT_LIST:
         try:
-            Product.objects.get(pk=brand.get('id'))
+            obj = Product.objects.get(pk=product.get('id'))
+            obj.name = product.get('name')
+            obj.description = product.get('description')
+            obj.rate = product.get('rate')
+            obj.brand_id = product.get('brand_id')
+            obj.save()
         except Product.DoesNotExist:
-            Product.objects.create(**brand)
+            Product.objects.create(**product)

@@ -47,3 +47,24 @@ services:
     command: 
       server /export
     restart: always
+
+  cron:
+    build:
+      context: .
+      dockerfile: Dockerfile.cron
+    volumes:
+      - .:/code
+    expose:
+      - 5555
+    ports:
+      - 5555:5555
+    tty: true
+    environment:
+      DATABASE_URL: 'postgres://hello:django@data:5432/yashoes'
+      CACHE_URL: 'redis://cache:6379/'
+      STORAGE_URL: 'storage:9000'
+    links:
+      - data:data
+      - cache:cache
+      - storage:storage
+    command: celery flower -A myproject

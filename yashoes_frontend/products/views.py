@@ -21,6 +21,7 @@ def products(request):
     color = request.GET.get('color', None)
     size = request.GET.get('size', None)
     brand_id = request.GET.get('brand_id', None)
+    cat_id = request.GET.get('cat_id', None)
     if request.method == "GET":
         payload = {
             'page': page,
@@ -28,7 +29,8 @@ def products(request):
             'sort': sort,
             'color': color,
             'size': size,
-            'brand_id': brand_id
+            'brand_id': brand_id,
+            'cat_id': cat_id
         }
         response = requests.get(settings.API_HOST + "api/products/", params=payload)
         products = {}
@@ -45,21 +47,18 @@ def products(request):
         if size_response.status_code == 200:
             sizes = size_response.json()
 
-        category_response = requests.get(settings.API_HOST + "api/categories/",
-            params={ 'brand_id': brand_id })
+        category_response = requests.get(settings.API_HOST + "api/categories/")
         categories_data = {}
         if category_response.status_code == 200:
             categories_data = category_response.json()
-        categories = categories_data.get("data").get("categories")
-        is_brand = categories_data.get("data").get("is_brand")
+        categories = categories_data.get("data")
 
     return render(
         request, 'products/products.html', {
             'products': products,
             'colors': colors,
             'sizes': sizes,
-            'categories': categories,
-            'is_brand': is_brand
+            'categories': categories
         })
 
 def products_detail(request, product_id):

@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response, redirect
+from django.shortcuts import render, redirect
 from yashoes_frontend.auth.form import UserLoginForm, UserRegisterForm
 import requests, json
 from django.conf import settings

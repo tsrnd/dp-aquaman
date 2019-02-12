@@ -88,8 +88,15 @@ CONST_VARIANT_LIST = [
 
 
 def create_variant():
-    for brand in CONST_VARIANT_LIST:
+    for variant in CONST_VARIANT_LIST:
         try:
-            Variant.objects.get(pk=brand.get('id'))
+            obj = Variant.objects.get(pk=variant.get('id'))
+            obj.name = variant.get('name')
+            obj.price = variant.get('price')
+            obj.quantity = variant.get('quantity')
+            obj.color = variant.get('color')
+            obj.image_link = variant.get('image_link')
+            obj.product_id = variant.get('product_id')
+            obj.save()
         except Variant.DoesNotExist:
-            Variant.objects.create(**brand)
+            Variant.objects.create(**variant)

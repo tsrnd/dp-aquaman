@@ -22,9 +22,9 @@ more-itertools==5.0.0
 msgpack==0.6.1
 pep8==1.7.1
 pluggy==0.8.1
-ptvsd==4.2.2
+ptvsd==4.2.3
 py==1.7.0
-pycodestyle==2.4.0
+pycodestyle==2.5.0
 pylint-django==2.0.5
 pylint-plugin-utils==0.4
 pylint==2.2.2

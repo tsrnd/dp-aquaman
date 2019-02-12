@@ -3,7 +3,9 @@ broker_host = 'cache'
 broker_port = '6379'
 broker_url = 'redis://%s:%s/0' % (broker_host, broker_port)
 
-# imports = ('myproject.task',)
+# imports = (
+#     'yashoes_batchjob.transaction.task',
+# )
 
 result_backend = 'django-cache'
 

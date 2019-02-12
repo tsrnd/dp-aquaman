@@ -17,14 +17,6 @@ cron:
 	@docker-compose up --build cron
 	@docker-compose logs -f cron
 
-#clear-log:
-#ifdef worker_name
-##	@rm *.pid *.
-#	@echo ^.*worker_name.*$
-#else
-#	@echo 'no toto around'
-#endif
-
 stop:
 	@docker-compose stop
 

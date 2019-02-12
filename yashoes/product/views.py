@@ -32,15 +32,17 @@ class ProductsAPIView(APIView):
         color = request.GET.get('color', None)
         size = request.GET.get('size', None)
         brand_id = request.GET.get('brand_id', None)
-        if 'price' not in sort:
-            if color:
-                product_list = Product.objects.filter(variant__color=color).order_by(sort)
-            elif size:
-                product_list = Product.objects.filter(variant__size=size).order_by(sort)
-            elif brand_id:
-                product_list = Product.objects.filter(brand_id=brand_id).order_by(sort)
-            else:
-                product_list = Product.objects.all().order_by(sort)
+        cat_id = request.GET.get('cat_id', None)
+        if color:
+            product_list = Product.objects.filter(variant__color=color)
+        elif size:
+            product_list = Product.objects.filter(variant__size=size)
+        elif brand_id:
+            product_list = Product.objects.filter(brand_id=brand_id)
+        elif cat_id:
+            product_list = Product.objects.filter(productcategory__category_id=cat_id)
+        elif 'price' not in sort:
+            product_list = Product.objects.all().order_by(sort)
         else:
             product_list = Product.objects.all()
 
@@ -89,8 +91,7 @@ class ProductsAPIView(APIView):
             'next_page_flg': products.has_next(),
             'result': serializer.data,
         }
-        res = Response(content)
-        return res
+        return Response(content)
 
 
 class ProductDetail(generics.RetrieveAPIView):
@@ -164,9 +165,9 @@ class CommentView(APIView):
     permission_classes = (AllowAny, )
 
     def get(self, request, product_id):
-        comment = Comment.objects.filter(
+        comments = Comment.objects.filter(
             product=product_id, deleted_at=None).filter(parent_comment=None)
-        data = GetCommentsSerializer(comment, many=True).data
+        data = GetCommentsSerializer(comments, many=True).data
         return Response({"data": data})
 
     def post(self, request, product_id):

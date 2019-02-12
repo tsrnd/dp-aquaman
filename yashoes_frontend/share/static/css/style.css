@@ -772,6 +772,7 @@ ul.product-categories{
 	margin-bottom:0;
 }
 ul.product-categories li {
+	position: relative;
 	padding: 5px 0;
 	border-bottom: 1px solid #eee;
 	margin-bottom: 5px;
@@ -779,10 +780,16 @@ ul.product-categories li {
 	list-style:none;
 }
 ul.product-categories li a {
+	display: block;
 	font-size: 14px;
 	color: #202739;
 	font-weight: 500;
 }
+
+.categories-dropdown {
+	display: none;
+}
+
 ul.product-categories li a:hover {
 	text-decoration: none;
 	color: #8c2830;
@@ -793,6 +800,9 @@ ul.product-categories li a:hover {
 	-ms-transition: 0.5s all;
 }
 .product-categories li span.count {
+	position: absolute;
+	top: 20%;
+	right: 0;
 	float: right;
 	color: #202739;
 	font-size: 15px;
@@ -1798,9 +1808,9 @@ ul.unit {
 .single-right h3 {
 	font-size: 1.2em;
 }
-ul.product-categories li a {
+/* ul.product-categories li a {
 	font-size: 13px;
-}
+} */
 .product-categories li span.count {
 	font-size: 14px;
 }

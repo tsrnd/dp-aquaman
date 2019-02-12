@@ -20,12 +20,15 @@
 			<div class="col-md-3 p-right single-right">
 				<h3>Categories</h3>
 				<ul class="product-categories">
-					<li><a href="#">Blucher Shoe</a> <span class="count">(14)</span></li>
-					<li><a href="#">Clog Shoe</a> <span class="count">(2)</span></li>
-					<li><a href="#">Snow Boot Shoe</a> <span class="count">(2)</span></li>
-					<li><a href="#">Galesh Shoe</a> <span class="count">(11)</span></li>
-					<li><a href="#">pataugas Shoe</a> <span class="count">(3)</span></li>
-					<li><a href="#">Jazz Shoe</a> <span class="count">(3)</span></li>
+					{% for cat in categories %}
+						<li><a href="">{{cat.name}}</a><span class="count">({{cat.sub_categories|length}})</span>
+							<ul class="categories-dropdown">
+							{% for sub_cat in cat.sub_categories %}
+								<li><a id="{{sub_cat.id}}" href="">{{sub_cat.name}}</a></li>
+							{% endfor %}
+							</ul>
+						</li>
+					{% endfor %}
 				</ul>
 				<h3>Colors</h3>
 				<ul class="product-categories">
@@ -110,4 +113,5 @@
 	</div>
 </div>
 <script src="{% static 'js/jquery.miranda.min.js' %}"></script>
+<script src="{% static 'js/category.js' %}"></script>
 {% endblock %}

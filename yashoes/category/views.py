@@ -4,6 +4,7 @@ from rest_framework.viewsets import ViewSet
 
 from yashoes.category.serializer import CategorySerializer
 from yashoes.model.category import Category
+from yashoes.model.brand import Brand
 
 
 class CategoryView(ViewSet):
@@ -13,4 +14,4 @@ class CategoryView(ViewSet):
     def list(request):
         categories = Category.objects.filter(parent=None).order_by('id')
         serializer = CategorySerializer(categories, many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)

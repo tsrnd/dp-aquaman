@@ -4,7 +4,6 @@ from rest_framework.viewsets import ViewSet
 
 from yashoes.category.serializer import CategorySerializer
 from yashoes.model.category import Category
-from yashoes.model.brand import Brand
 
 
 class CategoryView(ViewSet):

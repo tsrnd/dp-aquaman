@@ -7,5 +7,5 @@ urlpatterns = [
     path('<int:pk>', views.ProductDetail.as_view()),
     path('<int:product_id>/rating', views.RatingView.as_view()),
     path('<int:product_id>/comments', views.CommentView.as_view()),
-    path('homepage/', views.HomePageApiView.as_view())
+    path('homepage/', views.HomePageApiView.as_view(), name="home")
 ]
